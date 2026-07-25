@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復旦高中 | 博學而篤志，切問而近思</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0e1a30;
+    --navy:#16274a;
+    --navy-soft:#243866;
+    --dawn:#d4a24c;
+    --dawn-soft:#e8c98a;
+    --paper:#f6f3ec;
+    --paper-dim:#eae5d8;
+    --ink:#20242e;
+    --slate:#5a6072;
+    --line:rgba(20,30,55,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans TC',sans-serif;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+  h1,h2,h3,.serif{font-family:'Noto Serif TC',serif;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  /* ---------- Dawn arc signature ---------- */
+  .dawn-arc{
+    position:relative;
+    height:2px;
+    width:100%;
+    background:linear-gradient(90deg, transparent, var(--dawn) 20%, var(--dawn) 80%, transparent);
+  }
+  .arc-mark{
+    display:inline-block;
+    width:34px;height:34px;
+    position:relative;
+  }
+  .arc-mark svg{width:100%;height:100%;display:block;}
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(246,243,236,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{
+    max-width:1120px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-name{font-size:1.15rem;font-weight:700;letter-spacing:0.06em;color:var(--navy);}
+  .brand-sub{font-size:0.62rem;letter-spacing:0.28em;color:var(--dawn);text-transform:uppercase;}
+  nav ul{list-style:none;display:flex;gap:2rem;}
+  nav a{
+    font-size:0.92rem;font-weight:500;color:var(--navy);
+    position:relative;padding:4px 0;
+  }
+  nav a::after{
+    content:'';position:absolute;left:0;bottom:0;width:0;height:1.5px;
+    background:var(--dawn);transition:width .3s ease;
+  }
+  nav a:hover::after{width:100%;}
+  .nav-toggle{display:none;background:none;border:0;font-size:1.4rem;color:var(--navy);cursor:pointer;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;align-items:center;
+    background:radial-gradient(ellipse 120% 80% at 50% 120%, var(--navy-soft) 0%, var(--navy) 45%, var(--navy-deep) 100%);
+    color:var(--paper);
+    overflow:hidden;
+  }
+  .hero::before{
+    /* rising dawn arc */
+    content:'';
+    position:absolute;
+    left:50%;bottom:-42vw;
+    width:150vw;height:150vw;
+    max-width:1400px;max-height:1400px;
+    border-radius:50%;
+    border-top:2px solid var(--dawn);
+    transform:translateX(-50%);
+    opacity:0.55;
+    animation:rise 2.2s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .hero::after{
+    content:'';
+    position:absolute;
+    left:50%;bottom:-46vw;
+    width:150vw;height:150vw;
+    max-width:1400px;max-height:1400px;
+    border-radius:50%;
+    border-top:1px solid rgba(212,162,76,0.28);
+    transform:translateX(-50%);
+    animation:rise 2.2s .15s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes rise{
+    from{opacity:0;transform:translateX(-50%) translateY(24px);}
+    to{opacity:0.55;transform:translateX(-50%) translateY(0);}
+  }
+  .hero-inner{
+    position:relative;z-index:2;
+    max-width:1120px;margin:0 auto;padding:0 24px;
+    width:100%;
+  }
+  .hero-eyebrow{
+    font-size:0.78rem;letter-spacing:0.32em;color:var(--dawn-soft);
+    text-transform:uppercase;margin-bottom:22px;
+    opacity:0;animation:fadeUp .8s .3s ease forwards;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    font-weight:900;line-height:1.25;
+    margin-bottom:22px;
+    opacity:0;animation:fadeUp .9s .45s ease forwards;
+  }
+  .hero h1 em{
+    font-style:normal;color:var(--dawn);
+  }
+  .hero p{
+    max-width:520px;
+    font-size:1.05rem;color:rgba(246,243,236,0.78);
+    margin-bottom:38px;
+    opacity:0;animation:fadeUp .9s .6s ease forwards;
+  }
+  .hero-cta{
+    display:flex;gap:16px;flex-wrap:wrap;
+    opacity:0;animation:fadeUp .9s .75s ease forwards;
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(16px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 28px;border-radius:2px;
+    font-size:0.92rem;font-weight:600;letter-spacing:0.03em;
+    border:1px solid transparent;cursor:pointer;
+    transition:all .25s ease;
+  }
+  .btn-primary{background:var(--dawn);color:var(--navy-deep);}
+  .btn-primary:hover{background:var(--dawn-soft);transform:translateY(-2px);}
+  .btn-ghost{border-color:rgba(246,243,236,0.4);color:var(--paper);}
+  .btn-ghost:hover{border-color:var(--dawn);color:var(--dawn-soft);}
+
+  /* ---------- Section shell ---------- */
+  section{padding:110px 24px;}
+  .container{max-width:1120px;margin:0 auto;}
+  .eyebrow{
+    font-size:0.76rem;letter-spacing:0.3em;text-transform:uppercase;
+    color:var(--dawn);font-weight:600;margin-bottom:14px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:'';width:26px;height:1px;background:var(--dawn);}
+  .section-title{
+    font-size:clamp(1.8rem,3.4vw,2.6rem);
+    font-weight:700;color:var(--navy);
+    margin-bottom:20px;
+  }
+  .section-lead{
+    max-width:620px;color:var(--slate);font-size:1.02rem;
+  }
+
+  /* ---------- About/History ---------- */
+  .about{background:var(--paper);}
+  .about-grid{
+    display:grid;grid-template-columns:0.9fr 1.1fr;gap:64px;
+    margin-top:56px;align-items:start;
+  }
+  .quote-block{
+    background:var(--navy);color:var(--paper);
+    padding:44px 36px;position:relative;
+    border-radius:2px;
+  }
+  .quote-block::before{
+    content:'';position:absolute;top:0;left:0;width:100%;height:3px;
+    background:linear-gradient(90deg,var(--dawn),transparent);
+  }
+  .quote-block p.zh{
+    font-family:'Noto Serif TC',serif;font-size:1.5rem;font-weight:600;
+    letter-spacing:0.08em;margin-bottom:12px;color:var(--dawn-soft);
+  }
+  .quote-block p.origin{font-size:0.85rem;color:rgba(246,243,236,0.6);}
+  .timeline{border-left:1px solid var(--line);padding-left:32px;display:flex;flex-direction:column;gap:34px;}
+  .t-item{position:relative;}
+  .t-item::before{
+    content:'';position:absolute;left:-37px;top:6px;
+    width:9px;height:9px;border-radius:50%;background:var(--dawn);
+    box-shadow:0 0 0 4px var(--paper);
+  }
+  .t-year{font-family:'Noto Serif TC',serif;font-weight:700;color:var(--navy);font-size:1.15rem;margin-bottom:6px;}
+  .t-text{color:var(--slate);font-size:0.95rem;}
+
+  /* ---------- Faculty/Courses ---------- */
+  .academics{background:var(--navy-deep);color:var(--paper);}
+  .academics .eyebrow{color:var(--dawn-soft);}
+  .academics .eyebrow::before{background:var(--dawn-soft);}
+  .academics .section-title{color:var(--paper);}
+  .academics .section-lead{color:rgba(246,243,236,0.65);}
+  .track-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:rgba(246,243,236,0.12);margin-top:56px;
+  }
+  .track{
+    background:var(--navy-deep);padding:38px 30px;
+    transition:background .3s ease;
+  }
+  .track:hover{background:var(--navy-soft);}
+  .track-num{font-family:'Noto Serif TC',serif;color:var(--dawn);font-size:0.85rem;letter-spacing:0.1em;margin-bottom:18px;}
+  .track h3{font-size:1.2rem;margin-bottom:12px;color:var(--paper);}
+  .track p{color:rgba(246,243,236,0.6);font-size:0.92rem;}
+  .faculty-strip{
+    margin-top:70px;padding-top:50px;border-top:1px solid rgba(246,243,236,0.14);
+    display:grid;grid-template-columns:repeat(4,1fr);gap:28px;
+  }
+  .faculty-stat b{
+    display:block;font-family:'Noto Serif TC',serif;font-size:2rem;color:var(--dawn);
+  }
+  .faculty-stat span{font-size:0.85rem;color:rgba(246,243,236,0.6);}
+
+  /* ---------- News ---------- */
+  .news{background:var(--paper);}
+  .news-list{margin-top:56px;display:flex;flex-direction:column;}
+  .news-item{
+    display:grid;grid-template-columns:140px 1fr auto;gap:28px;align-items:center;
+    padding:26px 0;border-bottom:1px solid var(--line);
+    transition:padding-left .3s ease;
+  }
+  .news-item:hover{padding-left:12px;}
+  .news-date{font-family:'Noto Serif TC',serif;color:var(--dawn);font-weight:600;font-size:0.95rem;}
+  .news-tag{
+    display:inline-block;font-size:0.7rem;letter-spacing:0.08em;
+    color:var(--navy);background:var(--paper-dim);padding:3px 10px;border-radius:2px;margin-bottom:8px;
+  }
+  .news-title{font-size:1.05rem;font-weight:600;color:var(--navy);}
+  .news-arrow{color:var(--slate);font-size:1.2rem;transition:transform .3s ease;}
+  .news-item:hover .news-arrow{transform:translateX(6px);color:var(--dawn);}
+
+  /* ---------- Contact ---------- */
+  .contact{background:var(--navy);color:var(--paper);}
+  .contact .eyebrow{color:var(--dawn-soft);}
+  .contact .eyebrow::before{background:var(--dawn-soft);}
+  .contact .section-title{color:var(--paper);}
+  .contact-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:56px;align-items:start;
+  }
+  .info-list{display:flex;flex-direction:column;gap:26px;}
+  .info-row{display:flex;gap:18px;}
+  .info-icon{
+    width:38px;height:38px;flex:none;border:1px solid rgba(212,162,76,0.4);
+    border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--dawn);
+  }
+  .info-label{font-size:0.78rem;letter-spacing:0.12em;color:rgba(246,243,236,0.5);text-transform:uppercase;margin-bottom:4px;}
+  .info-value{font-size:1rem;color:var(--paper);}
+  .map-frame{
+    border:1px solid rgba(246,243,236,0.15);border-radius:2px;overflow:hidden;
+    aspect-ratio:4/3;background:var(--navy-deep);
+  }
+  .map-frame iframe{width:100%;height:100%;border:0;filter:grayscale(0.3) contrast(1.05);}
+
+  footer{
+    background:var(--navy-deep);color:rgba(246,243,236,0.5);
+    padding:36px 24px;text-align:center;font-size:0.82rem;
+    border-top:1px solid rgba(246,243,236,0.08);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:860px){
+    nav ul{
+      display:none;
+      position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;gap:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--line);
+      padding:8px 24px 18px;
+    }
+    nav ul.open{display:flex;}
+    nav li{border-top:1px solid var(--line);}
+    nav li:first-child{border-top:none;}
+    nav a{display:block;padding:14px 0;}
+    .nav-toggle{display:block;}
+    .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px;}
+    .track-grid{grid-template-columns:1fr;}
+    .faculty-strip{grid-template-columns:repeat(2,1fr);}
+    .news-item{grid-template-columns:1fr auto;grid-template-areas:"date arrow" "title title";row-gap:6px;}
+    .news-date{grid-area:date;}
+    .news-arrow{grid-area:arrow;}
+    .news-title{grid-area:title;}
+    section{padding:76px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">
+      <span class="arc-mark">
+        <svg viewBox="0 0 34 34"><path d="M4 22 A13 13 0 0 1 30 22" fill="none" stroke="#d4a24c" stroke-width="2"/><circle cx="17" cy="24" r="2.2" fill="#d4a24c"/></svg>
+      </span>
+      <div>
+        <div class="brand-name">復旦高中</div>
+        <div class="brand-sub">Fudan Senior High School</div>
+      </div>
+    </div>
+    <nav>
+      <ul id="navList">
+        <li><a href="#about">學校介紹</a></li>
+        <li><a href="#academics">師資課程</a></li>
+        <li><a href="#news">最新消息</a></li>
+        <li><a href="#contact">聯絡資訊</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="選單" aria-expanded="false" aria-controls="navList">☰</button>
+  </div>
+</header>
+
+<script>
+  (function(){
+    var toggle = document.getElementById('navToggle');
+    var list = document.getElementById('navList');
+    toggle.addEventListener('click', function(){
+      var isOpen = list.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+      toggle.textContent = isOpen ? '✕' : '☰';
+    });
+    list.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click', function(){
+        list.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = '☰';
+      });
+    });
+  })();
+</script>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">博學而篤志・切問而近思</div>
+    <h1>博學篤志，<br><em>切問近思</em>。</h1>
+    <p>復旦高中創立於1958年，由上海復旦大學在台校友傳承學術獨立、思想自由之校風而創辦。以五育均衡、多元學習的辦學理念，培養具自信、受尊重、有競爭力的未來世界公民。</p>
+    <div class="hero-cta">
+      <a href="#about" class="btn btn-primary">認識復旦</a>
+      <a href="#contact" class="btn btn-ghost">聯絡與參訪</a>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="eyebrow">School Profile</div>
+    <h2 class="section-title">學校介紹與歷史</h2>
+    <p class="section-lead">從創校至今，復旦中學始終相信教育是一次又一次的黎明——每天清晨，學生帶著前一日的積累，重新出發。</p>
+
+    <div class="about-grid">
+      <div class="quote-block">
+        <p class="zh">「博學而篤志，切問而近思」</p>
+        <p class="origin">語出《論語・子張》，勉勵學子廣泛學習且堅定志向，善於發問並貼近思考，為復旦高中校訓。</p>
+      </div>
+
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-year">1958</div>
+          <div class="t-text">上海復旦大學在台校友為傳承母校學術獨立、思想自由之校風，於桃園創立復旦中學。</div>
+        </div>
+        <div class="t-item">
+          <div class="t-year">董事會</div>
+          <div class="t-text">董事會由社會賢達及事業有成之校友組成，董事不支領任何報酬，並積極募款支持校務發展。</div>
+        </div>
+        <div class="t-item">
+          <div class="t-year">2005</div>
+          <div class="t-text">首創全台私立中學公開遴選校長之風，開啟校務治理新頁。</div>
+        </div>
+        <div class="t-item">
+          <div class="t-year">現在</div>
+          <div class="t-text">已有四萬餘名學子接受「博學而篤志、切問而近思」校訓薰陶，持續朝向全人教育目標邁進。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="academics" id="academics">
+  <div class="container">
+    <div class="eyebrow">Faculty &amp; Curriculum</div>
+    <h2 class="section-title">師資與課程</h2>
+    <p class="section-lead">課程規劃分為三大學程方向，並由專業教師團隊帶領學生深入探索、扎實奠基。</p>
+
+    <div class="track-grid">
+      <div class="track">
+        <div class="track-num">人文社會</div>
+        <h3>語文・歷史・社會</h3>
+        <p>強化閱讀思辨與寫作表達，透過議題探究理解社會脈動，培養公民關懷。</p>
+      </div>
+      <div class="track">
+        <div class="track-num">數理科學</div>
+        <h3>數學・自然・資訊</h3>
+        <p>以實驗與專題為核心，結合程式設計與科學方法,培養邏輯與創新能力。</p>
+      </div>
+      <div class="track">
+        <div class="track-num">藝術體育</div>
+        <h3>美感・體能・團隊</h3>
+        <p>提供多元社團與藝能課程,重視身心均衡發展與團隊合作精神。</p>
+      </div>
+    </div>
+
+    <div class="faculty-strip">
+      <div class="faculty-stat"><b>152</b><span>專任教師</span></div>
+      <div class="faculty-stat"><b>72</b><span>全校班級數</span></div>
+      <div class="faculty-stat"><b>3,393</b><span>全校學生人數</span></div>
+      <div class="faculty-stat"><b>184</b><span>教職員工總數</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="news" id="news">
+  <div class="container">
+    <div class="eyebrow">Announcements</div>
+    <h2 class="section-title">最新消息</h2>
+    <p class="section-lead">校園公告、活動與招生訊息，隨時掌握復旦動態。</p>
+
+    <div class="news-list">
+      <a class="news-item" href="#">
+        <div class="news-date">2026.08.12</div>
+        <div>
+          <span class="news-tag">招生</span>
+          <div class="news-title">115學年度新生入學說明會，即日起開放報名</div>
+        </div>
+        <div class="news-arrow">→</div>
+      </a>
+      <a class="news-item" href="#">
+        <div class="news-date">2026.07.30</div>
+        <div>
+          <span class="news-tag">活動</span>
+          <div class="news-title">校慶運動會暨園遊會活動花絮公告</div>
+        </div>
+        <div class="news-arrow">→</div>
+      </a>
+      <a class="news-item" href="#">
+        <div class="news-date">2026.07.15</div>
+        <div>
+          <span class="news-tag">課程</span>
+          <div class="news-title">新學年多元選修課程一覽表公布</div>
+        </div>
+        <div class="news-arrow">→</div>
+      </a>
+      <a class="news-item" href="#">
+        <div class="news-date">2026.06.28</div>
+        <div>
+          <span class="news-tag">榮譽</span>
+          <div class="news-title">本校學生於全國科展榮獲佳績</div>
+        </div>
+        <div class="news-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="eyebrow">Contact &amp; Visit</div>
+    <h2 class="section-title">聯絡資訊與地圖</h2>
+
+    <div class="contact-grid">
+      <div class="info-list">
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div>
+            <div class="info-label">地址</div>
+            <div class="info-value">324 桃園市平鎮區復旦里復旦路二段122號</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📞</div>
+          <div>
+            <div class="info-label">電話</div>
+            <div class="info-value">(03) 494-0890</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">✉️</div>
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-value">info@fdhs.tyc.edu.tw</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🕗</div>
+          <div>
+            <div class="info-label">辦公時間</div>
+            <div class="info-value">週一至週五 08:00–17:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-frame">
+        <iframe src="https://www.google.com/maps?q=%E6%A1%83%E5%9C%92%E5%B8%82%E5%B9%B3%E9%8E%AE%E5%8D%80%E5%BE%A9%E6%97%A6%E8%B7%AF%E4%BA%8C%E6%AE%B5122%E8%99%9F&output=embed" loading="lazy" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 復旦高中 Fudan Senior High School．版權所有　｜　<a href="https://www.fdhs.tyc.edu.tw" style="color:var(--dawn-soft);text-decoration:underline;" target="_blank" rel="noopener">學校官方網站</a>
+</footer>
+
+</body>
+</html>
