@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復旦高中 | 最新消息編輯後台</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0e1a30; --navy:#16274a; --dawn:#d4a24c; --dawn-text:#8f6424;
+    --paper:#f6f3ec; --paper-dim:#eae5d8; --ink:#20242e; --slate:#5a6072; --line:rgba(20,30,55,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-serif;line-height:1.7;}
+  header{background:var(--navy-deep);color:#fff;padding:28px 24px;}
+  header h1{margin:0 0 6px;font-size:1.3rem;}
+  header p{margin:0;color:rgba(255,255,255,0.6);font-size:0.85rem;}
+  main{max-width:760px;margin:0 auto;padding:32px 20px 100px;}
+
+  .box{background:#fff;border:1px solid var(--line);border-radius:4px;padding:24px;margin-bottom:24px;}
+  .box h2{margin-top:0;font-size:1.05rem;color:var(--navy);}
+  .hint{font-size:0.85rem;color:var(--slate);line-height:1.8;}
+  .hint a{color:var(--dawn-text);}
+  label{display:block;font-size:0.85rem;font-weight:600;color:var(--navy);margin:14px 0 6px;}
+  input[type=text],input[type=password],input[type=url]{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:3px;font-size:0.95rem;font-family:inherit;
+  }
+  .btn{
+    display:inline-block;padding:11px 22px;border-radius:3px;border:none;cursor:pointer;
+    font-size:0.9rem;font-weight:600;font-family:inherit;
+  }
+  .btn-primary{background:var(--dawn);color:var(--navy-deep);}
+  .btn-primary:hover{background:#e0b562;}
+  .btn-ghost{background:var(--paper-dim);color:var(--navy);}
+  .btn-danger{background:#c0392b;color:#fff;}
+  .btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+  #status{margin-top:14px;font-size:0.88rem;padding:10px 14px;border-radius:3px;display:none;}
+  #status.ok{display:block;background:#e6f4ea;color:#1a7a3a;}
+  #status.err{display:block;background:#fbe7e6;color:#c0392b;}
+  #status.loading{display:block;background:var(--paper-dim);color:var(--slate);}
+
+  .item{border:1px solid var(--line);border-radius:3px;padding:16px;margin-bottom:12px;background:var(--paper);}
+  .item-row{display:grid;grid-template-columns:120px 100px 1fr;gap:10px;margin-bottom:8px;}
+  .item-row input{font-size:0.85rem;padding:8px 10px;}
+  .item-actions{text-align:right;margin-top:8px;}
+  .item-actions button{font-size:0.78rem;padding:5px 12px;}
+
+  #editorArea{display:none;}
+  @media (max-width:600px){
+    .item-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📝 最新消息編輯後台</h1>
+  <p>此頁面僅供學校內部維護網站內容使用，一般訪客請勿在此操作</p>
+</header>
+
+<main>
+  <div class="box">
+    <h2>第一步：連接 GitHub</h2>
+    <div class="hint">
+      需要一組 GitHub 個人存取權杖（Personal Access Token）才能儲存變更。<br>
+      取得方式：登入 GitHub → 右上角頭像 → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token，Repository access 選擇這個網站的倉庫，Permissions 的 Contents 設為 Read and write。<br>
+      <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">直接前往建立權杖 →</a><br>
+      <b>權杖只會暫存在你目前的瀏覽器分頁，關閉分頁後就會消失，不會外流或儲存在任何地方。</b>
+    </div>
+    <label for="tokenInput">GitHub 權杖</label>
+    <input type="password" id="tokenInput" placeholder="ghp_ 或 github_pat_ 開頭的權杖">
+    <label for="repoInput">倉庫（格式：帳號名稱/倉庫名稱）</label>
+    <input type="text" id="repoInput" value="whatasmalls-coder/fudan-website">
+    <div style="margin-top:16px;">
+      <button class="btn btn-primary" id="connectBtn">連接並載入目前內容</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <div class="box" id="editorArea">
+    <h2>最新消息列表</h2>
+    <div class="hint" style="margin-bottom:16px;">最上面的會顯示在網站最前面，建議把最新的公告排在最上方。</div>
+    <div id="itemsContainer"></div>
+    <button class="btn btn-ghost" id="addItemBtn">＋ 新增一則消息</button>
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--line);">
+    <button class="btn btn-primary" id="saveBtn">💾 儲存變更到網站</button>
+    <div id="saveStatus"></div>
+  </div>
+</main>
+
+<script>
+(function(){
+  var FILE_PATH = 'news.json';
+  var currentSha = null;
+
+  var tokenInput = document.getElementById('tokenInput');
+  var repoInput = document.getElementById('repoInput');
+  var connectBtn = document.getElementById('connectBtn');
+  var statusEl = document.getElementById('status');
+  var editorArea = document.getElementById('editorArea');
+  var itemsContainer = document.getElementById('itemsContainer');
+  var addItemBtn = document.getElementById('addItemBtn');
+  var saveBtn = document.getElementById('saveBtn');
+  var saveStatus = document.getElementById('saveStatus');
+
+  function setStatus(el, type, msg){
+    el.className = type;
+    el.textContent = msg;
+  }
+
+  function apiHeaders(){
+    return {
+      'Authorization': 'Bearer ' + tokenInput.value.trim(),
+      'Accept': 'application/vnd.github+json'
+    };
+  }
+
+  function renderItems(items){
+    itemsContainer.innerHTML = '';
+    items.forEach(function(item, idx){
+      addItemRow(item);
+    });
+  }
+
+  function addItemRow(item){
+    item = item || {date:'', tag:'', title:'', link:'https://www.fdhs.tyc.edu.tw'};
+    var div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML =
+      '<div class="item-row">' +
+        '<input type="text" class="f-date" placeholder="日期 例如 2026.08.01" value="' + escapeAttr(item.date) + '">' +
+        '<input type="text" class="f-tag" placeholder="分類 例如 招生" value="' + escapeAttr(item.tag) + '">' +
+        '<input type="text" class="f-title" placeholder="標題內容" value="' + escapeAttr(item.title) + '">' +
+      '</div>' +
+      '<input type="url" class="f-link" placeholder="連結網址" value="' + escapeAttr(item.link) + '">' +
+      '<div class="item-actions"><button class="btn btn-danger btn-remove">刪除這則</button></div>';
+    div.querySelector('.btn-remove').addEventListener('click', function(){
+      div.remove();
+    });
+    itemsContainer.appendChild(div);
+  }
+
+  function escapeAttr(s){
+    return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  function collectItems(){
+    var rows = itemsContainer.querySelectorAll('.item');
+    var items = [];
+    rows.forEach(function(row){
+      var date = row.querySelector('.f-date').value.trim();
+      var tag = row.querySelector('.f-tag').value.trim();
+      var title = row.querySelector('.f-title').value.trim();
+      var link = row.querySelector('.f-link').value.trim();
+      if(title){
+        items.push({date:date, tag:tag, title:title, link:link || 'https://www.fdhs.tyc.edu.tw'});
+      }
+    });
+    return items;
+  }
+
+  connectBtn.addEventListener('click', function(){
+    var token = tokenInput.value.trim();
+    var repo = repoInput.value.trim();
+    if(!token || !repo){
+      setStatus(statusEl, 'err', '請輸入權杖與倉庫名稱');
+      return;
+    }
+    setStatus(statusEl, 'loading', '載入中...');
+    connectBtn.disabled = true;
+
+    fetch('https://api.github.com/repos/' + repo + '/contents/' + FILE_PATH, {headers: apiHeaders()})
+      .then(function(res){
+        if(res.status === 401) throw new Error('權杖無效或已過期，請重新產生');
+        if(res.status === 404) throw new Error('找不到 ' + FILE_PATH + '，請確認倉庫名稱正確、且倉庫根目錄有這個檔案');
+        if(!res.ok) throw new Error('連接失敗（狀態碼 ' + res.status + '）');
+        return res.json();
+      })
+      .then(function(data){
+        currentSha = data.sha;
+        var content = decodeURIComponent(escape(atob(data.content)));
+        var items = JSON.parse(content);
+        renderItems(items);
+        editorArea.style.display = 'block';
+        setStatus(statusEl, 'ok', '連接成功！已載入目前 ' + items.length + ' 則消息，可以在下方編輯。');
+      })
+      .catch(function(err){
+        setStatus(statusEl, 'err', err.message);
+      })
+      .finally(function(){
+        connectBtn.disabled = false;
+      });
+  });
+
+  addItemBtn.addEventListener('click', function(){
+    addItemRow(null);
+  });
+
+  saveBtn.addEventListener('click', function(){
+    var repo = repoInput.value.trim();
+    var items = collectItems();
+    if(items.length === 0){
+      setStatus(saveStatus, 'err', '至少需要保留一則消息');
+      return;
+    }
+    var jsonStr = JSON.stringify(items, null, 2) + '\n';
+    var base64Content = btoa(unescape(encodeURIComponent(jsonStr)));
+
+    setStatus(saveStatus, 'loading', '儲存中...');
+    saveBtn.disabled = true;
+
+    fetch('https://api.github.com/repos/' + repo + '/contents/' + FILE_PATH, {
+      method: 'PUT',
+      headers: Object.assign({'Content-Type':'application/json'}, apiHeaders()),
+      body: JSON.stringify({
+        message: '更新最新消息 - ' + new Date().toLocaleString('zh-TW'),
+        content: base64Content,
+        sha: currentSha
+      })
+    })
+      .then(function(res){
+        if(!res.ok) return res.json().then(function(e){ throw new Error(e.message || '儲存失敗'); });
+        return res.json();
+      })
+      .then(function(data){
+        currentSha = data.content.sha;
+        setStatus(saveStatus, 'ok', '✓ 已成功儲存！網站約 1-2 分鐘後會更新，重新整理首頁即可看到最新內容。');
+      })
+      .catch(function(err){
+        setStatus(saveStatus, 'err', '儲存失敗：' + err.message);
+      })
+      .finally(function(){
+        saveBtn.disabled = false;
+      });
+  });
+})();
+</script>
+</body>
+</html>
