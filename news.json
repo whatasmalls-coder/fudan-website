@@ -1,8 +1,38 @@
 [
-  {"date":"2026.06.03","tag":"課程","title":"114學年度高三重補修【自學輔導】科目開課資訊(6/8～6/29)","link":"https://www.fdhs.tyc.edu.tw"},
-  {"date":"2026.06.02","tag":"招生","title":"115學年度新生暑假作業資訊公告","link":"https://www.fdhs.tyc.edu.tw"},
-  {"date":"2026.05.11","tag":"徵才","title":"復旦高級中等學校甄選水電專業幹事1員","link":"https://www.fdhs.tyc.edu.tw"},
-  {"date":"2024.08.15","tag":"榮譽","title":"113學年度大學升學表現創新高，19人錄取醫科、25人錄取台大","link":"https://www.fdhs.tyc.edu.tw"},
-  {"date":"109學年度","tag":"榮譽","title":"國家太空中心109年太空實驗設計競賽高中組第一名","link":"https://www.fdhs.tyc.edu.tw"},
-  {"date":"106學年度","tag":"榮譽","title":"榮獲106年品德績優學校、服務學習績優學校，全國僅五所高中職獲獎","link":"https://www.fdhs.tyc.edu.tw"}
+  {
+    "date": "2026.06.03",
+    "tag": "招生",
+    "title": "二三年級開放市民卡遺失補辦至8/5(轉入生請一起來不收費)",
+    "link": "https://www.fdhs.tyc.edu.tw"
+  },
+  {
+    "date": "2026.06.02",
+    "tag": "招生",
+    "title": "115學年度新生暑假作業資訊公告",
+    "link": "https://www.fdhs.tyc.edu.tw"
+  },
+  {
+    "date": "2026.05.11",
+    "tag": "徵才",
+    "title": "復旦高級中等學校甄選水電專業幹事1員",
+    "link": "https://www.fdhs.tyc.edu.tw"
+  },
+  {
+    "date": "2024.08.15",
+    "tag": "榮譽",
+    "title": "113學年度大學升學表現創新高，19人錄取醫科、25人錄取台大",
+    "link": "https://www.fdhs.tyc.edu.tw"
+  },
+  {
+    "date": "109學年度",
+    "tag": "榮譽",
+    "title": "國家太空中心109年太空實驗設計競賽高中組第一名",
+    "link": "https://www.fdhs.tyc.edu.tw"
+  },
+  {
+    "date": "106學年度",
+    "tag": "榮譽",
+    "title": "榮獲106年品德績優學校、服務學習績優學校，全國僅五所高中職獲獎",
+    "link": "https://www.fdhs.tyc.edu.tw"
+  }
 ]
