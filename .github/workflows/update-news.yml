@@ -2,43 +2,6 @@ name: 自動更新最新消息
 
 on:
   schedule:
-    # UTC 00:00 = 台灣時間每天早上 8:00
-    - cron: '0 0 * * *'
-  workflow_dispatch: {}   # 也可以在 GitHub 網頁上手動點「Run workflow」立刻跑一次
-
-permissions:
-  contents: write   # 讓這個 workflow 有權限 commit / push 回這個 repo
-
-jobs:
-  update-news:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 取得 repo 內容
-        uses: actions/checkout@v4
-
-      - name: 設定 Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: 抓取官網最新公告並更新 news.json
-        run: python scripts/update_news.py
-
-      - name: 如果有變動就 commit + push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- news.json; then
-            echo "沒有變動，不需要 commit。"
-          else
-            git add news.json
-            git commit -m "自動更新最新消息 ($(date -u +'%Y-%m-%d'))"
-            git push
-          fi
-name: 自動更新最新消息
-
-on:
-  schedule:
     - cron: '0 0 * * *'
   workflow_dispatch: {}
 
