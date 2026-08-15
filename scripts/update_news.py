@@ -43,6 +43,28 @@ ROW_RE = re.compile(
     re.S,
 )
 
+# 依標題關鍵字，由上而下依序比對，第一個比對到的規則就採用；
+# 都比對不到就用「轉知」當預設分類。這不會百分之百精準，
+# 但比起全部統一貼「轉知」，至少能讓使用者一眼看出公告性質。
+TAG_RULES = [
+    (re.compile(r"校車|上放學"), "校車"),
+    (re.compile(r"疫苗|COVID|防疫|抗生素"), "防疫"),
+    (re.compile(r"演習|韌性"), "防災"),
+    (re.compile(r"獎學金|助學金|補助"), "獎助學金"),
+    (re.compile(r"競賽|比賽|徵件|徵選"), "競賽"),
+    (re.compile(r"招生|學分班|公費班|證照班|鑑定|甄選"), "招生"),
+    (re.compile(r"研習|工作坊|講座|論壇|說明會|研討會"), "研習"),
+    (re.compile(r"入選|通過名單|錄取|得獎|獲獎"), "榮譽"),
+    (re.compile(r"會議紀錄|行政"), "行政"),
+]
+
+
+def classify_tag(title):
+    for pattern, tag in TAG_RULES:
+        if pattern.search(title):
+            return tag
+    return "轉知"
+
 
 def fetch_html(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -79,7 +101,7 @@ def scrape():
         items.append(
             {
                 "date": date.replace("-", "."),  # 統一成跟現有 news.json 一致的 2026.08.05 格式
-                "tag": "轉知",
+                "tag": classify_tag(title),
                 "title": title,
                 "link": link,
             }
