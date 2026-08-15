@@ -1,0 +1,40 @@
+{
+  "name": "復旦高中 Fudan Senior High School",
+  "short_name": "復旦高中",
+  "description": "復旦高中官方形象網站，提供學校介紹、師資課程、升學表現、最新消息與校車路線查詢。",
+  "start_url": "/?utm_source=app&utm_medium=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f6f3ec",
+  "theme_color": "#0e1a30",
+  "lang": "zh-Hant-TW",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "校車路線查詢",
+      "short_name": "校車查詢",
+      "url": "/bus-search/?utm_source=app&utm_medium=pwa",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
