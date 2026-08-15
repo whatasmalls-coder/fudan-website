@@ -151,7 +151,13 @@ def update_sitemap_lastmod():
 
 
 def main():
-    scraped = scrape()
+    try:
+        scraped = scrape()
+    except Exception as e:
+        print("這次連不上學校官網（可能是暫時維護或網路逾時），先跳過這次，下次排程會再自動重試。")
+        print("實際錯誤訊息（僅供除錯參考）：" + str(e))
+        sys.exit(0)
+
     if not scraped:
         print("這次沒有抓到任何公告，可能是官網格式改變了。為了安全，不修改 news.json。")
         sys.exit(0)
