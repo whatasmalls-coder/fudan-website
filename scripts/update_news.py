@@ -3,6 +3,7 @@
 """
 自動從復旦高中官網（fdhs.tyc.edu.tw）抓取「一週消息」公告列表，
 比對現有 news.json，把還沒出現過的公告加進去，然後存檔。
+成功寫入 news.json 時，同時把 sitemap.xml 裡首頁的 <lastmod> 更新成今天的日期。
 
 設計原則：
 - 只「新增」，絕對不會刪除或覆蓋 admin.html 後台手動編輯的既有項目
@@ -19,12 +20,14 @@ import os
 import re
 import sys
 import urllib.request
+from datetime import datetime, timezone
 
 LIST_URL = "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_list_s.php"
 DETAIL_BASE = "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php"
 
-# news.json 在 repo 根目錄，這支腳本放在 scripts/ 資料夾下
+# news.json 跟 sitemap.xml 都在 repo 根目錄，這支腳本放在 scripts/ 資料夾下
 NEWS_JSON_PATH = os.path.join(os.path.dirname(__file__), "..", "news.json")
+SITEMAP_PATH = os.path.join(os.path.dirname(__file__), "..", "sitemap.xml")
 
 # 一次最多保留幾則公告（避免檔案無限長大；只會裁掉「自動抓的最舊」，
 # 邏輯上不會動到日期抓不到、判斷為手動項目的內容——見 save_news 註解）
@@ -98,6 +101,30 @@ def save_news(items):
         f.write("\n")
 
 
+def update_sitemap_lastmod():
+    """把 sitemap.xml 裡首頁那筆的 <lastmod> 更新成今天的日期（UTC）。
+    只更新首頁，因為只有首頁的公告內容是這支腳本在自動維護的；
+    校車查詢頁的資料是手動維護，不該被這支腳本動到日期。
+    如果 sitemap.xml 不存在，或格式跟預期不一樣，就安靜跳過，不影響主流程。"""
+    if not os.path.exists(SITEMAP_PATH):
+        return
+    try:
+        with open(SITEMAP_PATH, "r", encoding="utf-8") as f:
+            content = f.read()
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        pattern = re.compile(
+            r"(<loc>https://www\.visitfudan\.com/</loc>\s*<lastmod>)\d{4}-\d{2}-\d{2}(</lastmod>)"
+        )
+        new_content, count = pattern.subn(r"\g<1>" + today + r"\g<2>", content, count=1)
+        if count:
+            with open(SITEMAP_PATH, "w", encoding="utf-8") as f:
+                f.write(new_content)
+            print("sitemap.xml 首頁 lastmod 已更新為 " + today)
+    except Exception as e:
+        # sitemap 更新失敗不該讓整個流程失敗，安靜記錄一下就好
+        print("更新 sitemap.xml 時發生問題（不影響公告更新）：" + str(e))
+
+
 def main():
     scraped = scrape()
     if not scraped:
@@ -120,6 +147,7 @@ def main():
         merged = merged[:MAX_ITEMS]
 
     save_news(merged)
+    update_sitemap_lastmod()
     print(f"新增 {len(new_items)} 則公告，news.json 已更新。")
 
 
