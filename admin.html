@@ -47,6 +47,9 @@
   .item-actions{text-align:right;margin-top:8px;}
   .item-actions button{font-size:0.78rem;padding:5px 12px;}
 
+  .unsaved-badge{display:none;margin-left:10px;font-size:0.78rem;font-weight:700;color:#c0392b;background:#fbe7e6;padding:3px 9px;border-radius:10px;vertical-align:middle;}
+  .unsaved-badge.show{display:inline-block;}
+
   #editorArea{display:none;}
   @media (max-width:600px){
     .item-row{grid-template-columns:1fr;}
@@ -68,11 +71,12 @@
       取得方式：登入 GitHub → 右上角頭像 → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token，Repository access 選擇這個網站的倉庫，Permissions 的 Contents 設為 Read and write。<br>
       <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">直接前往建立權杖 →</a><br>
       <b>權杖只會暫存在你目前的瀏覽器分頁，關閉分頁後就會消失，不會外流或儲存在任何地方。</b>
+      若瀏覽器跳出「要儲存這組密碼嗎？」的提示，請選擇「不要儲存」，避免權杖被瀏覽器永久記住。
     </div>
     <label for="tokenInput">GitHub 權杖</label>
-    <input type="password" id="tokenInput" placeholder="ghp_ 或 github_pat_ 開頭的權杖">
+    <input type="password" id="tokenInput" placeholder="ghp_ 或 github_pat_ 開頭的權杖" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-bwignore>
     <label for="repoInput">倉庫（格式：帳號名稱/倉庫名稱）</label>
-    <input type="text" id="repoInput" value="whatasmalls-coder/fudan-website">
+    <input type="text" id="repoInput" value="whatasmalls-coder/fudan-website" autocomplete="off">
     <div style="margin-top:16px;">
       <button class="btn btn-primary" id="connectBtn">連接並載入目前內容</button>
     </div>
@@ -80,7 +84,7 @@
   </div>
 
   <div class="box" id="editorArea">
-    <h2>最新消息列表</h2>
+    <h2>最新消息列表 <span class="unsaved-badge" id="unsavedBadge">尚未儲存</span></h2>
     <div class="hint" style="margin-bottom:16px;">最上面的會顯示在網站最前面，建議把最新的公告排在最上方。</div>
     <div id="itemsContainer"></div>
     <button class="btn btn-ghost" id="addItemBtn">＋ 新增一則消息</button>
@@ -94,6 +98,7 @@
 (function(){
   var FILE_PATH = 'news.json';
   var currentSha = null;
+  var isDirty = false;
 
   var tokenInput = document.getElementById('tokenInput');
   var repoInput = document.getElementById('repoInput');
@@ -104,11 +109,30 @@
   var addItemBtn = document.getElementById('addItemBtn');
   var saveBtn = document.getElementById('saveBtn');
   var saveStatus = document.getElementById('saveStatus');
+  var unsavedBadge = document.getElementById('unsavedBadge');
 
   function setStatus(el, type, msg){
     el.className = type;
     el.textContent = msg;
   }
+
+  function markDirty(){
+    isDirty = true;
+    unsavedBadge.classList.add('show');
+  }
+
+  function markClean(){
+    isDirty = false;
+    unsavedBadge.classList.remove('show');
+  }
+
+  window.addEventListener('beforeunload', function(e){
+    if(isDirty){
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    }
+  });
 
   function apiHeaders(){
     return {
@@ -120,11 +144,11 @@
   function renderItems(items){
     itemsContainer.innerHTML = '';
     items.forEach(function(item, idx){
-      addItemRow(item);
+      addItemRow(item, true);
     });
   }
 
-  function addItemRow(item){
+  function addItemRow(item, isInitialLoad){
     item = item || {date:'', tag:'', title:'', link:'https://www.fdhs.tyc.edu.tw'};
     var div = document.createElement('div');
     div.className = 'item';
@@ -136,10 +160,26 @@
       '</div>' +
       '<input type="url" class="f-link" placeholder="連結網址" value="' + escapeAttr(item.link) + '">' +
       '<div class="item-actions"><button class="btn btn-danger btn-remove">刪除這則</button></div>';
-    div.querySelector('.btn-remove').addEventListener('click', function(){
-      div.remove();
+
+    div.querySelectorAll('input').forEach(function(inp){
+      inp.addEventListener('input', markDirty);
     });
+
+    div.querySelector('.btn-remove').addEventListener('click', function(){
+      var titleField = div.querySelector('.f-title');
+      var label = (titleField && titleField.value.trim()) ? '「' + titleField.value.trim() + '」' : '這一則消息';
+      var confirmed = window.confirm('確定要刪除' + label + '嗎？\n\n此動作要等按下「儲存變更到網站」之後才會真的生效，如果按錯了，儲存前都還可以重新整理頁面復原。');
+      if(confirmed){
+        div.remove();
+        markDirty();
+      }
+    });
+
     itemsContainer.appendChild(div);
+
+    if(!isInitialLoad){
+      markDirty();
+    }
   }
 
   function escapeAttr(s){
@@ -184,6 +224,7 @@
         var items = JSON.parse(content);
         renderItems(items);
         editorArea.style.display = 'block';
+        markClean();
         setStatus(statusEl, 'ok', '連接成功！已載入目前 ' + items.length + ' 則消息，可以在下方編輯。');
       })
       .catch(function(err){
@@ -195,7 +236,7 @@
   });
 
   addItemBtn.addEventListener('click', function(){
-    addItemRow(null);
+    addItemRow(null, false);
   });
 
   saveBtn.addEventListener('click', function(){
@@ -226,6 +267,7 @@
       })
       .then(function(data){
         currentSha = data.content.sha;
+        markClean();
         setStatus(saveStatus, 'ok', '✓ 已成功儲存！網站約 1-2 分鐘後會更新，重新整理首頁即可看到最新內容。');
       })
       .catch(function(err){
