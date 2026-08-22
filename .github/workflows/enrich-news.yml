@@ -1,15 +1,22 @@
 name: Enrich news announcements
 
 on:
-  schedule:
-    - cron: '30 1 * * *'  # 每天台灣時間早上9:30（在原本爬蟲9:00之後）
+  workflow_run:
+    workflows: ["自動更新最新消息"]
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
   enrich:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
