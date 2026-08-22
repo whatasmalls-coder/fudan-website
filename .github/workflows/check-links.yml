@@ -1,0 +1,43 @@
+name: Check broken links
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # 每週一台灣時間早上10點
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check broken links
+        run: python scripts/check_broken_links.py
+
+      - name: Open GitHub Issue if broken links found
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('link_check_report.json', 'utf8'));
+            if (report.brokenCount > 0) {
+              let body = '## 失效連結報告\n\n';
+              for (const b of report.broken) {
+                body += `- **${b.announcementTitle}**: ${b.url} (狀態: ${b.status})\n`;
+              }
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🔗 發現 ${report.brokenCount} 個失效連結`,
+                body: body,
+                labels: ['broken-link']
+              });
+            }
