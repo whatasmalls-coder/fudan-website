@@ -1,0 +1,34 @@
+name: Scrape school calendar
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # 每週一台灣時間早上11點（校曆不常變，不用太頻繁）
+  workflow_dispatch:
+
+jobs:
+  scrape-calendar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic requests pdfplumber
+
+      - name: Scrape calendar
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/scrape_calendar.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add calendar.json
+          git diff --staged --quiet || git commit -m "🤖 自動更新校曆"
+          git push
