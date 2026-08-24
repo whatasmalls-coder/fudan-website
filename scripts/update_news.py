@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-自動從復旦高中官網（fdhs.tyc.edu.tw）抓取「一週消息」公告列表，
+自動從復旦高中官網（fdhs.tyc.edu.tw）抓取公告列表，
 比對現有 news.json，把還沒出現過的公告加進去，然後存檔。
 成功寫入 news.json 時，同時把 sitemap.xml 裡首頁的 <lastmod> 更新成今天的日期。
+
+目前抓取兩個來源：
+1. 一週消息（www.fdhs.tyc.edu.tw）：學校轉知、獎助學金、招生等各類公告
+2. 校車餐飲公告（netflow.fdhs.tyc.edu.tw，flag=5）：校車路線調整、上放學路線異動等公告
 
 設計原則：
 - 只「新增」，絕對不會刪除或覆蓋 admin.html 後台手動編輯的既有項目
 - 用公告的官方連結（bd_id）當作唯一識別，避免重複加入
-- 如果這次完全抓不到任何公告（代表官網可能改版、腳本失效），
+- 每個來源獨立抓取；某一個來源抓失敗或抓不到東西，不影響另一個來源正常運作
+- 如果「全部來源」這次都抓不到任何公告（代表官網可能改版、腳本失效），
   就直接中止、不動 news.json，避免誤刪資料
 
 之後如果官網改版導致抓不到內容，八成是 ROW_RE 這個正規表達式要更新，
@@ -22,8 +27,21 @@ import sys
 import urllib.request
 from datetime import datetime, timezone
 
-LIST_URL = "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_list_s.php"
-DETAIL_BASE = "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php"
+# 每個來源是一組 (list_url, detail_base)。
+# list_url：公告列表頁，用來抓標題/日期/bd_id
+# detail_base：組合成完整公告連結時使用的網域+路徑
+SOURCES = [
+    {
+        "name": "一週消息",
+        "list_url": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_list_s.php",
+        "detail_base": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php",
+    },
+    {
+        "name": "校車餐飲公告",
+        "list_url": "https://netflow.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_list.php?flag=5",
+        "detail_base": "https://netflow.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php",
+    },
+]
 
 # news.json 跟 sitemap.xml 都在 repo 根目錄，這支腳本放在 scripts/ 資料夾下
 NEWS_JSON_PATH = os.path.join(os.path.dirname(__file__), "..", "news.json")
@@ -36,6 +54,7 @@ MAX_ITEMS = 30
 # 對應官網每一列公告的原始碼格式：
 # onclick="window.open('out_bd_detail.php?flag=14&bd_id=47965')" ...
 # <font size='3'>標題文字</font> ... 2026-08-05
+# （兩個來源共用同一套格式，flag 值不同但結構一致）
 ROW_RE = re.compile(
     r"onclick=\"window\.open\('out_bd_detail\.php\?flag=(\d+)&bd_id=(\d+)'\)\"[^>]*>"
     r"<font size='3'>(.*?)</font>.*?"
@@ -47,7 +66,7 @@ ROW_RE = re.compile(
 # 都比對不到就用「轉知」當預設分類。這不會百分之百精準，
 # 但比起全部統一貼「轉知」，至少能讓使用者一眼看出公告性質。
 TAG_RULES = [
-    (re.compile(r"校車|上放學"), "校車"),
+    (re.compile(r"校車|上放學|上學路線|放學路線|校車路線"), "校車"),
     (re.compile(r"疫苗|COVID|防疫|抗生素"), "防疫"),
     (re.compile(r"演習|韌性"), "防災"),
     (re.compile(r"獎學金|助學金|補助"), "獎助學金"),
@@ -89,15 +108,24 @@ def clean_title(raw_html):
     return text
 
 
-def scrape():
-    html = fetch_html(LIST_URL)
+def scrape_source(source):
+    """抓單一來源，回傳這個來源抓到的公告清單。
+    這個來源抓失敗（連不上、格式跑掉）不會讓整個流程中止，
+    只會印出訊息、回傳空清單，讓其他來源繼續正常運作。"""
+    try:
+        html = fetch_html(source["list_url"])
+    except Exception as e:
+        print(f"[{source['name']}] 這次連不上（可能是暫時維護或網路逾時），跳過這個來源。")
+        print(f"[{source['name']}] 實際錯誤訊息（僅供除錯參考）：{e}")
+        return []
+
     items = []
     for m in ROW_RE.finditer(html):
         flag, bd_id, raw_title, date = m.groups()
         title = clean_title(raw_title)
         if not title:
             continue
-        link = f"{DETAIL_BASE}?flag={flag}&bd_id={bd_id}"
+        link = f"{source['detail_base']}?flag={flag}&bd_id={bd_id}"
         items.append(
             {
                 "date": date.replace("-", "."),  # 統一成跟現有 news.json 一致的 2026.08.05 格式
@@ -106,7 +134,16 @@ def scrape():
                 "link": link,
             }
         )
+    print(f"[{source['name']}] 這次抓到 {len(items)} 則公告。")
     return items
+
+
+def scrape_all():
+    """依序抓取 SOURCES 裡的每個來源，合併回傳全部公告。"""
+    all_items = []
+    for source in SOURCES:
+        all_items.extend(scrape_source(source))
+    return all_items
 
 
 def load_news():
@@ -151,15 +188,10 @@ def update_sitemap_lastmod():
 
 
 def main():
-    try:
-        scraped = scrape()
-    except Exception as e:
-        print("這次連不上學校官網（可能是暫時維護或網路逾時），先跳過這次，下次排程會再自動重試。")
-        print("實際錯誤訊息（僅供除錯參考）：" + str(e))
-        sys.exit(0)
+    scraped = scrape_all()
 
     if not scraped:
-        print("這次沒有抓到任何公告，可能是官網格式改變了。為了安全，不修改 news.json。")
+        print("這次所有來源都沒有抓到任何公告，可能是官網格式改變了。為了安全，不修改 news.json。")
         sys.exit(0)
 
     current = load_news()
