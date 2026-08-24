@@ -1,6 +1,18 @@
 [
   {
     "date": "2026.08.24",
+    "tag": "獎助學金",
+    "title": "桃園市政府教育局轉知教育部補助國立臺南大學及靜宜大學開設115年教師在職進修「人權、法治與轉型正義教育（含消費者保護）」專長增能學分班資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48036"
+  },
+  {
+    "date": "2026.08.24",
+    "tag": "轉知",
+    "title": "國立臺北大學檢送辦理「第10期臺灣自然手語基礎班」課程",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48035"
+  },
+  {
+    "date": "2026.08.24",
     "tag": "轉知",
     "title": "國內上呼吸道疫情 （含新冠、流感等）已進入流行期",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48034",
@@ -305,28 +317,6 @@
     "seoDescription": "桃園市政府教育局函轉內政部移民署「115年外來人士在臺生活諮詢服務熱線1990」之宣導影片一案",
     "contentHash": "c2ded551df9ea444",
     "enrichedAt": "2026-08-22T14:47:39.716100+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.14",
-    "tag": "招生",
-    "title": "中國醫藥大學檢送推廣教育中心115學年度第1學期「學分班」招生簡章",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48002",
-    "summary": "中國醫藥大學檢送推廣教育中心115學年度第1學期「學分班」招生簡章",
-    "seoDescription": "中國醫藥大學檢送推廣教育中心115學年度第1學期「學分班」招生簡章",
-    "contentHash": "414aad7b472f37d6",
-    "enrichedAt": "2026-08-22T14:47:41.236279+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.14",
-    "tag": "研習",
-    "title": "中央研究院115年「知識饗宴—吳大猷院長科普講座」訂於115年9月8日（星期二）晚間舉辦",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48001",
-    "summary": "中央研究院115年「知識饗宴—吳大猷院長科普講座」訂於115年9月8日（星期二）晚間舉辦",
-    "seoDescription": "中央研究院115年「知識饗宴—吳大猷院長科普講座」訂於115年9月8日（星期二）晚間舉辦",
-    "contentHash": "baebdd72b8c619f0",
-    "enrichedAt": "2026-08-22T14:47:42.756568+00:00",
     "updatedAt": null
   }
 ]
