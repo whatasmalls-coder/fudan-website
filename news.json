@@ -1,6 +1,12 @@
 [
   {
     "date": "2026.08.25",
+    "tag": "獎助學金",
+    "title": "115年新光鋼添澄癲癇之友獎、助學金申請資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48043"
+  },
+  {
+    "date": "2026.08.25",
     "tag": "競賽",
     "title": "中國文化大學 2026年中國文化大學第三屆『世界大學問』高中職及五專簡報比賽暨學系探索闖關活動",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48042",
@@ -316,17 +322,6 @@
     "seoDescription": "國立臺灣大學學士班線上直播招生座談會",
     "contentHash": "c072368612a76be4",
     "enrichedAt": "2026-08-22T14:47:27.826647+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.18",
-    "tag": "競賽",
-    "title": "國立臺灣師範大學辦理「2026 iSTEAM-- PowerTech 青少年科技創作競賽」，請踴躍參加。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48013",
-    "summary": "國立臺灣師範大學辦理「2026 iSTEAM-- PowerTech 青少年科技創作競賽」，請踴躍參",
-    "seoDescription": "國立臺灣師範大學辦理「2026 iSTEAM-- PowerTech 青少年科技創作競賽」，請踴躍參加。",
-    "contentHash": "9ee98eff14605807",
-    "enrichedAt": "2026-08-22T14:47:29.344434+00:00",
     "updatedAt": null
   }
 ]
