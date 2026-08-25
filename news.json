@@ -232,6 +232,12 @@
   },
   {
     "date": "2026.08.18",
+    "tag": "競賽",
+    "title": "國立臺灣師範大學辦理「2026 iSTEAM-- PowerTech 青少年科技創作競賽」，請踴躍參加。",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48013"
+  },
+  {
+    "date": "2026.08.18",
     "tag": "轉知",
     "title": "桃園市政府教育局函轉國立中興大學訂於本(115)年8月26日(星期三)於農業環境科學大樓10樓國際會議廳辦理「有機食農教育種子教師培訓課程」",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48022",
@@ -316,17 +322,6 @@
     "seoDescription": "國立中央大學15年9月15日辦理線上講座：《國際科學教育論壇系列23》—— 「Evolution of Global Hydrology」，請師生踴躍報名參加。",
     "contentHash": "6f1ffd8b93aec419",
     "enrichedAt": "2026-08-22T14:47:25.990089+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.18",
-    "tag": "招生",
-    "title": "國立臺灣大學學士班線上直播招生座談會",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48014",
-    "summary": "國立臺灣大學學士班線上直播招生座談會",
-    "seoDescription": "國立臺灣大學學士班線上直播招生座談會",
-    "contentHash": "c072368612a76be4",
-    "enrichedAt": "2026-08-22T14:47:27.826647+00:00",
     "updatedAt": null
   }
 ]
