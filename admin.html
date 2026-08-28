@@ -58,6 +58,17 @@
 </head>
 <body>
 
+<div id="lockScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="max-width:340px;width:100%;background:#fff;border-radius:12px;padding:32px 24px;box-shadow:0 8px 24px rgba(20,30,55,0.12);">
+    <h2 style="margin:0 0 8px;font-size:1.15rem;">🔒 需要密碼</h2>
+    <p style="margin:0 0 18px;color:var(--slate);font-size:0.85rem;">此頁面僅供內部維護使用，請輸入密碼繼續。</p>
+    <input type="password" id="lockPasswordInput" placeholder="請輸入密碼" autocomplete="off" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
+    <button class="btn btn-primary" id="lockSubmitBtn" style="width:100%;margin-top:12px;">進入</button>
+    <div id="lockError" style="color:#b3392f;font-size:0.82rem;margin-top:10px;display:none;">密碼錯誤，請再試一次。</div>
+  </div>
+</div>
+
+<div id="adminContent" style="display:none;">
 <header>
   <h1>📝 最新消息編輯後台</h1>
   <p>此頁面僅供學校內部維護網站內容使用，一般訪客請勿在此操作</p>
@@ -93,7 +104,54 @@
     <div id="saveStatus"></div>
   </div>
 </main>
+</div>
 
+<script>
+/* 前端密碼鎖：只是擋掉隨手亂點或搜尋引擎意外收錄的訪客，
+   不是真正的資安防護 —— 真正的防線是需要有效的 GitHub Token 才能實際存檔。
+   密碼用 SHA-256 雜湊比對，原始密碼不會出現在程式碼裡。 */
+(function(){
+  var CORRECT_HASH = '86f7227b0ad1c27e540da20d7cfcca1611509c9f8a250b391f6a1f63e2e1efea';
+  var UNLOCK_SESSION_KEY = 'fd_admin_unlocked';
+
+  var lockScreen = document.getElementById('lockScreen');
+  var adminContent = document.getElementById('adminContent');
+  var pwInput = document.getElementById('lockPasswordInput');
+  var submitBtn = document.getElementById('lockSubmitBtn');
+  var errorEl = document.getElementById('lockError');
+
+  async function sha256Hex(text){
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2, '0'); }).join('');
+  }
+
+  function unlock(){
+    lockScreen.style.display = 'none';
+    adminContent.style.display = '';
+    try{ sessionStorage.setItem(UNLOCK_SESSION_KEY, '1'); }catch(e){}
+  }
+
+  async function tryUnlock(){
+    var hash = await sha256Hex(pwInput.value);
+    if(hash === CORRECT_HASH){
+      errorEl.style.display = 'none';
+      unlock();
+    }else{
+      errorEl.style.display = '';
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  }
+
+  // 同一個瀏覽器分頁的 session 內，不用每次重新整理都再輸入一次
+  try{
+    if(sessionStorage.getItem(UNLOCK_SESSION_KEY) === '1') unlock();
+  }catch(e){}
+
+  submitBtn.addEventListener('click', tryUnlock);
+  pwInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') tryUnlock(); });
+})();
+</script>
 <script>
 (function(){
   var FILE_PATH = 'news.json';
