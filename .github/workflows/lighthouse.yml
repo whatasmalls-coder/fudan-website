@@ -1,0 +1,26 @@
+name: 效能預算監控 (Lighthouse CI)
+
+# 目的：防止未來的改動不小心讓網站變慢、無障礙分數下滑，或 SEO 設定跑掉。
+# 門檻值設定在目前實際分數（100/90/100/100）之下留一點緩衝空間，
+# 只有真的明顯退步才會讓這個檢查變紅色 ❌，不會因為 Lighthouse 本身的
+# 測量誤差（每次跑分數會有 1-3 分的正常浮動）而誤報。
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 20 * * *'   # 每天固定時間跑一次（UTC 20:00 = 台灣時間 04:00，離峰時段）
+  workflow_dispatch: {}
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取得 repo 內容
+        uses: actions/checkout@v4
+
+      - name: 執行 Lighthouse 檢查
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: './.github/lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true

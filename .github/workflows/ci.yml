@@ -1,0 +1,26 @@
+name: CI 資料驗證
+
+# 每次 push 到 main、或開 pull request 時都會自動執行，
+# 結果會顯示在 GitHub 該次 commit 旁邊的 ✅/❌ 圖示，
+# 也可以在 repo 首頁的 Actions 分頁看到完整紀錄。
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取得 repo 內容
+        uses: actions/checkout@v4
+
+      - name: 設定 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 驗證 news.json 與校車路線資料格式
+        run: python scripts/validate_data.py
