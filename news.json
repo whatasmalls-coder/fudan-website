@@ -1,6 +1,24 @@
 [
   {
     "date": "2026.09.02",
+    "tag": "轉知",
+    "title": "靈鷲山慈善基金會「第24屆靈鷲山普仁獎」申請資訊(限國中)",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48107"
+  },
+  {
+    "date": "2026.09.02",
+    "tag": "獎助學金",
+    "title": "陽光社會福利基金會115年度獎助學金申請資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48106"
+  },
+  {
+    "date": "2026.09.02",
+    "tag": "轉知",
+    "title": "國泰人壽慈善基金會2026年國泰卓越獎助計畫資訊(限高中)",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48105"
+  },
+  {
+    "date": "2026.09.02",
     "tag": "獎助學金",
     "title": "桃園市利晉工程社會福利慈善事業基金會115學年度清寒獎學金申請資訊(限高中)",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48104",
@@ -144,6 +162,12 @@
   },
   {
     "date": "2026.08.31",
+    "tag": "研習",
+    "title": "教育部國民及學前教育署委託國立中央大學辦理115學年度國民中小學客語文授課教師增能研習計畫一案，詳如說明。",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48075"
+  },
+  {
+    "date": "2026.08.31",
     "tag": "轉知",
     "title": "115學年度第一學期第1週通報",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48092",
@@ -283,50 +307,6 @@
     "seoDescription": "國立臺北大學檢送辦理「臺灣台語語言能力認證輔導班」課程",
     "contentHash": "fc6e9ab01036b4ae",
     "enrichedAt": "2026-08-31T08:29:23.986566+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.31",
-    "tag": "獎助學金",
-    "title": "桃園市政府教育局檢送國立清華大學辦理教育部補助115年度高級中等以下學校教師在職進修「融合教育課程教學實務專長增能學分班」招生簡章",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48080",
-    "summary": "桃園市政府教育局檢送國立清華大學辦理教育部補助115年度高級中等以下學校教師在職進修「融合教育課程教",
-    "seoDescription": "桃園市政府教育局檢送國立清華大學辦理教育部補助115年度高級中等以下學校教師在職進修「融合教育課程教學實務專長增能學分班」招生簡章",
-    "contentHash": "678a86050bc20ea6",
-    "enrichedAt": "2026-08-31T08:29:25.454068+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.31",
-    "tag": "轉知",
-    "title": "115學年度第1學期註冊收費明細表",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48078",
-    "summary": "115學年度第1學期註冊收費明細表",
-    "seoDescription": "115學年度第1學期註冊收費明細表",
-    "contentHash": "df9b385bae14b25e",
-    "enrichedAt": "2026-08-31T08:29:27.331538+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.31",
-    "tag": "榮譽",
-    "title": "國立臺灣師範大學英語學系辦理115年度「Cool English 自主學習活動」七月份通過名單乙份。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48077",
-    "summary": "國立臺灣師範大學英語學系辦理115年度「Cool English 自主學習活動」七月份通過名單乙份。",
-    "seoDescription": "國立臺灣師範大學英語學系辦理115年度「Cool English 自主學習活動」七月份通過名單乙份。",
-    "contentHash": "66d824e109e7de4f",
-    "enrichedAt": "2026-08-31T00:20:04.181485+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.08.31",
-    "tag": "轉知",
-    "title": "桃園市政府教育局與國立陽明交通大學合作建置之「桃園市高中數位教學專區」一案，請所屬師生運用，詳如說明。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48076",
-    "summary": "桃園市政府教育局與國立陽明交通大學合作建置之「桃園市高中數位教學專區」一案，請所屬師生運用，詳如說明",
-    "seoDescription": "桃園市政府教育局與國立陽明交通大學合作建置之「桃園市高中數位教學專區」一案，請所屬師生運用，詳如說明。",
-    "contentHash": "e7135f59b0d2d21f",
-    "enrichedAt": "2026-08-31T00:20:06.366073+00:00",
     "updatedAt": null
   }
 ]
