@@ -1,6 +1,30 @@
 [
   {
     "date": "2026.09.03",
+    "tag": "轉知",
+    "title": "校園人權、民主、法治教育，本會提供議題導向式的學習資源",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48135"
+  },
+  {
+    "date": "2026.09.03",
+    "tag": "轉知",
+    "title": "朝陽科技大學函邀參加「115年上半年度幼老共學園所成果分享會」",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48134"
+  },
+  {
+    "date": "2026.09.03",
+    "tag": "研習",
+    "title": "社團法人中華民國瑩光教育協會謹訂於115年10月3日(六)及10月月4日(日)假臺北市南港瓶蓋工廠舉辦「瑩光七周年展」，期間並辦理教育論壇",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48133"
+  },
+  {
+    "date": "2026.09.03",
+    "tag": "轉知",
+    "title": "財團法人中華民國私立學校教職員退休撫卹離職資遣儲金管理委員會有關中國信託商業銀行自主投資平臺配合「全人生週期投資組合」正式上線作業，將暫停庫存部位調整預約功能一",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48132"
+  },
+  {
+    "date": "2026.09.03",
     "tag": "研習",
     "title": "「2026下半年【南方有人】系列講座－回望台灣記憶、踏上人權之路」",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48131",
@@ -266,67 +290,13 @@
   {
     "date": "2026.09.02",
     "tag": "轉知",
-    "title": "靈鷲山慈善基金會「第24屆靈鷲山普仁獎」申請資訊(限國中)",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48107",
-    "summary": "靈鷲山慈善基金會「第24屆靈鷲山普仁獎」申請資訊(限國中)",
-    "seoDescription": "靈鷲山慈善基金會「第24屆靈鷲山普仁獎」申請資訊(限國中)",
-    "contentHash": "e157824788d4c7f9",
-    "enrichedAt": "2026-09-02T14:14:00.530525+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.02",
-    "tag": "獎助學金",
-    "title": "陽光社會福利基金會115年度獎助學金申請資訊",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48106",
-    "summary": "陽光社會福利基金會115年度獎助學金申請資訊",
-    "seoDescription": "陽光社會福利基金會115年度獎助學金申請資訊",
-    "contentHash": "49fba1e6f53f75d0",
-    "enrichedAt": "2026-09-02T14:14:02.684987+00:00",
-    "updatedAt": null
+    "title": "本學年度第二次市民卡補辦申請(限2、3年級)",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48096"
   },
   {
     "date": "2026.09.02",
     "tag": "轉知",
-    "title": "國泰人壽慈善基金會2026年國泰卓越獎助計畫資訊(限高中)",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48105",
-    "summary": "國泰人壽慈善基金會2026年國泰卓越獎助計畫資訊(限高中)",
-    "seoDescription": "國泰人壽慈善基金會2026年國泰卓越獎助計畫資訊(限高中)",
-    "contentHash": "53a4917dd521c825",
-    "enrichedAt": "2026-09-02T14:14:04.646834+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.02",
-    "tag": "獎助學金",
-    "title": "桃園市利晉工程社會福利慈善事業基金會115學年度清寒獎學金申請資訊(限高中)",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48104",
-    "summary": "桃園市利晉工程社會福利慈善事業基金會115學年度清寒獎學金申請資訊(限高中)",
-    "seoDescription": "桃園市利晉工程社會福利慈善事業基金會115學年度清寒獎學金申請資訊(限高中)",
-    "contentHash": "a4840dd6c5ead314",
-    "enrichedAt": "2026-09-02T08:42:34.266661+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.02",
-    "tag": "獎助學金",
-    "title": "賑災基金會115學年度第1學期「助學金」申請資訊",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48103",
-    "summary": "賑災基金會115學年度第1學期「助學金」申請資訊",
-    "seoDescription": "賑災基金會115學年度第1學期「助學金」申請資訊",
-    "contentHash": "047580404c3540a6",
-    "enrichedAt": "2026-09-02T08:42:36.249333+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.02",
-    "tag": "行政",
-    "title": "11501開學校務會議紀錄",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48102",
-    "summary": "11501開學校務會議紀錄",
-    "seoDescription": "11501開學校務會議紀錄",
-    "contentHash": "f43b59d6700b9464",
-    "enrichedAt": "2026-09-02T08:42:37.841815+00:00",
-    "updatedAt": null
+    "title": "2026成大一日大學生-沉浸式學職涯探索營",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48101"
   }
 ]
