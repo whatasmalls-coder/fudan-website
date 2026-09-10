@@ -1,6 +1,48 @@
 [
   {
     "date": "2026.09.10",
+    "tag": "獎助學金",
+    "title": "115學年度第一學期校內獎學金開放申請(至9/28日)",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48177"
+  },
+  {
+    "date": "2026.09.10",
+    "tag": "獎助學金",
+    "title": "115學年度第一學期復旦獎學金得獎名單草案",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48170"
+  },
+  {
+    "date": "2026.09.10",
+    "tag": "研習",
+    "title": "文藻學校財團法人文藻外語大學謹訂於115年10月7日舉辦「李元欣紀念講座─文藻外語大學60週年校慶教育論壇暨產學成果展」",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48176"
+  },
+  {
+    "date": "2026.09.10",
+    "tag": "轉知",
+    "title": "桃園市政府教育局函轉國立中興大學辦理「有機食農教育種子教師培訓課程」",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48175"
+  },
+  {
+    "date": "2026.09.10",
+    "tag": "轉知",
+    "title": "桃園市政府教育局轉知文化部委託國立臺南大學辦理「115年度馬祖語語言能力認證考試」報名事宜",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48174"
+  },
+  {
+    "date": "2026.09.10",
+    "tag": "競賽",
+    "title": "國教署函轉農業部辦理「農業部寵物美容競技比賽」活動",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48173"
+  },
+  {
+    "date": "2026.09.10",
+    "tag": "招生",
+    "title": "國立中山大學外國語文教學中心「2026年語文能力研習班(2026 /09 ~ 2026/12)」招生資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48172"
+  },
+  {
+    "date": "2026.09.10",
     "tag": "轉知",
     "title": "115年度第2次原住民族語言能力認證測驗資訊",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48169",
@@ -250,83 +292,6 @@
     "seoDescription": "轉知國立中央大學辦理前瞻 AI 人培計畫「2026 NAPAI Agentic AI 校園落地創新應用競賽」，即日起開放線上報名，歡迎同學踴躍組隊報名參賽。",
     "contentHash": "df73eff6e48ba76e",
     "enrichedAt": "2026-09-07T09:16:05.018342+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.07",
-    "tag": "競賽",
-    "title": "國科會「CCUS科學 教育推廣計畫」-第三屆CCUS教案徵選辦法簡章乙份",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48142",
-    "summary": "國科會「CCUS科學 教育推廣計畫」-第三屆CCUS教案徵選辦法簡章乙份",
-    "seoDescription": "國科會「CCUS科學 教育推廣計畫」-第三屆CCUS教案徵選辦法簡章乙份",
-    "contentHash": "c9c5560ad2ce902e",
-    "enrichedAt": "2026-09-07T09:16:07.030278+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.07",
-    "tag": "轉知",
-    "title": "教育部國民及學前教育署「115年度金融基礎教育教案試教」簡章、教學實施回饋意見表及海報各1份，請教師踴躍參加。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48141",
-    "summary": "教育部國民及學前教育署「115年度金融基礎教育教案試教」簡章、教學實施回饋意見表及海報各1份，請教師",
-    "seoDescription": "教育部國民及學前教育署「115年度金融基礎教育教案試教」簡章、教學實施回饋意見表及海報各1份，請教師踴躍參加。",
-    "contentHash": "11b8c9a1e8087b26",
-    "enrichedAt": "2026-09-07T09:16:08.553335+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.04",
-    "tag": "研習",
-    "title": "桃園市政府教育局辦理「115年度中小學數位學習實施計畫」教師增能研習「B3數位教學指引培力工作坊」一案，詳如說明。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48140",
-    "summary": "桃園市政府教育局辦理「115年度中小學數位學習實施計畫」教師增能研習「B3數位教學指引培力工作坊」一",
-    "seoDescription": "桃園市政府教育局辦理「115年度中小學數位學習實施計畫」教師增能研習「B3數位教學指引培力工作坊」一案，詳如說明。",
-    "contentHash": "e14ad1f76ce1310c",
-    "enrichedAt": "2026-09-04T08:46:59.066017+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.04",
-    "tag": "轉知",
-    "title": "115年度「高級中等學校第二外語教育推動計畫」電子報徵文，請學生踴躍參與，詳如說明。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48139",
-    "summary": "115年度「高級中等學校第二外語教育推動計畫」電子報徵文，請學生踴躍參與，詳如說明。",
-    "seoDescription": "115年度「高級中等學校第二外語教育推動計畫」電子報徵文，請學生踴躍參與，詳如說明。",
-    "contentHash": "c901a3fa546aa172",
-    "enrichedAt": "2026-09-04T08:47:00.929108+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.04",
-    "tag": "轉知",
-    "title": "國立臺中教育大學 『諮』己知彼，解鎖你的社交『心』濾鏡」諮心體驗營",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48138",
-    "summary": "國立臺中教育大學 『諮』己知彼，解鎖你的社交『心』濾鏡」諮心體驗營",
-    "seoDescription": "國立臺中教育大學 『諮』己知彼，解鎖你的社交『心』濾鏡」諮心體驗營",
-    "contentHash": "32d688ecfe8c445d",
-    "enrichedAt": "2026-09-04T03:57:32.044252+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.04",
-    "tag": "轉知",
-    "title": "國立臺灣科學教育館(下稱科教館)辦理「2027年臺灣國際科學展覽會」，請踴躍報名。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48137",
-    "summary": "國立臺灣科學教育館(下稱科教館)辦理「2027年臺灣國際科學展覽會」，請踴躍報名。",
-    "seoDescription": "國立臺灣科學教育館(下稱科教館)辦理「2027年臺灣國際科學展覽會」，請踴躍報名。",
-    "contentHash": "954ec41c9df2673f",
-    "enrichedAt": "2026-09-04T03:57:33.985366+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.04",
-    "tag": "轉知",
-    "title": "台灣發明協會參加「2027第52屆瑞士日內瓦國際發明展」青少年組，請師生踴躍報名參加。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48136",
-    "summary": "台灣發明協會參加「2027第52屆瑞士日內瓦國際發明展」青少年組，請師生踴躍報名參加。",
-    "seoDescription": "台灣發明協會參加「2027第52屆瑞士日內瓦國際發明展」青少年組，請師生踴躍報名參加。",
-    "contentHash": "5d198db6ec4d3a37",
-    "enrichedAt": "2026-09-04T03:57:36.348602+00:00",
     "updatedAt": null
   }
 ]
