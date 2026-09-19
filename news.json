@@ -300,18 +300,33 @@
     "date": "2026.09.17",
     "tag": "獎助學金",
     "title": "關於桃園市身障生獎學金申請說明(為學校薦送模式)",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48238"
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48238",
+    "summary": "關於桃園市身障生獎學金申請說明(為學校薦送模式)",
+    "seoDescription": "關於桃園市身障生獎學金申請說明(為學校薦送模式)",
+    "contentHash": "2d449546ed6b0592",
+    "enrichedAt": "2026-09-19T17:06:34.901732+00:00",
+    "updatedAt": null
   },
   {
     "date": "2026.09.17",
     "tag": "獎助學金",
     "title": "新竹市115學年度第1學期高中職以上清寒優秀學生獎學金資訊",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48237"
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48237",
+    "summary": "新竹市115學年度第1學期高中職以上清寒優秀學生獎學金資訊",
+    "seoDescription": "新竹市115學年度第1學期高中職以上清寒優秀學生獎學金資訊",
+    "contentHash": "a24c4b0c4711eb85",
+    "enrichedAt": "2026-09-19T17:06:36.453759+00:00",
+    "updatedAt": null
   },
   {
     "date": "2026.09.17",
     "tag": "獎助學金",
     "title": "金門縣政府獎學金申請資訊",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48236"
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48236",
+    "summary": "金門縣政府獎學金申請資訊",
+    "seoDescription": "金門縣政府獎學金申請資訊",
+    "contentHash": "65d0224f7c0d9666",
+    "enrichedAt": "2026-09-19T17:06:38.013813+00:00",
+    "updatedAt": null
   }
 ]
