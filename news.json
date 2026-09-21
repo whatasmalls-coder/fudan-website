@@ -1,5 +1,41 @@
 [
   {
+    "date": "2026.09.21",
+    "tag": "競賽",
+    "title": "桃園市115年度學生資訊教育競賽-校內賽報名",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48272"
+  },
+  {
+    "date": "2026.09.21",
+    "tag": "研習",
+    "title": "轉知-115年度「SEL種子教師初階培訓工作坊」",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48271"
+  },
+  {
+    "date": "2026.09.21",
+    "tag": "轉知",
+    "title": "轉知-「116年青年生涯領航計畫」",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48270"
+  },
+  {
+    "date": "2026.09.21",
+    "tag": "轉知",
+    "title": "轉知－《性私密影像》議題模組課程教材試教長期募集活動",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48269"
+  },
+  {
+    "date": "2026.09.21",
+    "tag": "研習",
+    "title": "苗栗高級農工職業學校推動新興科技教育辦理「APP遙控六軸機械手臂任務型裁判研習會」，敬邀貴校教師參與。",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48268"
+  },
+  {
+    "date": "2026.09.21",
+    "tag": "轉知",
+    "title": "勤益科技大學電機工程系辦理「2026第38屆AERC亞洲機器人運動競技大賽」，請師生踴躍報名參加。",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48267"
+  },
+  {
     "date": "2026.09.18",
     "tag": "招生",
     "title": "國立臺灣師範大學檢送工業教育學系「116學年度碩、博士班甄試入學」招生資訊",
@@ -261,72 +297,6 @@
     "seoDescription": "教育部國民及學前教育署(下稱國教署)辦理之「115學年度科技教育創意實作競賽辦法」1份。",
     "contentHash": "492707319990f3f8",
     "enrichedAt": "2026-09-18T07:16:05.009201+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.18",
-    "tag": "競賽",
-    "title": "115學年度第1學期英語演講比賽優勝名單",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48242",
-    "summary": "115學年度第1學期英語演講比賽優勝名單",
-    "seoDescription": "115學年度第1學期英語演講比賽優勝名單",
-    "contentHash": "16ef5215c25ddc45",
-    "enrichedAt": "2026-09-18T07:16:07.143755+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.18",
-    "tag": "競賽",
-    "title": "115學年度第1學期美術比賽優勝名單",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48240",
-    "summary": "115學年度第1學期美術比賽優勝名單",
-    "seoDescription": "115學年度第1學期美術比賽優勝名單",
-    "contentHash": "9d53072a43d32c07",
-    "enrichedAt": "2026-09-18T07:16:08.731651+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.18",
-    "tag": "研習",
-    "title": "暨南國際大學 115學年度DICE TALK系列講座資訊",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48239",
-    "summary": "暨南國際大學 115學年度DICE TALK系列講座資訊",
-    "seoDescription": "暨南國際大學 115學年度DICE TALK系列講座資訊",
-    "contentHash": "d2ec2609e621bcea",
-    "enrichedAt": "2026-09-18T07:16:10.311263+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.17",
-    "tag": "招生",
-    "title": "國立臺北大學檢送「第1期AI能力雙證輔導班(iPAS +資策會)」招生簡章",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48235",
-    "summary": "國立臺北大學檢送「第1期AI能力雙證輔導班(iPAS +資策會)」招生簡章",
-    "seoDescription": "國立臺北大學檢送「第1期AI能力雙證輔導班(iPAS +資策會)」招生簡章",
-    "contentHash": "ba3206f4dec2ce59",
-    "enrichedAt": "2026-09-20T22:19:18.635652+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.17",
-    "tag": "研習",
-    "title": "中國文化大學檢送本校推廣教育部終身學習中心辦理「臺灣台語語言能力認證【考試輔導班】【實體/遠距】」研習訊息",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48234",
-    "summary": "中國文化大學檢送本校推廣教育部終身學習中心辦理「臺灣台語語言能力認證【考試輔導班】【實體/遠距】」研",
-    "seoDescription": "中國文化大學檢送本校推廣教育部終身學習中心辦理「臺灣台語語言能力認證【考試輔導班】【實體/遠距】」研習訊息",
-    "contentHash": "688d53e084a0545c",
-    "enrichedAt": "2026-09-20T22:19:20.159148+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.17",
-    "tag": "招生",
-    "title": "國立臺北大學檢送「【臺北】第一期多益TOEIC基礎實力養成班」招生簡章",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48233",
-    "summary": "國立臺北大學檢送「【臺北】第一期多益TOEIC基礎實力養成班」招生簡章",
-    "seoDescription": "國立臺北大學檢送「【臺北】第一期多益TOEIC基礎實力養成班」招生簡章",
-    "contentHash": "3a8ba4716e7d6592",
-    "enrichedAt": "2026-09-20T22:19:21.681095+00:00",
     "updatedAt": null
   }
 ]
