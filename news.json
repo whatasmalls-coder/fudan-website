@@ -1,6 +1,30 @@
 [
   {
     "date": "2026.09.23",
+    "tag": "招生",
+    "title": "國立臺北教育大學檢送國立臺北教育大學教育系「教育創新與評鑑碩士班」、「生命教育碩士班」116學年度甄試入學招生資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48295"
+  },
+  {
+    "date": "2026.09.23",
+    "tag": "研習",
+    "title": "園市政府教育局轉知櫛構科技股份有限公司(以下稱櫛構科技)辦理「AI X ESG 職涯浪潮下打造你的求職競爭力」職涯論壇",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48294"
+  },
+  {
+    "date": "2026.09.23",
+    "tag": "轉知",
+    "title": "桃園市政府教育局檢送致理學校財團法人致理科技大學辦理2026年第2次「國際越南語能力認證檢定」簡章",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48293"
+  },
+  {
+    "date": "2026.09.23",
+    "tag": "轉知",
+    "title": "國立臺中科技大學與越南胡志明市國家大學下屬人文與社會科學大學合作辦理「國際越南語能力檢定測驗」報名資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48292"
+  },
+  {
+    "date": "2026.09.23",
     "tag": "轉知",
     "title": "新北市政府辦理「2026亞洲電子競技公開賽」一案，請協助轉知並踴躍報名。",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48291",
@@ -283,50 +307,6 @@
     "seoDescription": "勤益科技大學電機工程系辦理「2026第38屆AERC亞洲機器人運動競技大賽」，請師生踴躍報名參加。",
     "contentHash": "520587e8a7ec89a1",
     "enrichedAt": "2026-09-21T04:22:53.433345+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.18",
-    "tag": "研習",
-    "title": "國立中興大學謹訂於今(115)年10月20日(二)舉辦「學術研究倫理講座」",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48265",
-    "summary": "國立中興大學謹訂於今(115)年10月20日(二)舉辦「學術研究倫理講座」",
-    "seoDescription": "國立中興大學謹訂於今(115)年10月20日(二)舉辦「學術研究倫理講座」",
-    "contentHash": "0bc4e70e9865eb79",
-    "enrichedAt": "2026-09-23T07:36:55.027977+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.18",
-    "tag": "轉知",
-    "title": "桃園市政府教育局函轉中華民國大專院校體育總會辦理「中華民國大專校院115年度教職員工匹克球聯誼賽」",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48264",
-    "summary": "桃園市政府教育局函轉中華民國大專院校體育總會辦理「中華民國大專校院115年度教職員工匹克球聯誼賽」",
-    "seoDescription": "桃園市政府教育局函轉中華民國大專院校體育總會辦理「中華民國大專校院115年度教職員工匹克球聯誼賽」",
-    "contentHash": "57fa834475b9d55c",
-    "enrichedAt": "2026-09-23T07:36:56.620538+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.18",
-    "tag": "轉知",
-    "title": "國家檔案館戶外教育預約參訪及學習資源，請各機關學校、老師踴躍申請運用",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48263",
-    "summary": "國家檔案館戶外教育預約參訪及學習資源，請各機關學校、老師踴躍申請運用",
-    "seoDescription": "國家檔案館戶外教育預約參訪及學習資源，請各機關學校、老師踴躍申請運用",
-    "contentHash": "271f789195ced2d9",
-    "enrichedAt": "2026-09-23T07:36:58.211697+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.18",
-    "tag": "轉知",
-    "title": "財團法人普仁青年關懷基金會「大手拉小手」助學計畫",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48262",
-    "summary": "財團法人普仁青年關懷基金會「大手拉小手」助學計畫",
-    "seoDescription": "財團法人普仁青年關懷基金會「大手拉小手」助學計畫",
-    "contentHash": "80a8ae2316be9d86",
-    "enrichedAt": "2026-09-23T07:37:02.748864+00:00",
     "updatedAt": null
   }
 ]
