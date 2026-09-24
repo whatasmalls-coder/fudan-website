@@ -1,6 +1,42 @@
 [
   {
     "date": "2026.09.24",
+    "tag": "招生",
+    "title": "嶺東科技大學檢送本校承辦勞動部勞動力發展署中彰投分署『115度托育人員專業訓練課程專班-托育人員專業訓練課程假日班第01期』招生簡章",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48310"
+  },
+  {
+    "date": "2026.09.24",
+    "tag": "轉知",
+    "title": "115-1學務處9月份導師會報紀錄",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48309"
+  },
+  {
+    "date": "2026.09.24",
+    "tag": "研習",
+    "title": "國立中山大學檢送國際事務處華語教學中心辦理「菲律賓文化講座－原來這就是菲律賓！從旅遊風景到真實日常，看見魔幻的千島之國」活動",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48308"
+  },
+  {
+    "date": "2026.09.24",
+    "tag": "獎助學金",
+    "title": "桃園市政府希望工程獎助學金(限國三畢業時校排1%畢且家境清寒的高一生)",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48307"
+  },
+  {
+    "date": "2026.09.24",
+    "tag": "轉知",
+    "title": "本校【2027年寒假澳洲教育遊學活動】開始受理登記領表",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48306"
+  },
+  {
+    "date": "2026.09.24",
+    "tag": "轉知",
+    "title": "本校《2027日本教育旅行》活動開始受理報名登記",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48305"
+  },
+  {
+    "date": "2026.09.24",
     "tag": "轉知",
     "title": "115學年度第1學期 定期評量範圍",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48304",
@@ -177,6 +213,12 @@
   },
   {
     "date": "2026.09.22",
+    "tag": "研習",
+    "title": "苗栗高級農工職業學校推動新興科技教育辦理「APP遙控六軸機械手臂任務型裁判研習會」，敬邀貴校教師參與。",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48275"
+  },
+  {
+    "date": "2026.09.22",
     "tag": "轉知",
     "title": "115學年度第1學期友達永續基金會【友達永續素養獎 學金】",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48288",
@@ -250,83 +292,6 @@
     "seoDescription": "中原大學訂於115年11月13日（星期五）上午9時30分至下午5時在校內全人教育村北棟4樓國際會議廳舉辦「115年度中原大學服務學習研討會－現場學 ∞ AI行」",
     "contentHash": "a55e87cb97427460",
     "enrichedAt": "2026-09-22T11:19:20.998755+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.22",
-    "tag": "轉知",
-    "title": "國立臺北大學檢送辦理同步遠距AI財金課程--「第1期財報分析與AI協作入門班」簡章",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48281",
-    "summary": "國立臺北大學檢送辦理同步遠距AI財金課程--「第1期財報分析與AI協作入門班」簡章",
-    "seoDescription": "國立臺北大學檢送辦理同步遠距AI財金課程--「第1期財報分析與AI協作入門班」簡章",
-    "contentHash": "2dd148870dfd6f29",
-    "enrichedAt": "2026-09-22T11:19:22.565538+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.22",
-    "tag": "招生",
-    "title": "國立臺北大學檢送「【臺北】第四期初中階商用英文會話：職場情境英文開口說」招生簡章",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48280",
-    "summary": "國立臺北大學檢送「【臺北】第四期初中階商用英文會話：職場情境英文開口說」招生簡章",
-    "seoDescription": "國立臺北大學檢送「【臺北】第四期初中階商用英文會話：職場情境英文開口說」招生簡章",
-    "contentHash": "b1f5d76854b9122e",
-    "enrichedAt": "2026-09-22T11:19:24.110614+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.22",
-    "tag": "校車",
-    "title": "[公告]115年9月26日起【高三】學生週六到校自習上下學 校車路線",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48279",
-    "summary": "[公告]115年9月26日起【高三】學生週六到校自習上下學 校車路線",
-    "seoDescription": "[公告]115年9月26日起【高三】學生週六到校自習上下學 校車路線",
-    "contentHash": "365d971782453930",
-    "enrichedAt": "2026-09-22T11:19:25.674507+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.22",
-    "tag": "轉知",
-    "title": "115學年第1學期「國際運算思維挑戰賽」報名，歡迎同學踴躍參加",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48278",
-    "summary": "115學年第1學期「國際運算思維挑戰賽」報名，歡迎同學踴躍參加",
-    "seoDescription": "115學年第1學期「國際運算思維挑戰賽」報名，歡迎同學踴躍參加",
-    "contentHash": "9b2ca088714ca66b",
-    "enrichedAt": "2026-09-22T11:19:27.240883+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.22",
-    "tag": "校車",
-    "title": "[公告]115年9月26日起【高三】學生週六到校自習上下學 校車路線",
-    "link": "https://netflow.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=5&bd_id=48279",
-    "summary": "[公告]115年9月26日起【高三】學生週六到校自習上下學 校車路線",
-    "seoDescription": "[公告]115年9月26日起【高三】學生週六到校自習上下學 校車路線",
-    "contentHash": "53a91c529e9836b8",
-    "enrichedAt": "2026-09-22T11:19:29.691544+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.22",
-    "tag": "競賽",
-    "title": "中華民國學習障礙協會 2026「超越自己 幸福繪愛~Love to Draw~學習障礙者聯合畫展」畫作徵件活動",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48277",
-    "summary": "中華民國學習障礙協會 2026「超越自己 幸福繪愛~Love to Draw~學習障礙者聯合畫展」畫",
-    "seoDescription": "中華民國學習障礙協會 2026「超越自己 幸福繪愛~Love to Draw~學習障礙者聯合畫展」畫作徵件活動",
-    "contentHash": "55cac17ddc4c2b6c",
-    "enrichedAt": "2026-09-22T04:18:10.981617+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.09.22",
-    "tag": "轉知",
-    "title": "學生學習歷程檔案分享會",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48276",
-    "summary": "學生學習歷程檔案分享會",
-    "seoDescription": "學生學習歷程檔案分享會",
-    "contentHash": "deb308e88906faf2",
-    "enrichedAt": "2026-09-22T04:18:12.671523+00:00",
     "updatedAt": null
   }
 ]
