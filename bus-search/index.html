@@ -89,6 +89,29 @@ a{color:#000 !important}
 ]
 }
 </script>
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "WebApplication",
+"name": "復旦高中校車路線查詢",
+"url": "https://www.visitfudan.com/bus-search/",
+"applicationCategory": "TravelApplication",
+"operatingSystem": "Any",
+"browserRequirements": "Requires JavaScript",
+"isAccessibleForFree": true,
+"offers": {
+"@type": "Offer",
+"price": "0",
+"priceCurrency": "TWD"
+},
+"description": "輸入住家附近的站名、路名或社區名稱，查詢復旦高中校車路線與發車時間，支援模糊搜尋與錯字容錯。",
+"isPartOf": {
+"@type": "WebSite",
+"name": "復旦高中",
+"url": "https://www.visitfudan.com/"
+}
+}
+</script>
 <!-- Privacy-friendly analytics by Plausible --><script async src="https://plausible.io/js/pa-S2IkYNcI1ZJ02s3LOnvbk.js"></script><script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <script>
 /* 輕量錯誤監控：把 JS 執行錯誤自動回報到 Plausible 自訂事件，方便在後台發現問題，不用等使用者回報 */
@@ -697,6 +720,14 @@ input.focus();
 updateClearBtn();
 
 render('');
+
+var sharedQuery = new URLSearchParams(location.search).get('q');
+if(sharedQuery){
+input.value = sharedQuery;
+render(stripQuestionWords(sharedQuery));
+setAiHint(null);
+updateClearBtn();
+}
 
 var sharedRouteNo = new URLSearchParams(location.search).get('route');
 if(sharedRouteNo){
