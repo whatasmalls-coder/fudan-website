@@ -24,7 +24,7 @@ button,input,select,textarea{font-family:inherit}
 [data-theme="dark"]{--paper:#0f1826;--paper-dim:#182338;--ink:#eae7dd;--slate:#c2c8d6;--line:rgba(232,228,216,0.12)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans TC','Noto Sans TC Fallback',sans-serif;line-height:1.7;transition:background-color .3s ease,color .3s ease}
-header{background:var(--navy-deep);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+header{background:var(--navy-deep);color:#fff;padding:calc(18px + env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) 18px max(24px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
 .brand-name{font-weight:700;font-size:1rem}
 .brand-sub{font-size:0.68rem;letter-spacing:0.08em;color:rgba(255,255,255,0.6)}
@@ -56,7 +56,7 @@ footer{text-align:center;padding:24px;color:var(--slate);font-size:0.8rem}
 <p>可能是網址打錯了，或是頁面已經搬家。要不要回首頁看看，或直接查校車路線？</p>
 <div class="actions">
 <a class="btn btn-primary" href="/">回首頁</a>
-<a class="btn btn-ghost" href="/bus-search/">校車路線查詢</a>
+<a class="btn btn-ghost" href="/bus-search/">校車路線查詢</a><a class="btn btn-ghost" href="/calendar/">校曆</a>
 </div>
 </main>
 <footer>© 2026 復旦高中 Fudan Senior High School</footer>
