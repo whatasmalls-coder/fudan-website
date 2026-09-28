@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v8';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
