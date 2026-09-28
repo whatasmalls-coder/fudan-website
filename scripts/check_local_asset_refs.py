@@ -77,6 +77,18 @@ def main():
             if not target.exists():
                 problems.append((str(path.relative_to(REPO_ROOT)), raw))
 
+    # sw.js 的預快取清單：只要有一個網址不存在，那一項就快取失敗、離線時打不開
+    sw = REPO_ROOT / 'sw.js'
+    if sw.exists():
+        block = re.search(r'PRECACHE_URLS\s*=\s*\[(.*?)\];', sw.read_text(encoding='utf-8'), re.S)
+        for raw in re.findall(r"'(/[^']*)'", block.group(1) if block else ''):
+            clean = strip_query_and_hash(raw)
+            target = REPO_ROOT / clean.lstrip('/')
+            if clean.endswith('/'):
+                target = target / 'index.html'
+            if clean != '/' and not target.exists():
+                problems.append(('sw.js（預快取）', raw))
+
     print(f'掃描了 {files_scanned} 個檔案')
     if problems:
         print(f'\n發現 {len(problems)} 個指向不存在檔案的站內路徑：\n')
