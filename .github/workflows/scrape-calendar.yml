@@ -18,11 +18,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install anthropic requests pdfplumber
+        run: pip install requests pdfplumber
 
       - name: Scrape calendar
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/scrape_calendar.py
 
       - name: Commit changes
