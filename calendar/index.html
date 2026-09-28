@@ -17,7 +17,8 @@ a{color:inherit}
 #fd-offline-banner{display:none;text-align:center;font-size:0.82rem;padding:8px 12px;background:#8f6424;color:#fff}
 body.fd-offline #fd-offline-banner{display:block}
 .topbar{background:var(--navy-deep);color:#fff}
-.topbar-inner{max-width:1000px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.topbar{padding-top:env(safe-area-inset-top)}
+.topbar-inner{max-width:1000px;margin:0 auto;padding:14px max(20px,env(safe-area-inset-right)) 14px max(20px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
 .brand-name{font-weight:700;font-size:1rem}
 .brand-sub{font-size:0.65rem;letter-spacing:0.1em;color:rgba(255,255,255,0.6)}
@@ -36,6 +37,7 @@ header.hero p{color:var(--slate);margin:0;max-width:60ch;font-size:0.92rem;font-
 main{max-width:1000px;margin:0 auto;padding:24px 20px 100px}
 .month-section{margin-bottom:32px}
 .month-title{font-family:'Noto Serif TC','Noto Serif TC Fallback',serif;font-size:1.2rem;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+.eyebrow span{white-space:nowrap}
 .day-row{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
 .day-row:last-child{border-bottom:none}
 .day-date{text-align:center}
@@ -65,6 +67,7 @@ footer{text-align:center;padding:24px;color:var(--slate);font-size:0.8rem}
 .skeleton{background:var(--paper-dim);border-radius:4px;height:60px;margin-bottom:12px}
 @media (prefers-reduced-motion: no-preference){.skeleton{animation:pulse 1.4s ease-in-out infinite}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@media (max-width:600px){.eyebrow{letter-spacing:0.1em}.eyebrow{display:flex;flex-direction:column}.eyebrow-sep{display:none}header.hero{padding-top:24px}h1{font-size:1.55rem}header.hero p{line-height:1.8}.filter-wrap{flex-wrap:nowrap;overflow-x:auto;padding:2px 20px 6px;margin-top:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding:0 20px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}.filter-wrap::-webkit-scrollbar{display:none}.chip{flex:none;white-space:nowrap}.day-row{grid-template-columns:48px 1fr;gap:10px}}
 </style>
 </head>
 <body>
@@ -79,7 +82,7 @@ footer{text-align:center;padding:24px;color:var(--slate);font-size:0.8rem}
 </div></div>
 <a class="back-link" href="/">← 回首頁</a>
 <header class="hero">
-<div class="eyebrow">School Calendar ・ 115學年度第1學期</div>
+<div class="eyebrow"><span>School Calendar</span><span class="eyebrow-sep"> ・ </span><span>115學年度第1學期</span></div>
 <h1>校曆</h1>
 <p>依校方公告的學期行事曆整理，可依分類篩選。日期或活動內容如有異動，請以總務處最新公告為準。</p>
 </header>
