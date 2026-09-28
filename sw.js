@@ -8,7 +8,7 @@
  * 1. 首頁 / 校車頁面（HTML）：先試網路，拿到最新版本；連不上網路才用快取版本頂替
  * 2. 字型、圖示、共用 JS：網路狀況好的時候才需要重抓，用「快取優先」策略
  * 3. Google Fonts（外部 CDN，若有使用到）：先用快取立即顯示，背景偷偷更新（stale-while-revalidate）
- * 4. news.json：優先拿最新公告，離線時退回上次抓到的版本
+ * 4. news.json / calendar.json：優先拿最新資料，離線時退回上次抓到的版本
  * 5. AI 相關的 API 呼叫（Cloudflare Worker、Gemini、Plausible、GitHub API）：
  *    完全不快取，一律直接放行，避免使用者收到過期或錯誤的 AI 回應
  *
@@ -16,12 +16,13 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/',
   '/bus-search/',
+  '/calendar/',
   '/manifest.json',
   '/favicon.ico',
   '/favicon-32.png',
@@ -135,8 +136,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 站內的公告資料：想要盡量新，但離線時仍能看到上次抓到的版本
-  if (url.origin === self.location.origin && url.pathname === '/news.json') {
+  // 站內的公告資料／校曆資料：想要盡量新，但離線時仍能看到上次抓到的版本
+  if (url.origin === self.location.origin &&
+      (url.pathname === '/news.json' || url.pathname === '/calendar.json')) {
     event.respondWith(networkFirst(request));
     return;
   }

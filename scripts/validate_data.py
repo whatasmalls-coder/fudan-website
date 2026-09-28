@@ -92,9 +92,46 @@ def check_bus_data():
     print(f"共檢查 {len(routes)} 條路線、{total_stops} 個站牌")
 
 
+def check_calendar_json():
+    try:
+        with open("calendar.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        # calendar.json 是校曆爬蟲跑過才會有的檔案，還沒跑過時本來就不存在，
+        # 不算錯誤（跟 news.json / routes.json 不一樣，那兩個是網站一定要有的）
+        return
+    except json.JSONDecodeError as e:
+        errors.append(f"calendar.json 不是合法的 JSON：{e}")
+        return
+
+    if not isinstance(data, dict) or "events" not in data:
+        errors.append("calendar.json 最外層必須是物件，且要有 events 欄位")
+        return
+
+    events = data["events"]
+    if not isinstance(events, list):
+        errors.append("calendar.json 的 events 必須是陣列")
+        return
+
+    required_fields = ["date", "title", "category"]
+    for i, item in enumerate(events):
+        if not isinstance(item, dict):
+            errors.append(f"calendar.json 第 {i+1} 筆事件不是物件格式")
+            continue
+        for field in required_fields:
+            if field not in item or not str(item.get(field, "")).strip():
+                errors.append(f"calendar.json 第 {i+1} 筆事件缺少或空白的欄位：{field}")
+        date_val = item.get("date", "")
+        if date_val and not re.match(r"^\d{4}-\d{2}-\d{2}$", str(date_val)):
+            errors.append(f"calendar.json 第 {i+1} 筆事件日期格式不是 YYYY-MM-DD：{date_val}")
+
+    print(f"共檢查 {len(events)} 筆校曆事件")
+
+
 def main():
     check_news_json()
     check_bus_data()
+    check_calendar_json()
 
     if errors:
         print("\n❌ 資料驗證失敗：\n")
@@ -103,7 +140,7 @@ def main():
         print(f"\n共 {len(errors)} 個問題，請修正後再重新 commit。")
         sys.exit(1)
     else:
-        print("✅ 資料驗證通過，news.json 與校車路線資料格式都正常。")
+        print("✅ 資料驗證通過，news.json、校車路線資料、校曆資料格式都正常。")
 
 
 if __name__ == "__main__":
