@@ -118,6 +118,13 @@ def read(rel: str) -> str:
     if not p.exists():
         return ""
     text = p.read_text("utf-8", errors="ignore")
+    if rel == "news.json":
+        # 頁面上只會顯示公告的標題、分類、日期；AI 摘要等欄位不會出現在畫面上，不用收錄那些字
+        try:
+            items = json.loads(text)
+            return "\n".join(f"{n.get('title', '')} {n.get('tag', '')} {n.get('date', '')}" for n in items)
+        except (ValueError, AttributeError):
+            return text
     return _COMMENT_RE.sub("", text) if p.suffix in (".html", ".js") else text
 
 
@@ -315,7 +322,7 @@ def page_preload(manifest: dict, cfg: dict) -> str:
     return "<!--fonts:preload:start-->" + "".join(links) + "<!--fonts:preload:end-->"
 
 
-def update_pages(manifest: dict) -> None:
+def update_pages(manifest: dict, quiet: bool = False) -> None:
     for rel, cfg in PAGES.items():
         p = ROOT / rel
         html = p.read_text("utf-8")
@@ -339,15 +346,18 @@ def update_pages(manifest: dict) -> None:
                 html = PRELOAD_OLD_RE.sub("", html).replace("\0PRE\0", pre)
             elif cfg["preload"]:
                 html = html.replace("</head>", pre + "</head>", 1)
-        p.write_text(html, "utf-8")
-        print(f"  更新 {rel}")
+        if html != p.read_text("utf-8"):
+            p.write_text(html, "utf-8")
+            print(f"  更新 {rel}")
+        elif not quiet:
+            print(f"  {rel} 不用改")
 
 
 SW_RE = re.compile(r"( *)// fonts:precache:start\n.*?// fonts:precache:end", re.S)
 SW_OLD_RE = re.compile(r"( *)'/fonts/NotoS(?:ans|erif)TC-\d{3}(?:-[a-z-]+\.[0-9a-f]+)?\.woff2',\n")
 
 
-def update_sw(manifest: dict) -> None:
+def update_sw(manifest: dict, quiet: bool = False) -> None:
     p = ROOT / "sw.js"
     js = p.read_text("utf-8")
     shared = sorted(n for n, f in manifest["files"].items() if f["slice"] == "all")
@@ -364,8 +374,9 @@ def update_sw(manifest: dict) -> None:
             raise SystemExit("sw.js: 找不到字型預快取清單")
         js = js[:m.start()] + "\0SW\0" + js[m.end():]
         js = SW_OLD_RE.sub("", js).replace("\0SW\0", block(m.group(1)) + "\n")
-    p.write_text(js, "utf-8")
-    print("  更新 sw.js")
+    if js != p.read_text("utf-8"):
+        p.write_text(js, "utf-8")
+        print("  更新 sw.js")
 
 
 def needs_rebuild(slices: dict) -> bool:
@@ -395,6 +406,11 @@ def main() -> int:
         update_pages(manifest)
         update_sw(manifest)
         finish(manifest)
+    else:
+        # 字型沒變，也要確認每一頁的 @font-face 都指到現有的檔案
+        # （例如新增了頁面，或上次自動化只 commit 了部分頁面）
+        update_pages(load_manifest(), quiet=True)
+        update_sw(load_manifest(), quiet=True)
     return 0
 
 

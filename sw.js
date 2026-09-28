@@ -38,11 +38,11 @@ const PRECACHE_URLS = [
   '/js/routes.json',
   '/js/stops-coords.json',
   // fonts:precache:start
-  '/fonts/NotoSansTC-400-all.22458f6a.woff2',
-  '/fonts/NotoSansTC-500-all.f4707c9c.woff2',
-  '/fonts/NotoSansTC-700-all.ee9aa181.woff2',
-  '/fonts/NotoSerifTC-600-all.dad8f4de.woff2',
-  '/fonts/NotoSerifTC-700-all.756d95b2.woff2',
+  '/fonts/NotoSansTC-400-all.81845e2a.woff2',
+  '/fonts/NotoSansTC-500-all.414e687c.woff2',
+  '/fonts/NotoSansTC-700-all.c78df95f.woff2',
+  '/fonts/NotoSerifTC-600-all.937e6c29.woff2',
+  '/fonts/NotoSerifTC-700-all.6ddcf2bd.woff2',
   // fonts:precache:end
   '/fonts/NotoSerifTC-900-subset.woff2',
 ];
