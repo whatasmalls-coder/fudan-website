@@ -24,3 +24,6 @@ jobs:
 
       - name: 驗證 news.json 與校車路線資料格式
         run: python scripts/validate_data.py
+
+      - name: 檢查站內資源路徑是否有失效引用（例如刪檔案後忘記清引用）
+        run: python scripts/check_local_asset_refs.py
