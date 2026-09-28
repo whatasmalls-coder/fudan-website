@@ -74,7 +74,7 @@ def slices_of(page):
 
 # 每個分片的內容來源。一個字如果出現在兩個以上頁面 → shared。
 PAGE_SOURCES = {
-    "home": ["index.html", "news.json"],
+    "home": ["index.html", "news.json", "calendar.json"],  # 首頁「近期行事」也會顯示校曆
     "cal": ["calendar/index.html", "calendar.json"],
     "bus": ["bus-search/index.html", "js/routes.json", "js/stops-coords.json"],
 }
@@ -87,7 +87,7 @@ PAGES = {
     "index.html": {"slice": "home", "weights": WEIGHTS, "preload": [("sans", 400)]},
     "calendar/index.html": {"slice": "cal",
                             "weights": [("sans", 400), ("sans", 500), ("sans", 700), ("serif", 700)],
-                            "preload": [("serif", 700)]},
+                            "preload": [("serif", 700), ("sans", 400), ("sans", 700)]},
     "bus-search/index.html": {"slice": "bus", "weights": WEIGHTS,
                               "preload": [("sans", 400), ("sans", 700)]},
     "404.html": {"slice": None, "weights": [("sans", 400), ("sans", 700)], "preload": []},
