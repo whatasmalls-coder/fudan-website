@@ -82,7 +82,15 @@ def enrich_announcement(title: str, page_text: str):
             raise ValueError("AI 回傳沒有 summary")
         return {"summary": summary[:80], "seoDescription": (seo or summary)[:160]}
     except Exception as e:  # noqa: BLE001
-        print(f"[warn] AI 加工失敗（下次排程會重試）：{title[:30]}… {e}")
+        detail = ""
+        resp = getattr(e, "response", None)
+        if resp is not None:
+            detail = f" HTTP {resp.status_code}: {resp.text[:200]}"
+        print(f"[warn] AI 加工失敗（下次排程會重試）：{title[:30]}… {e}{detail}")
+        if os.environ.get("GITHUB_ACTIONS"):
+            # 在 GitHub Actions 的執行結果頁面顯示成黃色警告，方便查原因
+            msg = f"{type(e).__name__}: {e}{detail}".replace("\n", " ")[:300]
+            print(f"::warning title=AI 摘要失敗::{msg}")
         return None
 
 
