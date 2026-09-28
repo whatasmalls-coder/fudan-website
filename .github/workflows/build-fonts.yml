@@ -24,6 +24,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: 把公車路線、校曆寫進網頁（routes.json / calendar.json 手動改過時）
+        run: python scripts/build_static_html.py
+
       - name: 檢查並補字
         run: |
           pip install fonttools brotli

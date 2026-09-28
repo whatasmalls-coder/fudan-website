@@ -23,6 +23,10 @@ jobs:
       - name: Scrape calendar
         run: python scripts/scrape_calendar.py
 
+      - name: 把校曆事件寫進 calendar/index.html（讓 Google 讀得到）
+        continue-on-error: true
+        run: python scripts/build_static_html.py
+
       - name: 字型補字（新內容出現字型沒收錄的字就重新產生）
         continue-on-error: true
         run: |
