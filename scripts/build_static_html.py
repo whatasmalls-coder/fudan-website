@@ -9,6 +9,10 @@
   頁面上的 JavaScript 載入後會照常重新產生內容（搜尋、篩選、今天標示都不變），
   所以畫面跟原本一樣。
 
+另外也會：
+  - 把校曆頁標題、說明裡的「XXX學年度第X學期」換成校曆資料對應的學期
+  - 把 sitemap.xml 裡校曆頁的 <lastmod> 設成校曆資料更新日期
+
 寫入位置（兩段註解之間的內容會被整段換掉）：
   bus-search/index.html   <!--prerender:routes:start--> … <!--prerender:routes:end-->
   calendar/index.html     <!--prerender:calendar:start--> … <!--prerender:calendar:end-->
@@ -89,6 +93,40 @@ def calendar_html() -> str:
     return "".join(out)
 
 
+def semester_label() -> str:
+    """從校曆第一筆事件推算「115學年度第1學期」這種字樣（8 月以後開始 = 第 1 學期）。"""
+    data = json.loads((ROOT / "calendar.json").read_text("utf-8"))
+    dates = sorted(x["date"] for x in data.get("events") or [] if x.get("date"))
+    if not dates:
+        return ""
+    d = dt.date.fromisoformat(dates[0])
+    if d.month >= 8:
+        return f"{d.year - 1911}學年度第1學期"
+    return f"{d.year - 1912}學年度第2學期"
+
+
+def sync_calendar_meta(text: str) -> str:
+    """校曆頁的標題、說明、眉標裡的學期字樣跟著校曆資料更新，新學期不用手動改。"""
+    label = semester_label()
+    return re.sub(r"\d{3}學年度第[12]學期", label, text) if label else text
+
+
+def sync_sitemap() -> bool:
+    """sitemap.xml 裡 /calendar/ 的 <lastmod> 設成校曆資料的更新日期。"""
+    p = ROOT / "sitemap.xml"
+    data = json.loads((ROOT / "calendar.json").read_text("utf-8"))
+    day = str(data.get("updatedAt") or "")[:10]
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
+        return False
+    text = p.read_text("utf-8")
+    new = re.sub(r"(<loc>https://www\.visitfudan\.com/calendar/</loc>\s*<lastmod>)[^<]*(</lastmod>)",
+                 lambda m: m.group(1) + day + m.group(2), text)
+    if new != text:
+        p.write_text(new, "utf-8")
+        return True
+    return False
+
+
 TARGETS = [
     ("bus-search/index.html", "routes", routes_html),
     ("calendar/index.html", "calendar", calendar_html),
@@ -108,10 +146,14 @@ def main() -> int:
             print(f"{rel}: 找不到 prerender:{key} 標記")
             return 1
         new = pat.sub(lambda m: m.group(1) + fn() + m.group(2), text, count=1)
+        if key == "calendar":
+            new = sync_calendar_meta(new)
         if new != text:
             stale.append(rel)
             if not args.check:
                 p.write_text(new, "utf-8")
+    if not args.check and sync_sitemap():
+        print("已更新 sitemap.xml 的校曆日期")
     if stale:
         print(("需要重新產生：" if args.check else "已更新：") + "、".join(stale))
     else:

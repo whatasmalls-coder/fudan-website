@@ -92,7 +92,8 @@ PAGES = {
                               "preload": [("sans", 400), ("sans", 700)]},
     "today/index.html": {"slice": "home",
                          "weights": [("sans", 400), ("sans", 500), ("sans", 700), ("serif", 700)],
-                         "preload": [("serif", 700), ("sans", 400), ("sans", 700)]},
+                         # 頁面很短，預載太多字型反而會擋到 news.json；只預載標題用的字重
+                         "preload": [("serif", 700)]},
     "404.html": {"slice": None, "weights": [("sans", 400), ("sans", 700)], "preload": []},
     "admin.html": {"slice": None, "weights": [("sans", 400), ("sans", 500), ("sans", 700)], "preload": []},
 }
