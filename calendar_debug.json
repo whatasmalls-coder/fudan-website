@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-28T05:15:15.812788+00:00",
+  "updatedAt": "2026-09-28T05:16:44.955717+00:00",
   "stage": "parse_calendar_with_ai",
   "error_type": "TypeError",
   "error_message": "\"Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\"",
