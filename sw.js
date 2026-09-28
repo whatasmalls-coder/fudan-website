@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -35,11 +35,13 @@ const PRECACHE_URLS = [
   '/js/fuse.min.js',
   '/js/routes.json',
   '/js/stops-coords.json',
-  '/fonts/NotoSansTC-400.woff2',
-  '/fonts/NotoSansTC-500.woff2',
-  '/fonts/NotoSansTC-700.woff2',
-  '/fonts/NotoSerifTC-600.woff2',
-  '/fonts/NotoSerifTC-700.woff2',
+  // fonts:precache:start
+  '/fonts/NotoSansTC-400-all.21db301f.woff2',
+  '/fonts/NotoSansTC-500-all.d94c4e16.woff2',
+  '/fonts/NotoSansTC-700-all.6d80d95e.woff2',
+  '/fonts/NotoSerifTC-600-all.4a15b283.woff2',
+  '/fonts/NotoSerifTC-700-all.763e9164.woff2',
+  // fonts:precache:end
   '/fonts/NotoSerifTC-900-subset.woff2',
 ];
 
@@ -143,10 +145,10 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 站內字型：會隨新公告／校曆自動補字重新產生，用「先快取、背景更新」，
-  // 下次造訪就會拿到補過字的新版本（快取優先的話會永遠卡在舊字型）
+  // 站內字型：檔名帶內容雜湊（scripts/build_fonts.py 產生），內容一變就換檔名，
+  // 同一個網址永遠是同一份檔案，所以直接快取優先就好
   if (url.origin === self.location.origin && url.pathname.startsWith('/fonts/')) {
-    event.respondWith(staleWhileRevalidate(request));
+    event.respondWith(cacheFirst(request));
     return;
   }
 

@@ -38,6 +38,7 @@ jobs:
           # 不會連累其他真的存在的檔案沒被 stage 到。
           git add calendar.json 2>/dev/null || true
           git add calendar_debug.json 2>/dev/null || true
-          git add fonts/ 2>/dev/null || true
+          # 字型分片會同時改到各頁 @font-face 和 sw.js，要一起 commit
+          git add fonts/ sw.js index.html calendar/index.html bus-search/index.html 404.html admin.html 2>/dev/null || true
           git diff --staged --quiet || git commit -m "🤖 自動更新校曆（或除錯資訊）"
           git push

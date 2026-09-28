@@ -34,10 +34,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- news.json sitemap.xml fonts/; then
+          if git diff --quiet -- news.json sitemap.xml fonts/ sw.js index.html calendar/index.html bus-search/index.html 404.html admin.html; then
             echo "沒有變動，不需要 commit。"
           else
-            git add news.json sitemap.xml fonts/
+            git add news.json sitemap.xml fonts/ sw.js index.html calendar/index.html bus-search/index.html 404.html admin.html
             git commit -m "自動更新最新消息 ($(date -u +'%Y-%m-%d'))"
             git push
           fi
