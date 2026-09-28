@@ -35,6 +35,12 @@
       "short_name": "校車查詢",
       "url": "/bus-search/?utm_source=app&utm_medium=pwa",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "校曆",
+      "short_name": "校曆",
+      "url": "/calendar/?utm_source=app&utm_medium=pwa",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
