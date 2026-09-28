@@ -1,15 +1,45 @@
 import os
 import json
-import requests
-import pdfplumber
 import io
+import sys
 import traceback
 from datetime import datetime, timezone
-import anthropic
 
-client = anthropic.Anthropic()
 PDF_URL = "https://www.fdhs.tyc.edu.tw/schedule.pdf"
 OUTPUT_PATH = "calendar.json"
+
+
+def write_debug(stage: str, exc: Exception, extra: dict | None = None):
+    """暫時性除錯：把失敗階段與例外訊息寫進 calendar_debug.json，
+    這樣即使腳本本身失敗，我們還是能從 commit 出來的檔案看到真正原因。
+    問題排除後這支函式與呼叫處都應該移除。"""
+    debug = {
+        "updatedAt": datetime.now(timezone.utc).isoformat(),
+        "stage": stage,
+        "error_type": type(exc).__name__,
+        "error_message": str(exc),
+        "traceback": traceback.format_exc(),
+    }
+    if extra:
+        debug.update(extra)
+    with open("calendar_debug.json", "w", encoding="utf-8") as f:
+        json.dump(debug, f, ensure_ascii=False, indent=2)
+
+
+# requests / pdfplumber / anthropic 這幾個第三方套件的 import 本身也可能失敗
+# （例如 pip 裝得起來但實際 import 時因為底層相依套件版本不合而炸掉），
+# 而且是在任何 try/except 生效之前就會發生。之前 6 次執行都是「Install
+# dependencies」步驟成功、但下一步在 3 秒內就失敗，時間短到不像是真的有
+# 呼叫網路或 AI，更像是 import 階段就死掉了——所以這裡把這幾個 import
+# 也包進 try/except，確保無論在哪個階段失敗，都能把真正的錯誤寫下來。
+try:
+    import requests
+    import pdfplumber
+    import anthropic
+    client = anthropic.Anthropic()
+except Exception as e:
+    write_debug("import_or_client_init", e)
+    sys.exit(1)
 
 
 def download_and_extract_text(url: str) -> str:
@@ -52,23 +82,6 @@ def parse_calendar_with_ai(raw_text: str) -> list:
     text = response.content[0].text.strip()
     text = text.replace("```json", "").replace("```", "").strip()
     return json.loads(text)
-
-
-def write_debug(stage: str, exc: Exception, extra: dict | None = None):
-    """暫時性除錯：把失敗階段與例外訊息寫進 calendar_debug.json，
-    這樣即使腳本本身失敗，我們還是能從 commit 出來的檔案看到真正原因。
-    問題排除後這支函式與呼叫處都應該移除。"""
-    debug = {
-        "updatedAt": datetime.now(timezone.utc).isoformat(),
-        "stage": stage,
-        "error_type": type(exc).__name__,
-        "error_message": str(exc),
-        "traceback": traceback.format_exc(),
-    }
-    if extra:
-        debug.update(extra)
-    with open("calendar_debug.json", "w", encoding="utf-8") as f:
-        json.dump(debug, f, ensure_ascii=False, indent=2)
 
 
 def main():
