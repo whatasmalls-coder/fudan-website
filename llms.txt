@@ -9,6 +9,7 @@
 - [校曆](https://www.visitfudan.com/calendar/): 本學期行事曆（考試、活動、假期、行政、社團），依月份整理、可依分類篩選
 - [最新消息 JSON 資料](https://www.visitfudan.com/news.json): 校方公告的結構化資料，包含標題、日期、分類標籤、摘要
 - [校曆 JSON 資料](https://www.visitfudan.com/calendar.json): 本學期行事曆的結構化資料，每筆事件含日期（YYYY-MM-DD）、標題、分類，每週自動從校方公告 PDF 更新
+- [校曆 iCalendar 訂閱檔](https://www.visitfudan.com/calendar.ics): 同一份行事曆的 .ics 格式，可用 webcal:// 訂閱到手機或 Google 日曆
 - [學校官方網站](https://www.fdhs.tyc.edu.tw): 校方原始官網，含完整行政公告
 - [校園入口](https://osa.fdhs.tyc.edu.tw/e-campus/login.php): 學生/教職員登入系統
 
