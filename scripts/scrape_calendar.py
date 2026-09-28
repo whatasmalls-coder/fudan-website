@@ -26,17 +26,37 @@ def write_debug(stage: str, exc: Exception, extra: dict | None = None):
         json.dump(debug, f, ensure_ascii=False, indent=2)
 
 
+def mark_progress(checkpoint: str):
+    """暫時性除錯：就算某一步是被 OS 直接砍掉（例如 C extension 底層崩潰，
+    不是 Python 例外、try/except 完全抓不到），這個檔案在崩潰前的最後一次
+    寫入還是會留在磁碟上，讓我們知道到底是哪一步之後才死掉的。
+    問題排除後這支函式與呼叫處都應該移除。"""
+    with open("calendar_progress.json", "w", encoding="utf-8") as f:
+        json.dump({
+            "updatedAt": datetime.now(timezone.utc).isoformat(),
+            "last_checkpoint": checkpoint,
+        }, f, ensure_ascii=False, indent=2)
+
+
+mark_progress("before_any_import")
+
 # requests / pdfplumber / anthropic 這幾個第三方套件的 import 本身也可能失敗
 # （例如 pip 裝得起來但實際 import 時因為底層相依套件版本不合而炸掉），
 # 而且是在任何 try/except 生效之前就會發生。之前 6 次執行都是「Install
 # dependencies」步驟成功、但下一步在 3 秒內就失敗，時間短到不像是真的有
 # 呼叫網路或 AI，更像是 import 階段就死掉了——所以這裡把這幾個 import
 # 也包進 try/except，確保無論在哪個階段失敗，都能把真正的錯誤寫下來。
+# 如果是 C extension 層級的崩潰（try/except 抓不到），就靠 mark_progress()
+# 留在磁碟上的最後一個檢查點來定位問題。
 try:
     import requests
+    mark_progress("after_import_requests")
     import pdfplumber
+    mark_progress("after_import_pdfplumber")
     import anthropic
+    mark_progress("after_import_anthropic")
     client = anthropic.Anthropic()
+    mark_progress("after_anthropic_client_init")
 except Exception as e:
     write_debug("import_or_client_init", e)
     sys.exit(1)
@@ -44,11 +64,15 @@ except Exception as e:
 
 def download_and_extract_text(url: str) -> str:
     resp = requests.get(url, timeout=20)
+    mark_progress("after_requests_get")
     resp.raise_for_status()
+    mark_progress(f"after_raise_for_status_len={len(resp.content)}")
     text_parts = []
     with pdfplumber.open(io.BytesIO(resp.content)) as pdf:
-        for page in pdf.pages:
+        mark_progress(f"after_pdfplumber_open_pages={len(pdf.pages)}")
+        for i, page in enumerate(pdf.pages):
             text_parts.append(page.extract_text() or "")
+            mark_progress(f"after_extract_text_page_{i}")
     return "\n".join(text_parts)
 
 
