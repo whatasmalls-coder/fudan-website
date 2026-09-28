@@ -7,7 +7,7 @@
  * 快取策略：
  * 1. 首頁 / 校車頁面（HTML）：先試網路，拿到最新版本；連不上網路才用快取版本頂替
  * 2. 字型、圖示、共用 JS：網路狀況好的時候才需要重抓，用「快取優先」策略
- * 3. Google Fonts / Fuse.js（外部 CDN）：先用快取立即顯示，背景偷偷更新（stale-while-revalidate）
+ * 3. Google Fonts（外部 CDN，若有使用到）：先用快取立即顯示，背景偷偷更新（stale-while-revalidate）
  * 4. news.json：優先拿最新公告，離線時退回上次抓到的版本
  * 5. AI 相關的 API 呼叫（Cloudflare Worker、Gemini、Plausible、GitHub API）：
  *    完全不快取，一律直接放行，避免使用者收到過期或錯誤的 AI 回應
@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -31,6 +31,9 @@ const PRECACHE_URLS = [
   '/icon-512.png',
   '/icon-512-maskable.png',
   '/js/ai-shared.js',
+  '/js/fuse.min.js',
+  '/js/routes.json',
+  '/js/stops-coords.json',
   '/fonts/NotoSansTC-400.woff',
   '/fonts/NotoSansTC-500.woff',
   '/fonts/NotoSansTC-700.woff',
@@ -144,10 +147,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 外部 CDN（Google Fonts、Fuse.js）：先用快取立即顯示，背景更新
+  // 外部 CDN（Google Fonts，若有使用到）：先用快取立即顯示，背景更新
   if (url.hostname.includes('fonts.googleapis.com') ||
-      url.hostname.includes('fonts.gstatic.com') ||
-      url.hostname.includes('cdnjs.cloudflare.com')) {
+      url.hostname.includes('fonts.gstatic.com')) {
     event.respondWith(staleWhileRevalidate(request));
     return;
   }
