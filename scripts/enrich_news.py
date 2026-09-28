@@ -27,7 +27,9 @@ TIMEOUT = 15
 PROXY_URL = os.environ.get("AI_PROXY_URL", "https://fudan-ai-proxy.whatasmalls.workers.dev")
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
-MAX_CALLS = int(os.environ.get("ENRICH_MAX_CALLS", "10"))  # 每次最多呼叫幾次 AI（免費額度有每分鐘上限）
+# 每次最多呼叫幾次 AI。Gemini 免費額度是跟網站 AI 助手、公車 AI 搜尋共用的，
+# 所以慢慢補就好（公告每 2 小時更新一次，一天也能補好幾十則），不要把額度用光。
+MAX_CALLS = int(os.environ.get("ENRICH_MAX_CALLS", "4"))
 PAUSE = float(os.environ.get("ENRICH_PAUSE", "13"))         # 每次呼叫間隔秒數（免費額度大約每分鐘 5 次）
 
 
@@ -46,7 +48,8 @@ def fetch_page_text(url: str) -> str:
 
 
 def ask_ai(prompt: str) -> str:
-    body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}]}
+    body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "generationConfig": {"responseMimeType": "application/json"}}
     if GEMINI_KEY:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
         resp = requests.post(url, params={"key": GEMINI_KEY}, json=body, timeout=40)
@@ -87,11 +90,12 @@ def enrich_announcement(title: str, page_text: str):
         if resp is not None:
             detail = f" HTTP {resp.status_code}: {resp.text[:200]}"
         print(f"[warn] AI 加工失敗（下次排程會重試）：{title[:30]}… {e}{detail}")
+        quota = resp is not None and resp.status_code == 429
         if os.environ.get("GITHUB_ACTIONS"):
             # 在 GitHub Actions 的執行結果頁面顯示成黃色警告，方便查原因
             msg = f"{type(e).__name__}: {e}{detail}".replace("\n", " ")[:300]
             print(f"::warning title=AI 摘要失敗::{msg}")
-        return None
+        return "quota" if quota else None
 
 
 def content_hash(title: str, page_text: str) -> str:
@@ -110,8 +114,11 @@ def main() -> int:
 
     print(f"AI 來源：{'Gemini API（' + GEMINI_MODEL + '）' if GEMINI_KEY else 'Cloudflare Worker ' + PROXY_URL}")
     calls = ok = failed = 0
+    quota_hit = False
 
-    for item in items:
+    # 先補「還沒有真正摘要」的公告，剩下的額度才拿去更新內容有變動的舊公告
+    order = sorted(items, key=lambda i: 0 if is_placeholder(i) else 1)
+    for item in order:
         url = item.get("link")
         if not url:
             continue
@@ -121,12 +128,17 @@ def main() -> int:
         changed = item.get("contentHash") != new_hash and bool(page_text) and not placeholder
         if not placeholder and not changed:
             continue
-        if calls >= MAX_CALLS:
+        if calls >= MAX_CALLS or quota_hit:
             continue
         if calls:
             time.sleep(PAUSE)
         calls += 1
         enriched = enrich_announcement(item["title"], page_text)
+        if enriched == "quota":
+            # 額度用完了：這次就停，別再打（也留額度給網站上的 AI 功能）
+            failed += 1
+            quota_hit = True
+            continue
         if not enriched:
             failed += 1
             continue
@@ -147,8 +159,10 @@ def main() -> int:
 
     left = sum(1 for i in items if is_placeholder(i))
     print(f"完成：成功 {ok} 筆、失敗 {failed} 筆；還沒有真正摘要的公告 {left} 筆")
-    # 有呼叫但全部失敗 → 讓 workflow 顯示失敗，才不會像以前一樣默默壞掉
-    return 1 if calls and not ok else 0
+    if quota_hit:
+        print("Gemini 免費額度暫時用完，下次排程再繼續補")
+    # 有呼叫但全部失敗、而且不是額度問題 → 讓 workflow 顯示失敗，才不會像以前一樣默默壞掉
+    return 1 if calls and not ok and not quota_hit else 0
 
 
 if __name__ == "__main__":
