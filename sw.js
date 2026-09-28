@@ -33,14 +33,15 @@ const PRECACHE_URLS = [
   '/icon-512-maskable.png',
   '/js/ai-shared.js',
   '/js/fuse.min.js',
+  '/js/exam-countdown.js',
   '/js/routes.json',
   '/js/stops-coords.json',
   // fonts:precache:start
-  '/fonts/NotoSansTC-400-all.9fdbf9ae.woff2',
-  '/fonts/NotoSansTC-500-all.6623b2b7.woff2',
-  '/fonts/NotoSansTC-700-all.b0d1db15.woff2',
-  '/fonts/NotoSerifTC-600-all.206320a5.woff2',
-  '/fonts/NotoSerifTC-700-all.8fc8ad42.woff2',
+  '/fonts/NotoSansTC-400-all.3dcbf2bd.woff2',
+  '/fonts/NotoSansTC-500-all.39018042.woff2',
+  '/fonts/NotoSansTC-700-all.10aa7cef.woff2',
+  '/fonts/NotoSerifTC-600-all.146e6963.woff2',
+  '/fonts/NotoSerifTC-700-all.333afc0e.woff2',
   // fonts:precache:end
   '/fonts/NotoSerifTC-900-subset.woff2',
 ];

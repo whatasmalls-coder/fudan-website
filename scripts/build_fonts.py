@@ -74,8 +74,8 @@ def slices_of(page):
 
 # 每個分片的內容來源。一個字如果出現在兩個以上頁面 → shared。
 PAGE_SOURCES = {
-    "home": ["index.html", "news.json", "calendar.json"],  # 首頁「近期行事」也會顯示校曆
-    "cal": ["calendar/index.html", "calendar.json"],
+    "home": ["index.html", "news.json", "calendar.json", "js/exam-countdown.js"],  # 首頁「近期行事」也會顯示校曆
+    "cal": ["calendar/index.html", "calendar.json", "js/exam-countdown.js"],
     "bus": ["bus-search/index.html", "js/routes.json", "js/stops-coords.json"],
 }
 # 不屬於特定頁面、但網站上會出現的字 → other（除非也在某頁出現）
