@@ -144,7 +144,8 @@ updateOfflineState();
 var themeToggle = document.getElementById('themeToggle');
 var themeColorMeta = document.querySelector('meta[name="theme-color"]');
 function syncThemeColor(isDark){
-if(themeColorMeta) themeColorMeta.setAttribute('content', isDark ? '#0e1a30' : '#f6f3ec');
+// 校曆頁頂部導覽列在淺色、深色模式都是深藍色，瀏覽器頂部顏色也固定用深藍才接得起來
+if(themeColorMeta) themeColorMeta.setAttribute('content', '#0e1a30');
 }
 syncThemeColor(document.documentElement.getAttribute('data-theme') === 'dark');
 themeToggle.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
