@@ -12,6 +12,7 @@
 另外也會：
   - 把校曆頁標題、說明裡的「XXX學年度第X學期」換成校曆資料對應的學期
   - 把 sitemap.xml 裡校曆頁的 <lastmod> 設成校曆資料更新日期
+  - 公車頁標題、說明、統計文字裡的「N條路線、N個停靠站」跟著 routes.json 更新
 
 寫入位置（兩段註解之間的內容會被整段換掉）：
   bus-search/index.html   <!--prerender:routes:start--> … <!--prerender:routes:end-->
@@ -111,6 +112,17 @@ def sync_calendar_meta(text: str) -> str:
     return re.sub(r"\d{3}學年度第[12]學期", label, text) if label else text
 
 
+def sync_bus_counts(text: str) -> str:
+    """公車頁上寫死的路線數、站數（標題、說明、統計文字）跟著 routes.json 更新。"""
+    routes = json.loads((ROOT / "js/routes.json").read_text("utf-8"))
+    n_routes, n_stops = len(routes), sum(len(r["stops"]) for r in routes)
+    text = re.sub(r"\d+條路線、\d+(個停靠站|站時刻表)", lambda m: f"{n_routes}條路線、{n_stops}{m.group(1)}", text)
+    text = re.sub(r'(id="statTotal">)\d+', lambda m: m.group(1) + str(n_routes), text)
+    text = re.sub(r'(id="statStops">)\d+', lambda m: m.group(1) + str(n_stops), text)
+    text = re.sub(r"共 <b>\d+</b> 條校車路線", f"共 <b>{n_routes}</b> 條校車路線", text)
+    return text
+
+
 def sync_sitemap() -> bool:
     """sitemap.xml 裡 /calendar/ 的 <lastmod> 設成校曆資料的更新日期。"""
     p = ROOT / "sitemap.xml"
@@ -148,6 +160,8 @@ def main() -> int:
         new = pat.sub(lambda m: m.group(1) + fn() + m.group(2), text, count=1)
         if key == "calendar":
             new = sync_calendar_meta(new)
+        elif key == "routes":
+            new = sync_bus_counts(new)
         if new != text:
             stale.append(rel)
             if not args.check:
