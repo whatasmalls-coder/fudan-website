@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -34,11 +34,11 @@ const PRECACHE_URLS = [
   '/js/fuse.min.js',
   '/js/routes.json',
   '/js/stops-coords.json',
-  '/fonts/NotoSansTC-400.woff',
-  '/fonts/NotoSansTC-500.woff',
-  '/fonts/NotoSansTC-700.woff',
-  '/fonts/NotoSerifTC-600.woff',
-  '/fonts/NotoSerifTC-700.woff',
+  '/fonts/NotoSansTC-400.woff2',
+  '/fonts/NotoSansTC-500.woff2',
+  '/fonts/NotoSansTC-700.woff2',
+  '/fonts/NotoSerifTC-600.woff2',
+  '/fonts/NotoSerifTC-700.woff2',
   '/fonts/NotoSerifTC-900-subset.woff2',
 ];
 
