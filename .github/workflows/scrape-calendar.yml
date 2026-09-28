@@ -23,13 +23,29 @@ jobs:
       - name: Scrape calendar
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/scrape_calendar.py
+        run: |
+          # 暫時性除錯：之前 7 次執行都在 2~3 秒內失敗、且 Python 內部的
+          # try/except（連 import 都包進去了）完全沒機會寫出任何除錯檔案，
+          # 代表問題可能是 shell 層級或連 Python 解譯器本身都沒真正跑起來
+          # ——所以這裡改成在 shell 層級直接把所有輸出、真正的結束代碼都
+          # 存下來，不管腳本本身是死是活都不讓這個 step 失敗，這樣後面的
+          # commit 步驟才有機會把記錄下來的東西送出去。問題排除後這整段
+          # 都要還原成單純的 `run: python scripts/scrape_calendar.py`。
+          which python python3 || true
+          python --version || true
+          python3 --version || true
+          pwd
+          ls -la scripts/
+          python scripts/scrape_calendar.py > calendar_run_log.txt 2>&1
+          echo "EXIT_CODE=$?" >> calendar_run_log.txt
+          cat calendar_run_log.txt
+          exit 0
 
       - name: Commit changes
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add calendar.json calendar_debug.json calendar_progress.json 2>/dev/null || true
+          git add calendar.json calendar_debug.json calendar_progress.json calendar_run_log.txt 2>/dev/null || true
           git diff --staged --quiet || git commit -m "🤖 自動更新校曆（或除錯資訊）"
           git push
