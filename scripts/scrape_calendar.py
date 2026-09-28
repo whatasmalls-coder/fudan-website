@@ -32,8 +32,18 @@ except Exception as e:
 
 
 def main():
-    resp = requests.get(PDF_URL, timeout=20)
-    resp.raise_for_status()
+    last_err = None
+    resp = None
+    for attempt in range(3):
+        try:
+            resp = requests.get(PDF_URL, timeout=45)
+            resp.raise_for_status()
+            break
+        except Exception as e:
+            last_err = e
+            resp = None
+    if resp is None:
+        raise last_err
 
     debug = {"updatedAt": datetime.now(timezone.utc).isoformat(), "mode": "TABLE_STRUCTURE_PROBE", "pages": []}
 
