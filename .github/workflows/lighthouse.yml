@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 取得 repo 內容
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 執行 Lighthouse 檢查
         uses: treosh/lighthouse-ci-action@v11

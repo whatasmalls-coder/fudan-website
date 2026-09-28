@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 取得 repo 內容
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 設定 Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
