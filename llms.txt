@@ -6,6 +6,7 @@
 
 - [首頁](https://www.visitfudan.com/): 學校介紹、師資課程、校園建築、升學表現、最新消息、聯絡資訊
 - [校車路線查詢](https://www.visitfudan.com/bus-search/): 全校54條路線、264個停靠站的校車時刻與站點查詢工具，支援模糊搜尋
+- [今日](https://www.visitfudan.com/today/): 今天、明天、接下來一週的校曆行事，下次放假與段考倒數，最新公告
 - [校曆](https://www.visitfudan.com/calendar/): 本學期行事曆（考試、活動、假期、行政、社團），依月份整理、可依分類篩選
 - [最新消息 JSON 資料](https://www.visitfudan.com/news.json): 校方公告的結構化資料，包含標題、日期、分類標籤、摘要
 - [校曆 JSON 資料](https://www.visitfudan.com/calendar.json): 本學期行事曆的結構化資料，每筆事件含日期（YYYY-MM-DD）、標題、分類，每週自動從校方公告 PDF 更新

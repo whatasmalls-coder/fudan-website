@@ -16,13 +16,14 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v9';
+const CACHE_VERSION = 'v10';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/',
   '/bus-search/',
   '/calendar/',
+  '/today/',
   '/manifest.json',
   '/favicon.ico',
   '/favicon-32.png',
@@ -37,11 +38,11 @@ const PRECACHE_URLS = [
   '/js/routes.json',
   '/js/stops-coords.json',
   // fonts:precache:start
-  '/fonts/NotoSansTC-400-all.365ce7f5.woff2',
-  '/fonts/NotoSansTC-500-all.f2ce1214.woff2',
-  '/fonts/NotoSansTC-700-all.25a86dde.woff2',
-  '/fonts/NotoSerifTC-600-all.24fe404c.woff2',
-  '/fonts/NotoSerifTC-700-all.97fa8ed8.woff2',
+  '/fonts/NotoSansTC-400-all.b97a9c90.woff2',
+  '/fonts/NotoSansTC-500-all.8338c2a4.woff2',
+  '/fonts/NotoSansTC-700-all.6c0857a4.woff2',
+  '/fonts/NotoSerifTC-600-all.7bf4c7a4.woff2',
+  '/fonts/NotoSerifTC-700-all.4d588dd0.woff2',
   // fonts:precache:end
   '/fonts/NotoSerifTC-900-subset.woff2',
 ];

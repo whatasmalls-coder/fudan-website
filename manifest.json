@@ -41,6 +41,12 @@
       "short_name": "校曆",
       "url": "/calendar/?utm_source=app&utm_medium=pwa",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "今日",
+      "short_name": "今日",
+      "url": "/today/?utm_source=app&utm_medium=pwa",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
