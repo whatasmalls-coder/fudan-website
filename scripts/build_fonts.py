@@ -222,14 +222,17 @@ def build(slices: dict) -> dict:
             (FONT_DIR / name).write_bytes(data)
             files[name] = {"family": src_key, "weight": weight, "slice": sl, "codepoints": covered}
             print(f"  {name}: {len(covered)} 字，{len(data) // 1024}KB")
-    # 刪掉不再使用的舊字型（900-subset 以外）
+    return {"slices": {k: sorted(v) for k, v in slices.items()}, "files": files}
+
+
+def finish(manifest: dict) -> None:
+    """頁面和 sw.js 都改好之後才刪舊檔、寫 manifest。
+    中途出錯的話，舊字型檔都還在，頁面不會指到不存在的檔案。"""
     for p in FONT_DIR.glob("NotoS*TC-*.woff2"):
-        if p.name not in files and "900-subset" not in p.name:
+        if p.name not in manifest["files"] and "900-subset" not in p.name:
             p.unlink()
             print(f"  刪除舊檔 {p.name}")
-    manifest = {"slices": {k: sorted(v) for k, v in slices.items()}, "files": files}
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n", "utf-8")
-    return manifest
 
 
 def files_for(manifest: dict, src_key: str, weight: int, slice_names) -> list:
@@ -348,6 +351,7 @@ def main() -> int:
         manifest = build(slices)
         update_pages(manifest)
         update_sw(manifest)
+        finish(manifest)
     return 0
 
 
