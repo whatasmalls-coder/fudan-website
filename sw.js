@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v9';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -152,9 +152,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 站內的靜態資源（圖示、共用 JS）：快取優先，減少重複下載
+  // 站內其他靜態資源（圖示、共用 JS、路線資料）：先用快取立即回應、背景抓新版，
+  // 下次造訪就是新的。（以前是快取優先，改了 routes.json 或 JS 要等 CACHE_VERSION
+  // 變了使用者才拿得到新版）
   if (url.origin === self.location.origin) {
-    event.respondWith(cacheFirst(request));
+    event.respondWith(staleWhileRevalidate(request));
     return;
   }
 
