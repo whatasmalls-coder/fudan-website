@@ -23,11 +23,13 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install anthropic requests beautifulsoup4
+        run: pip install requests beautifulsoup4
 
+      # 免費：預設走網站的 Cloudflare Worker（Gemini）。
+      # 如果之後在 repo 的 Settings → Secrets 加了 GEMINI_API_KEY，就會改成直接呼叫 Gemini API。
       - name: Enrich news
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/enrich_news.py
 
       - name: Commit changes
