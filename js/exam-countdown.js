@@ -84,6 +84,7 @@
 
   Array.prototype.forEach.call(boxes, function (box) {
     box.classList.add('exam-cd');
+    box.setAttribute('role', 'group');
     box.setAttribute('aria-label', '段考倒數');
     if ('IntersectionObserver' in window && box.hasAttribute('data-lazy')) {
       var io = new IntersectionObserver(function (entries) {
