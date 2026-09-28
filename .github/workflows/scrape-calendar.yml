@@ -28,16 +28,21 @@ jobs:
           # try/except（連 import 都包進去了）完全沒機會寫出任何除錯檔案，
           # 代表問題可能是 shell 層級或連 Python 解譯器本身都沒真正跑起來
           # ——所以這裡改成在 shell 層級直接把所有輸出、真正的結束代碼都
-          # 存下來，不管腳本本身是死是活都不讓這個 step 失敗，這樣後面的
-          # commit 步驟才有機會把記錄下來的東西送出去。問題排除後這整段
-          # 都要還原成單純的 `run: python scripts/scrape_calendar.py`。
-          which python python3 || true
-          python --version || true
-          python3 --version || true
+          # 存下來。GitHub Actions 預設用 `bash -e` 執行多行 run，一旦
+          # python 那行失敗，會直接中止整個 step，後面的 echo/cat/exit 0
+          # 根本沒機會執行，calendar_run_log.txt 也就永遠不會被寫完整
+          # ——這正是前一版診斷徹底失敗的原因。這裡先 set +e 關掉這個行為。
+          # 問題排除後這整段都要還原成單純的
+          # `run: python scripts/scrape_calendar.py`。
+          set +e
+          which python python3
+          python --version
+          python3 --version
           pwd
           ls -la scripts/
           python scripts/scrape_calendar.py > calendar_run_log.txt 2>&1
-          echo "EXIT_CODE=$?" >> calendar_run_log.txt
+          SCRIPT_EXIT=$?
+          echo "EXIT_CODE=$SCRIPT_EXIT" >> calendar_run_log.txt
           cat calendar_run_log.txt
           exit 0
 
