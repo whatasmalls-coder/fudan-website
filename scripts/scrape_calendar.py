@@ -3,6 +3,7 @@ import json
 import requests
 import pdfplumber
 import io
+import traceback
 from datetime import datetime, timezone
 import anthropic
 
@@ -53,12 +54,37 @@ def parse_calendar_with_ai(raw_text: str) -> list:
     return json.loads(text)
 
 
+def write_debug(stage: str, exc: Exception, extra: dict | None = None):
+    """暫時性除錯：把失敗階段與例外訊息寫進 calendar_debug.json，
+    這樣即使腳本本身失敗，我們還是能從 commit 出來的檔案看到真正原因。
+    問題排除後這支函式與呼叫處都應該移除。"""
+    debug = {
+        "updatedAt": datetime.now(timezone.utc).isoformat(),
+        "stage": stage,
+        "error_type": type(exc).__name__,
+        "error_message": str(exc),
+        "traceback": traceback.format_exc(),
+    }
+    if extra:
+        debug.update(extra)
+    with open("calendar_debug.json", "w", encoding="utf-8") as f:
+        json.dump(debug, f, ensure_ascii=False, indent=2)
+
+
 def main():
     print("下載並解析校曆PDF...")
-    raw_text = download_and_extract_text(PDF_URL)
+    try:
+        raw_text = download_and_extract_text(PDF_URL)
+    except Exception as e:
+        write_debug("download_and_extract_text", e)
+        raise
 
     print("呼叫AI解析為結構化資料...")
-    events = parse_calendar_with_ai(raw_text)
+    try:
+        events = parse_calendar_with_ai(raw_text)
+    except Exception as e:
+        write_debug("parse_calendar_with_ai", e, {"raw_text_len": len(raw_text), "raw_text_preview": raw_text[:500]})
+        raise
 
     output = {
         "updatedAt": datetime.now(timezone.utc).isoformat(),
