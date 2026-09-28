@@ -1,7 +1,832 @@
 {
-  "updatedAt": "2026-09-28T06:48:51.654285+00:00",
-  "stage": "probe_failed",
-  "error_type": "ReadTimeout",
-  "error_message": "HTTPSConnectionPool(host='www.fdhs.tyc.edu.tw', port=443): Read timed out. (read timeout=20)",
-  "traceback": "Traceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connectionpool.py\", line 470, in _make_request\n    self._validate_conn(conn)\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connectionpool.py\", line 1125, in _validate_conn\n    conn.connect()\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connection.py\", line 878, in connect\n    wrapped_socket, is_verified = _ssl_wrap_socket_and_match_hostname(\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connection.py\", line 1080, in _ssl_wrap_socket_and_match_hostname\n    ssl_sock = ssl_wrap_socket(\n               ^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/util/ssl_.py\", line 437, in ssl_wrap_socket\n    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/util/ssl_.py\", line 481, in _ssl_wrap_socket_impl\n    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/ssl.py\", line 517, in wrap_socket\n    return self.sslsocket_class._create(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/ssl.py\", line 1104, in _create\n    self.do_handshake()\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/ssl.py\", line 1382, in do_handshake\n    self._sslobj.do_handshake()\nTimeoutError: _ssl.c:999: The handshake operation timed out\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/requests/adapters.py\", line 696, in send\n    resp = conn.urlopen(\n           ^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connectionpool.py\", line 847, in urlopen\n    retries = retries.increment(\n              ^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/util/retry.py\", line 510, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connectionpool.py\", line 793, in urlopen\n    response = self._make_request(\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connectionpool.py\", line 494, in _make_request\n    raise new_e\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connectionpool.py\", line 472, in _make_request\n    self._raise_timeout(err=e, url=url, timeout_value=conn.timeout)\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/urllib3/connectionpool.py\", line 373, in _raise_timeout\n    raise ReadTimeoutError(\nurllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='www.fdhs.tyc.edu.tw', port=443): Read timed out. (read timeout=20)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/fudan-website/fudan-website/scripts/scrape_calendar.py\", line 80, in <module>\n    main()\n  File \"/home/runner/work/fudan-website/fudan-website/scripts/scrape_calendar.py\", line 35, in main\n    resp = requests.get(PDF_URL, timeout=20)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/requests/api.py\", line 87, in get\n    return request(\"get\", url, params=params, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/requests/api.py\", line 71, in request\n    return session.request(method=method, url=url, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request\n    resp = self.send(prep, **send_kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send\n    r = adapter.send(request, **kwargs)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send\n    raise ReadTimeout(e, request=request)\nrequests.exceptions.ReadTimeout: HTTPSConnectionPool(host='www.fdhs.tyc.edu.tw', port=443): Read timed out. (read timeout=20)\n"
+  "updatedAt": "2026-09-28T06:49:34.053918+00:00",
+  "mode": "TABLE_STRUCTURE_PROBE",
+  "pages": [
+    {
+      "page_index": 0,
+      "width": 841.8,
+      "height": 1190.52,
+      "table_count": 1,
+      "tables": [
+        {
+          "table_index": 0,
+          "bbox": [
+            34.4475,
+            43.020000000000095,
+            811.6733316666669,
+            1175.711982
+          ],
+          "n_rows": 22,
+          "n_cols": 9,
+          "rows": [
+            [
+              "週\n次",
+              "日",
+              null,
+              "一",
+              "二",
+              "三",
+              "四",
+              "五",
+              "六"
+            ],
+            [
+              "第\n1\n週",
+              "30友善校園週\n週內進行影片宣導\n(8/31~9/2)",
+              null,
+              "31開學日及開學典禮\n八\n教室佈置辦法公告（至\n月\n11/13）\n【1】班級遴選幹部",
+              "1\n九\n月",
+              "O 2 國一始業輔導(第1梯次\n9/2~9/3)\n【56】班級遴選幹部\n高三模擬考2\n高二期初複習考",
+              "O 3 國一始業輔導(第1梯次\n9/2~9/3；第2梯次\n9/3~9/4)\n【1~6】高三模擬考2\n【1~6】高二期初複習考",
+              "O 4 國一始業輔導(第2梯次\n9/3~9/4)",
+              "5"
+            ],
+            [
+              "第\n2\n週",
+              "6 本週國二各班身高體重視\n力量測(健康中心)",
+              null,
+              "O 7 【1】高中英文作文比賽\n(個人賽)",
+              "O 8 國三模擬考1\n【1~4】國二期初複習考",
+              "O 9 【56】幹部訓練\n【1~4】國三模擬考1",
+              "O10高一始業輔導",
+              "O11高一始業輔導",
+              "●12國三到校自習1"
+            ],
+            [
+              "第\n3\n週",
+              "13",
+              "【教師節活動】\n高一新生健檢週(本週擇一\n日舉辦)\n生活榮譽競賽開始",
+              "O14【1】高中英文演講比賽\n(初賽)",
+              "O15【晨光】防震災影片宣導\n【午】畢聯會議1",
+              "O16【晨光】國家防災預演\n【56】班會或團體活動\n【56】高中英文演講比賽\n(複賽)\n【56】國中英文演講比賽\n【56】高二生命教育講座",
+              "O17【2~4】國一學力檢測",
+              "O18銷過1 (課後)\n【晨光】環境教育影片宣\n導",
+              "●19高國中新生班親師座談會\n(上午：國一、下午：高一)\n高二到校自習1"
+            ],
+            [
+              "第\n4\n週",
+              "20",
+              null,
+              "O21【1】國中部週會1\n國家防災日",
+              "O22",
+              "O23【56】社團1\n國二九價HPV疫苗接種\n10:30~11:30",
+              "O24 【午】學生議會大會1\n高一新生健檢補檢(預)",
+              "25\n中秋節",
+              "●26"
+            ],
+            [
+              "第\n5\n週",
+              "27",
+              null,
+              "28\n教師節",
+              "O29清教學園高校來訪交流",
+              "O30【56】班會或團體活動\n【56】高中班際大隊接力\n比賽",
+              "O 1 【午】公勤開訓預演\n十\n國一健康檢查(長榮)\n月",
+              "O 2 【晨光】CRC影片收視\n【午】公勤開訓典禮",
+              "● 3 高二到校自習2\n銷過2"
+            ],
+            [
+              "第\n6\n週",
+              "4 本週國三各班身高體重視力\n量測(健康中心)",
+              null,
+              "O 5 【1】高中部週會1",
+              "O 6 【午】畢聯會議2",
+              "O 7 【56】社團2",
+              "O 8",
+              "● 9\n補假",
+              "10\n國慶日"
+            ],
+            [
+              "第\n7\n週",
+              "11本週高二各班身高體重視力\n量測(健康中心)",
+              null,
+              "O12【1】硬筆字及書法比賽\n(個人賽)",
+              "O13",
+              "O14【56】全校國語文作文比\n賽",
+              "O15",
+              "O16【晨光】營養教育宣導",
+              "17第一次大考中心英聽測驗"
+            ],
+            [
+              "第\n8\n週",
+              "18",
+              null,
+              "O19",
+              "20第1次定期評量",
+              "21第1次定期評量",
+              "O22",
+              "O23",
+              "●24"
+            ],
+            [
+              "第\n9\n週",
+              "25\n光復節",
+              null,
+              "●26\n補假\n銷過3",
+              "O27國二隔宿露營\n【午】畢聯會議3\n三国丘高校來訪交流\n建置國1生涯檔案",
+              "O28國二隔宿露營\n【56】高二性平講座\n【56】禮節達人遴選\n【56】國一班際拔河比賽\n高三模擬考3",
+              "O29【午】學生議會大會2\n【1~6】高三模擬考3",
+              "O30【晨光】防詐騙影片宣導",
+              "●31高二到校自習3"
+            ],
+            [
+              "第\n1\n0\n週",
+              "1 服務學習認證週1\n十\n本週高三各班身高體重視\n一\n月 力量測(健康中心)",
+              null,
+              "O 2 【1】國中部週會2",
+              "O 3 流感疫苗接種\n13:00~16:00",
+              "O 4 【56】社團3",
+              "O 5",
+              "O 6 【晨光】交通安全影片宣\n導",
+              "● 7 2026第七屆臺灣科學節\n國三期中複習考\n國三到校自習2"
+            ],
+            [
+              "第\n1\n1\n週",
+              "8 2026第七屆臺灣科學節",
+              null,
+              "O 9 【1】一二年級期中複習考\n(英)",
+              "O10【午】畢聯會議4",
+              "O11【56】班會或團體活動\n【56】國中班際大隊接力\n比賽\n國3免試入學適性宣導講座\n(暫定)",
+              "O12",
+              "O13【晨光】防制學生藥物濫\n用影片宣導\n教室佈置上傳結束",
+              "●14 2026第七屆臺灣科學節\n高二到校自習4"
+            ],
+            [
+              "第\n1\n2\n週",
+              "152026第七屆臺灣科學節",
+              null,
+              "O16【1】一二年級期中複習考\n(國)\n【1】高三課程諮詢",
+              "O17",
+              "O18 【56】社團4",
+              "O19",
+              "O20 【晨光】環境教育影片宣\n導",
+              "●21 國三到校自習3\n銷過4"
+            ],
+            [
+              "第\n1\n3\n週",
+              "22",
+              null,
+              "O23【1】高二課程諮詢",
+              "O24",
+              "O25 【56】班會或團體活動\n【5】高二英文背誦比賽\n【6】國二英文背誦比賽\n【56】學群講座(抽離式)",
+              "O26 【午】學生議會大會3",
+              "O27",
+              "28"
+            ],
+            [
+              "第\n1\n4\n週",
+              "29",
+              null,
+              "O30",
+              "O 1\n十\n二\n月",
+              "2 第2次定期評量",
+              "3 第2次定期評量\n校園演唱會",
+              "O 4",
+              "● 5 國三到校自習4"
+            ],
+            [
+              "第\n1\n5\n週",
+              "6",
+              null,
+              "O 7 高二成年禮",
+              "O 8 高二成年禮\n高三模擬考4\n【午】畢聯會議5",
+              "O 9 龍谷高校來訪交流\n【1~6】高三模擬考4\n【56】國二友善校園生命\n教育講座\n【56】高一班際籃球3對3\n比賽",
+              "O10",
+              "O11 [晨]交通安全影片宣導",
+              "●12 第二次大考中心英聽測驗\n高二到校自習5\n銷過5"
+            ],
+            [
+              "第\n1\n6\n週",
+              "13藝文季\n圖書館週\n服務學習認證週2",
+              null,
+              "O14【1】國一國文背誦比賽",
+              "O15",
+              "O16 【56】社團5",
+              "O17 國三試模擬考",
+              "O18 國三試模擬考",
+              "●19 高三親職講座-大學多元入\n學管道介紹\n【家長場】青年儲蓄戶宣\n導活動\n國三到校自習5"
+            ],
+            [
+              "第\n1\n7\n週",
+              "20生活寫作本抽查週\n生活榮譽競賽結束(12/24\n止)",
+              null,
+              "O21【1】高一國文背誦比賽",
+              "O22 【午】畢聯會議6",
+              "O23 【56】社團6",
+              "O24 高三第3次定期評量",
+              "25\n行憲紀念日",
+              "●26"
+            ],
+            [
+              "第\n1\n8\n週",
+              "27",
+              null,
+              "O28【1】高中部週會2\n高三第3次定期評量\n高三集中自習開始",
+              "O29",
+              "O30 【56】一二年級期中複習\n考(數)",
+              "O31 【午】學生議會大會4",
+              "1\n一\n月\n元旦",
+              "● 2 國三到校自習6"
+            ],
+            [
+              "第\n1\n9\n週",
+              "3",
+              null,
+              "O 4",
+              "O 5",
+              "O 6 【56】關懷達人遴選\n【56】國二班際籃球3對3\n比賽",
+              "O 7",
+              "O 8",
+              "● 9 高二到校自習6"
+            ],
+            [
+              "第\n2\n0\n週",
+              "10",
+              null,
+              "O11",
+              "O12",
+              "O13 【56】環境教育大掃除",
+              "O14",
+              "O15",
+              "●16國三到校自習7"
+            ],
+            [
+              "第\n2\n1\n週",
+              "17",
+              null,
+              "18第3次定期評量",
+              "19 第3次定期評量\n高三集中自習結束",
+              "20 休業式\n第3次定期評量",
+              "21 寒假開始",
+              "22\n學測\n(1/22~1/24)",
+              "23\n學測\n(1/22~1/24)"
+            ]
+          ]
+        }
+      ],
+      "word_count": 447,
+      "sample_words": [
+        {
+          "text": "115學年度第1學期校曆(公告版)",
+          "x0": 353.3,
+          "x1": 507.3,
+          "top": 24.7,
+          "bottom": 35.8
+        },
+        {
+          "text": "製表：2026/8/18",
+          "x0": 744.2,
+          "x1": 823.9,
+          "top": 24.6,
+          "bottom": 34.7
+        },
+        {
+          "text": "週",
+          "x0": 36.0,
+          "x1": 41.5,
+          "top": 44.2,
+          "bottom": 49.7
+        },
+        {
+          "text": "日",
+          "x0": 101.7,
+          "x1": 109.0,
+          "top": 47.0,
+          "bottom": 54.3
+        },
+        {
+          "text": "一",
+          "x0": 211.0,
+          "x1": 219.3,
+          "top": 46.4,
+          "bottom": 54.7
+        },
+        {
+          "text": "二",
+          "x0": 320.8,
+          "x1": 329.1,
+          "top": 46.4,
+          "bottom": 54.7
+        },
+        {
+          "text": "三",
+          "x0": 430.6,
+          "x1": 438.9,
+          "top": 46.4,
+          "bottom": 54.7
+        },
+        {
+          "text": "四",
+          "x0": 540.4,
+          "x1": 548.7,
+          "top": 46.4,
+          "bottom": 54.7
+        },
+        {
+          "text": "五",
+          "x0": 650.3,
+          "x1": 658.5,
+          "top": 46.4,
+          "bottom": 54.7
+        },
+        {
+          "text": "六",
+          "x0": 760.1,
+          "x1": 768.3,
+          "top": 46.4,
+          "bottom": 54.7
+        },
+        {
+          "text": "次",
+          "x0": 36.0,
+          "x1": 41.5,
+          "top": 51.5,
+          "bottom": 57.0
+        },
+        {
+          "text": "30友善校園週",
+          "x0": 50.4,
+          "x1": 98.4,
+          "top": 59.2,
+          "bottom": 67.3
+        },
+        {
+          "text": "31開學日及開學典禮",
+          "x0": 160.2,
+          "x1": 231.6,
+          "top": 59.2,
+          "bottom": 67.3
+        },
+        {
+          "text": "1",
+          "x0": 271.6,
+          "x1": 274.6,
+          "top": 59.2,
+          "bottom": 64.3
+        },
+        {
+          "text": "O",
+          "x0": 373.5,
+          "x1": 377.2,
+          "top": 59.2,
+          "bottom": 63.7
+        },
+        {
+          "text": "2",
+          "x0": 381.3,
+          "x1": 384.3,
+          "top": 59.2,
+          "bottom": 64.3
+        },
+        {
+          "text": "國一始業輔導(第1梯次",
+          "x0": 388.9,
+          "x1": 466.1,
+          "top": 59.5,
+          "bottom": 67.3
+        },
+        {
+          "text": "O",
+          "x0": 483.3,
+          "x1": 487.0,
+          "top": 59.2,
+          "bottom": 63.7
+        },
+        {
+          "text": "3",
+          "x0": 491.1,
+          "x1": 494.1,
+          "top": 59.2,
+          "bottom": 64.3
+        },
+        {
+          "text": "國一始業輔導(第1梯次",
+          "x0": 498.7,
+          "x1": 575.9,
+          "top": 59.5,
+          "bottom": 67.3
+        },
+        {
+          "text": "O",
+          "x0": 593.1,
+          "x1": 596.8,
+          "top": 59.2,
+          "bottom": 63.7
+        },
+        {
+          "text": "4",
+          "x0": 600.9,
+          "x1": 603.9,
+          "top": 59.2,
+          "bottom": 64.3
+        },
+        {
+          "text": "國一始業輔導(第2梯次",
+          "x0": 608.5,
+          "x1": 685.7,
+          "top": 59.5,
+          "bottom": 67.3
+        },
+        {
+          "text": "5",
+          "x0": 710.7,
+          "x1": 713.7,
+          "top": 59.2,
+          "bottom": 64.3
+        },
+        {
+          "text": "八",
+          "x0": 160.7,
+          "x1": 165.7,
+          "top": 66.1,
+          "bottom": 71.1
+        },
+        {
+          "text": "九",
+          "x0": 270.5,
+          "x1": 275.6,
+          "top": 66.1,
+          "bottom": 71.1
+        },
+        {
+          "text": "週內進行影片宣導",
+          "x0": 59.4,
+          "x1": 121.8,
+          "top": 69.9,
+          "bottom": 77.7
+        },
+        {
+          "text": "教室佈置辦法公告（至",
+          "x0": 169.2,
+          "x1": 247.2,
+          "top": 69.9,
+          "bottom": 77.7
+        },
+        {
+          "text": "9/2~9/3)",
+          "x0": 388.9,
+          "x1": 421.8,
+          "top": 69.9,
+          "bottom": 77.7
+        },
+        {
+          "text": "9/2~9/3；第2梯次",
+          "x0": 498.7,
+          "x1": 564.9,
+          "top": 69.9,
+          "bottom": 77.7
+        },
+        {
+          "text": "9/3~9/4)",
+          "x0": 608.5,
+          "x1": 641.4,
+          "top": 69.9,
+          "bottom": 77.7
+        },
+        {
+          "text": "第",
+          "x0": 36.0,
+          "x1": 41.5,
+          "top": 75.1,
+          "bottom": 80.7
+        },
+        {
+          "text": "月",
+          "x0": 160.7,
+          "x1": 165.7,
+          "top": 72.9,
+          "bottom": 78.0
+        },
+        {
+          "text": "月",
+          "x0": 270.5,
+          "x1": 275.6,
+          "top": 72.9,
+          "bottom": 78.0
+        },
+        {
+          "text": "1",
+          "x0": 37.2,
+          "x1": 40.5,
+          "top": 82.5,
+          "bottom": 88.0
+        },
+        {
+          "text": "(8/31~9/2)",
+          "x0": 59.4,
+          "x1": 99.4,
+          "top": 80.2,
+          "bottom": 88.0
+        },
+        {
+          "text": "11/13）",
+          "x0": 169.2,
+          "x1": 198.5,
+          "top": 80.2,
+          "bottom": 88.0
+        },
+        {
+          "text": "【56】班級遴選幹部",
+          "x0": 388.9,
+          "x1": 460.4,
+          "top": 80.2,
+          "bottom": 88.0
+        },
+        {
+          "text": "9/3~9/4)",
+          "x0": 498.7,
+          "x1": 531.6,
+          "top": 80.2,
+          "bottom": 88.0
+        },
+        {
+          "text": "週",
+          "x0": 36.0,
+          "x1": 41.5,
+          "top": 89.8,
+          "bottom": 95.3
+        },
+        {
+          "text": "【1】班級遴選幹部",
+          "x0": 169.2,
+          "x1": 236.2,
+          "top": 90.5,
+          "bottom": 98.3
+        },
+        {
+          "text": "高三模擬考2",
+          "x0": 388.9,
+          "x1": 432.4,
+          "top": 90.5,
+          "bottom": 98.3
+        },
+        {
+          "text": "【1~6】高三模擬考2",
+          "x0": 498.7,
+          "x1": 572.7,
+          "top": 90.5,
+          "bottom": 98.3
+        },
+        {
+          "text": "高二期初複習考",
+          "x0": 388.9,
+          "x1": 443.5,
+          "top": 100.8,
+          "bottom": 108.6
+        },
+        {
+          "text": "【1~6】高二期初複習考",
+          "x0": 498.7,
+          "x1": 583.7,
+          "top": 100.8,
+          "bottom": 108.6
+        },
+        {
+          "text": "6",
+          "x0": 51.8,
+          "x1": 54.8,
+          "top": 113.1,
+          "bottom": 118.2
+        },
+        {
+          "text": "本週國二各班身高體重視",
+          "x0": 59.4,
+          "x1": 145.2,
+          "top": 113.4,
+          "bottom": 121.2
+        },
+        {
+          "text": "O",
+          "x0": 153.9,
+          "x1": 157.6,
+          "top": 113.1,
+          "bottom": 117.6
+        },
+        {
+          "text": "7",
+          "x0": 161.7,
+          "x1": 164.7,
+          "top": 113.1,
+          "bottom": 118.2
+        },
+        {
+          "text": "【1】高中英文作文比賽",
+          "x0": 169.2,
+          "x1": 251.8,
+          "top": 113.4,
+          "bottom": 121.2
+        },
+        {
+          "text": "O",
+          "x0": 263.7,
+          "x1": 267.4,
+          "top": 113.1,
+          "bottom": 117.6
+        },
+        {
+          "text": "8",
+          "x0": 271.5,
+          "x1": 274.5,
+          "top": 113.1,
+          "bottom": 118.2
+        },
+        {
+          "text": "國三模擬考1",
+          "x0": 279.1,
+          "x1": 322.6,
+          "top": 113.4,
+          "bottom": 121.2
+        },
+        {
+          "text": "O",
+          "x0": 373.5,
+          "x1": 377.2,
+          "top": 113.1,
+          "bottom": 117.6
+        },
+        {
+          "text": "9",
+          "x0": 381.3,
+          "x1": 384.3,
+          "top": 113.1,
+          "bottom": 118.2
+        },
+        {
+          "text": "【56】幹部訓練",
+          "x0": 388.9,
+          "x1": 444.8,
+          "top": 113.4,
+          "bottom": 121.2
+        },
+        {
+          "text": "O10高一始業輔導",
+          "x0": 483.3,
+          "x1": 545.5,
+          "top": 113.1,
+          "bottom": 121.2
+        },
+        {
+          "text": "O11高一始業輔導",
+          "x0": 593.1,
+          "x1": 655.3,
+          "top": 113.1,
+          "bottom": 121.2
+        },
+        {
+          "text": "●12國三到校自習1",
+          "x0": 702.8,
+          "x1": 769.6,
+          "top": 112.9,
+          "bottom": 121.2
+        },
+        {
+          "text": "第",
+          "x0": 36.0,
+          "x1": 41.5,
+          "top": 124.8,
+          "bottom": 130.3
+        },
+        {
+          "text": "力量測(健康中心)",
+          "x0": 59.4,
+          "x1": 119.0,
+          "top": 123.8,
+          "bottom": 131.6
+        },
+        {
+          "text": "(個人賽)",
+          "x0": 169.2,
+          "x1": 197.6,
+          "top": 123.8,
+          "bottom": 131.6
+        },
+        {
+          "text": "【1~4】國二期初複習考",
+          "x0": 279.1,
+          "x1": 364.1,
+          "top": 123.8,
+          "bottom": 131.6
+        },
+        {
+          "text": "【1~4】國三模擬考1",
+          "x0": 388.9,
+          "x1": 462.8,
+          "top": 123.8,
+          "bottom": 131.6
+        },
+        {
+          "text": "2",
+          "x0": 37.2,
+          "x1": 40.5,
+          "top": 132.1,
+          "bottom": 137.7
+        },
+        {
+          "text": "週",
+          "x0": 36.0,
+          "x1": 41.5,
+          "top": 139.5,
+          "bottom": 145.0
+        },
+        {
+          "text": "13【教師節活動】",
+          "x0": 50.4,
+          "x1": 114.0,
+          "top": 158.7,
+          "bottom": 166.8
+        },
+        {
+          "text": "O14【1】高中英文演講比賽",
+          "x0": 153.9,
+          "x1": 251.8,
+          "top": 158.7,
+          "bottom": 166.8
+        },
+        {
+          "text": "O15【晨光】防震災影片宣導",
+          "x0": 263.7,
+          "x1": 364.9,
+          "top": 158.7,
+          "bottom": 166.8
+        },
+        {
+          "text": "O16【晨光】國家防災預演",
+          "x0": 373.5,
+          "x1": 466.9,
+          "top": 158.7,
+          "bottom": 166.8
+        },
+        {
+          "text": "O17【2~4】國一學力檢測",
+          "x0": 483.3,
+          "x1": 575.9,
+          "top": 158.7,
+          "bottom": 166.8
+        },
+        {
+          "text": "O18銷過1",
+          "x0": 593.1,
+          "x1": 628.6,
+          "top": 158.7,
+          "bottom": 166.8
+        },
+        {
+          "text": "(課後)",
+          "x0": 630.5,
+          "x1": 651.2,
+          "top": 159.0,
+          "bottom": 166.8
+        },
+        {
+          "text": "●19高國中新生班親師座談會",
+          "x0": 702.8,
+          "x1": 804.1,
+          "top": 158.5,
+          "bottom": 166.8
+        },
+        {
+          "text": "高一新生健檢週(本週擇一",
+          "x0": 59.4,
+          "x1": 147.7,
+          "top": 169.4,
+          "bottom": 177.2
+        },
+        {
+          "text": "(初賽)",
+          "x0": 169.2,
+          "x1": 189.8,
+          "top": 169.4,
+          "bottom": 177.2
+        },
+        {
+          "text": "【午】畢聯會議1",
+          "x0": 279.1,
+          "x1": 338.2,
+          "top": 169.4,
+          "bottom": 177.2
+        },
+        {
+          "text": "【56】班會或團體活動",
+          "x0": 388.9,
+          "x1": 468.2,
+          "top": 169.4,
+          "bottom": 177.2
+        },
+        {
+          "text": "【晨光】環境教育影片宣",
+          "x0": 608.5,
+          "x1": 694.3,
+          "top": 169.4,
+          "bottom": 177.2
+        },
+        {
+          "text": "(上午：國一、下午：高一)",
+          "x0": 718.3,
+          "x1": 809.1,
+          "top": 169.4,
+          "bottom": 177.2
+        }
+      ]
+    }
+  ]
 }
