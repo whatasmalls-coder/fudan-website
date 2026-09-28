@@ -27,8 +27,8 @@ TIMEOUT = 15
 PROXY_URL = os.environ.get("AI_PROXY_URL", "https://fudan-ai-proxy.whatasmalls.workers.dev")
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
-MAX_CALLS = int(os.environ.get("ENRICH_MAX_CALLS", "12"))  # 每次最多呼叫幾次 AI（免費額度有每分鐘上限）
-PAUSE = float(os.environ.get("ENRICH_PAUSE", "5"))          # 每次呼叫間隔秒數
+MAX_CALLS = int(os.environ.get("ENRICH_MAX_CALLS", "10"))  # 每次最多呼叫幾次 AI（免費額度有每分鐘上限）
+PAUSE = float(os.environ.get("ENRICH_PAUSE", "13"))         # 每次呼叫間隔秒數（免費額度大約每分鐘 5 次）
 
 
 def fetch_page_text(url: str) -> str:
