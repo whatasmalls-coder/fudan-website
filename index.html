@@ -265,7 +265,7 @@ return '<a class="news-item" href="/calendar/"><div class="news-date">' + label 
 }
 // 等快捲到這一區才載入，不影響首頁一開始的速度
 if('IntersectionObserver' in window){
-var io = new IntersectionObserver(function(entries){ if(entries[0].isIntersecting){ io.disconnect(); load(); } }, { rootMargin: '600px 0px' });
+var io = new IntersectionObserver(function(entries){ if(entries[0].isIntersecting){ io.disconnect(); load(); } }, { rootMargin: '1200px 0px' });
 io.observe(list);
 } else { load(); }
 })();
