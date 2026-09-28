@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -143,7 +143,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 站內的靜態資源（字型、圖示、共用 JS）：快取優先，減少重複下載
+  // 站內字型：會隨新公告／校曆自動補字重新產生，用「先快取、背景更新」，
+  // 下次造訪就會拿到補過字的新版本（快取優先的話會永遠卡在舊字型）
+  if (url.origin === self.location.origin && url.pathname.startsWith('/fonts/')) {
+    event.respondWith(staleWhileRevalidate(request));
+    return;
+  }
+
+  // 站內的靜態資源（圖示、共用 JS）：快取優先，減少重複下載
   if (url.origin === self.location.origin) {
     event.respondWith(cacheFirst(request));
     return;

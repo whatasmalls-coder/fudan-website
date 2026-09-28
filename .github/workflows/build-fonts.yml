@@ -1,0 +1,43 @@
+name: 字型補字
+
+# 手動改 HTML / JSON 推上來時，檢查字型有沒有缺字，缺就重新產生並 commit。
+# （news / 校曆的自動更新 workflow 裡已經各自跑過這一步）
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.html'
+      - '*.json'
+      - 'js/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-fonts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 檢查並補字
+        run: |
+          pip install fonttools brotli
+          python scripts/build_fonts.py
+
+      - name: 有變動就 commit + push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- fonts/; then
+            echo "字型不用更新。"
+          else
+            git add fonts/
+            git commit -m "🤖 字型補字"
+            git pull --rebase
+            git push
+          fi

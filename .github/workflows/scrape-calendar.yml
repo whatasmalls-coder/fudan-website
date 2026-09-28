@@ -23,6 +23,12 @@ jobs:
       - name: Scrape calendar
         run: python scripts/scrape_calendar.py
 
+      - name: 字型補字（新內容出現字型沒收錄的字就重新產生）
+        continue-on-error: true
+        run: |
+          pip install fonttools brotli
+          python scripts/build_fonts.py
+
       - name: Commit changes
         if: always()
         run: |
@@ -32,5 +38,6 @@ jobs:
           # 不會連累其他真的存在的檔案沒被 stage 到。
           git add calendar.json 2>/dev/null || true
           git add calendar_debug.json 2>/dev/null || true
+          git add fonts/ 2>/dev/null || true
           git diff --staged --quiet || git commit -m "🤖 自動更新校曆（或除錯資訊）"
           git push
