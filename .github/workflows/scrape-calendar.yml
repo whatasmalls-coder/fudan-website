@@ -40,6 +40,8 @@ jobs:
           python3 --version
           pwd
           ls -la scripts/
+          python -c "import os; v=os.environ.get('ANTHROPIC_API_KEY'); print('ANTHROPIC_API_KEY is', ('SET, length='+str(len(v))) if v else 'MISSING/EMPTY')" > calendar_env_check.txt 2>&1
+          cat calendar_env_check.txt
           python scripts/scrape_calendar.py > calendar_run_log.txt 2>&1
           SCRIPT_EXIT=$?
           echo "EXIT_CODE=$SCRIPT_EXIT" >> calendar_run_log.txt
@@ -60,5 +62,6 @@ jobs:
           git add calendar_debug.json 2>/dev/null || true
           git add calendar_progress.json 2>/dev/null || true
           git add calendar_run_log.txt 2>/dev/null || true
+          git add calendar_env_check.txt 2>/dev/null || true
           git diff --staged --quiet || git commit -m "🤖 自動更新校曆（或除錯資訊）"
           git push
