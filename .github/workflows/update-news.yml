@@ -30,6 +30,9 @@ jobs:
           pip install fonttools brotli
           python scripts/build_fonts.py
 
+      - name: 確認所有頁面引用的檔案都存在（避免推上指向已刪除字型的頁面）
+        run: python scripts/check_local_asset_refs.py
+
       - name: 如果有變動就 commit + push
         run: |
           git config user.name "github-actions[bot]"
