@@ -5,8 +5,10 @@
 
 檢查項目：
 1. news.json：必須是陣列、每筆有 title/date/tag/link 四個欄位、最多 30 筆
-2. bus-search/index.html 裡內嵌的路線 JSON：每條路線要有 no/name/time/stops，
+2. js/routes.json 的校車路線資料：每條路線要有 no/name/time/stops，
    每個站牌要有 code/time/name
+   （路線資料原本是內嵌在 bus-search/index.html 裡的 <script id="routeData">，
+   後來抽成獨立的 js/routes.json 讓 Service Worker 可以快取，這裡也要跟著改）
 
 檢查失敗時會印出清楚的錯誤訊息並以非 0 狀態碼結束，讓 GitHub Actions 顯示紅色 ❌。
 """
@@ -51,25 +53,16 @@ def check_news_json():
 
 def check_bus_data():
     try:
-        with open("bus-search/index.html", "r", encoding="utf-8") as f:
-            html = f.read()
+        with open("js/routes.json", "r", encoding="utf-8") as f:
+            raw = f.read()
     except FileNotFoundError:
-        errors.append("bus-search/index.html 不存在")
-        return
-
-    match = re.search(
-        r'<script id="routeData" type="application/json">(.*?)</script>',
-        html,
-        re.S,
-    )
-    if not match:
-        errors.append("bus-search/index.html 裡找不到 id=\"routeData\" 的內嵌 JSON 區塊")
+        errors.append("js/routes.json 不存在")
         return
 
     try:
-        routes = json.loads(match.group(1))
+        routes = json.loads(raw)
     except json.JSONDecodeError as e:
-        errors.append(f"校車路線 JSON 不是合法格式：{e}")
+        errors.append(f"js/routes.json 不是合法的 JSON：{e}")
         return
 
     if not isinstance(routes, list) or len(routes) == 0:
