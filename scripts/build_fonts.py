@@ -133,20 +133,52 @@ def previously_covered() -> set:
     return cps
 
 
-def assign_slices() -> dict:
-    """回傳 {slice: set(codepoints)}。"""
+def covers(slice_name: str) -> set:
+    """某一片會被哪些頁面預期用到（all＝三個主要頁面，other＝不屬於任何頁面）。"""
+    if slice_name == "all":
+        return set(PAGE_KEYS)
+    if slice_name == "other":
+        return set()
+    return set(slice_name.split("-"))
+
+
+def assign_slices(fresh: bool = False) -> dict:
+    """回傳 {slice: set(codepoints)}。
+
+    分片要「穩定」：公告每兩小時更新、舊公告會被擠掉，如果每次都照目前內容
+    重新分組，字就會在各片之間搬來搬去，每次都要重新產生字型、repo 一直長大。
+    所以一個字一旦分進某一片就留在那裡（只增不減），只有在
+      - 出現新字，或
+      - 某頁開始用到一個字、但它所在的那片不是給這頁的（例如公車站名出現在首頁公告）
+    時才會重新分配那個字。--force 會完全照目前內容重新分組（清掉累積的舊字）。
+    """
     page_sets = {k: set().union(*(cjk_set(read(r)) for r in v)) for k, v in PAGE_SOURCES.items()}
     base = {ord(c) for c in BASE_TEXT}
+    prev = {}
+    if not fresh:
+        for sl, cps in load_manifest().get("slices", {}).items():
+            if sl in SLICES:
+                for c in cps:
+                    prev[c] = sl
     result = {s: set() for s in SLICES}
-    for c in set().union(*page_sets.values()):
-        who = [k for k in PAGE_KEYS if c in page_sets[k]]
-        result["all" if len(who) == 3 else "-".join(who)].add(c)
-    result["all"] |= base
-    for k in SLICES[1:7]:
-        result[k] -= base
+    for c in base:
+        result["all"].add(c)
+    for c in set().union(*page_sets.values()) - base:
+        who = {k for k in PAGE_KEYS if c in page_sets[k]}
+        if c in prev and who <= covers(prev[c]):
+            result[prev[c]].add(c)
+        else:
+            result["all" if len(who) == 3 else "-".join(k for k in PAGE_KEYS if k in who)].add(c)
     used = set().union(*result.values())
-    other = set().union(*(cjk_set(read(r)) for r in OTHER_SOURCES)) | previously_covered()
-    result["other"] = other - used
+    # 目前沒有頁面用到、但以前收錄過的字：留在原本那片（不搬動，避免重新產生）
+    for c, sl in prev.items():
+        if c not in used:
+            result[sl].add(c)
+    used = set().union(*result.values())
+    other = set().union(*(cjk_set(read(r)) for r in OTHER_SOURCES))
+    if fresh or not prev:
+        other |= previously_covered()
+    result["other"] |= other - used
     return result
 
 
@@ -338,10 +370,10 @@ def needs_rebuild(slices: dict) -> bool:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="只檢查，不重新產生")
-    ap.add_argument("--force", action="store_true", help="無論如何都重新產生")
+    ap.add_argument("--force", action="store_true", help="完全照目前內容重新分組並重新產生（清掉累積的舊字）")
     args = ap.parse_args()
 
-    slices = assign_slices()
+    slices = assign_slices(fresh=args.force)
     print("分片字數：" + "、".join(f"{k} {len(v)}" for k, v in slices.items()))
     stale = needs_rebuild(slices)
     print("需要重新產生" if stale else "字型分片已是最新 ✓")
