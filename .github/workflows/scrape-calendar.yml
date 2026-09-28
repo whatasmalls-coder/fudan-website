@@ -23,45 +23,16 @@ jobs:
       - name: Scrape calendar
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          # 暫時性除錯：之前 7 次執行都在 2~3 秒內失敗、且 Python 內部的
-          # try/except（連 import 都包進去了）完全沒機會寫出任何除錯檔案，
-          # 代表問題可能是 shell 層級或連 Python 解譯器本身都沒真正跑起來
-          # ——所以這裡改成在 shell 層級直接把所有輸出、真正的結束代碼都
-          # 存下來。GitHub Actions 預設用 `bash -e` 執行多行 run，一旦
-          # python 那行失敗，會直接中止整個 step，後面的 echo/cat/exit 0
-          # 根本沒機會執行，calendar_run_log.txt 也就永遠不會被寫完整
-          # ——這正是前一版診斷徹底失敗的原因。這裡先 set +e 關掉這個行為。
-          # 問題排除後這整段都要還原成單純的
-          # `run: python scripts/scrape_calendar.py`。
-          set +e
-          which python python3
-          python --version
-          python3 --version
-          pwd
-          ls -la scripts/
-          python -c "import os; v=os.environ.get('ANTHROPIC_API_KEY'); print('ANTHROPIC_API_KEY is', ('SET, length='+str(len(v))) if v else 'MISSING/EMPTY')" > calendar_env_check.txt 2>&1
-          cat calendar_env_check.txt
-          python scripts/scrape_calendar.py > calendar_run_log.txt 2>&1
-          SCRIPT_EXIT=$?
-          echo "EXIT_CODE=$SCRIPT_EXIT" >> calendar_run_log.txt
-          cat calendar_run_log.txt
-          exit 0
+        run: python scripts/scrape_calendar.py
 
       - name: Commit changes
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # 之前這裡是一次 `git add fileA fileB fileC`：只要其中一個檔案不存在，
-          # 有些 git 版本會讓整次 git add 整個失敗、什麼都沒 stage 到，而外面包的
-          # `2>/dev/null || true` 又把這個錯誤默默吞掉——這才是真正害前面好幾輪
-          # 診斷檔案「明明應該被寫出來，commit 卻永遠是空的」的元兇。改成每個檔案
-          # 分開 add，一個檔案不存在不會連累其他檔案。
+          # 分開 add，一個檔案不存在（例如成功時不會有 calendar_debug.json）
+          # 不會連累其他真的存在的檔案沒被 stage 到。
           git add calendar.json 2>/dev/null || true
           git add calendar_debug.json 2>/dev/null || true
-          git add calendar_progress.json 2>/dev/null || true
-          git add calendar_run_log.txt 2>/dev/null || true
-          git add calendar_env_check.txt 2>/dev/null || true
           git diff --staged --quiet || git commit -m "🤖 自動更新校曆（或除錯資訊）"
           git push
