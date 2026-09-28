@@ -105,9 +105,17 @@ def is_cjk(ch: str) -> bool:
             or 0xFF00 <= o <= 0xFFEF or 0x20000 <= o <= 0x2FFFF)
 
 
+_COMMENT_RE = re.compile(r"<!--(?!fonts:).*?-->|/\*.*?\*/|^[ \t]*//[^\n]*", re.S | re.M)
+
+
 def read(rel: str) -> str:
+    """讀檔，並拿掉 HTML / CSS / JS 註解（註解不會顯示在畫面上，不需要收錄那些字，
+    也避免只是改個註解就要重新產生字型）。"""
     p = ROOT / rel
-    return p.read_text("utf-8", errors="ignore") if p.exists() else ""
+    if not p.exists():
+        return ""
+    text = p.read_text("utf-8", errors="ignore")
+    return _COMMENT_RE.sub("", text) if p.suffix in (".html", ".js") else text
 
 
 def cjk_set(text: str) -> set:
