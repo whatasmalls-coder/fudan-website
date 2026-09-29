@@ -20,6 +20,7 @@
 可以直接把官網原始碼（右鍵→檢視原始碼）貼給 Claude 幫忙抓新的格式。
 """
 
+import html as html_lib
 import json
 import os
 import re
@@ -100,7 +101,8 @@ def fetch_html(url):
 
 def clean_title(raw_html):
     text = re.sub(r"<[^>]+>", "", raw_html)  # 去掉裡面殘留的 <font>...New!!</font> 之類標籤
-    text = text.replace("&nbsp;", " ").strip()
+    # 官網標題裡有 &#12539;（・）、&amp; 之類的 HTML 字元碼，轉回真正的字，否則網站上會直接顯示「&#12539;」
+    text = html_lib.unescape(text).replace("\u00a0", " ").strip()
     text = re.sub(r"\s+", " ", text)
     # 官網會在標題尾端用巢狀 <font> 標籤加註「...New!!」提示新公告，
     # 上面那行只拿掉標籤本身，裡面的文字內容會留下來，這裡把它一併清掉。
