@@ -260,13 +260,25 @@ def unicode_range(cps) -> str:
     return ",".join(out)
 
 
-def build(slices: dict) -> dict:
+def build(slices: dict, reuse: bool = True) -> dict:
+    """產生各分片。字集沒變的分片沿用原本的檔案（檔名不變），
+    使用者瀏覽器和 Service Worker 裡快取的字型就不用整批重新下載；
+    也避免不同電腦／CI 的 fonttools 版本產生位元組不同的檔案，造成沒必要的換檔。"""
     files = {}
+    old = load_manifest() if reuse else {}
+    old_slices = {k: set(v) for k, v in old.get("slices", {}).items()}
     for src_key, weight in WEIGHTS:
         fam = FAMILY[src_key][1]
         for sl in SLICES:
             if not slices[sl]:
                 continue
+            if old_slices.get(sl) == slices[sl]:
+                kept = [(n, f) for n, f in old.get("files", {}).items()
+                        if f["family"] == src_key and f["weight"] == weight and f["slice"] == sl
+                        and (FONT_DIR / n).exists()]
+                if kept:
+                    files[kept[0][0]] = kept[0][1]
+                    continue
             data, covered = make_slice(src_key, weight, slices[sl])
             h = hashlib.sha256(data).hexdigest()[:8]
             name = f"{fam}-{weight}-{sl}.{h}.woff2"
@@ -403,7 +415,7 @@ def main() -> int:
     if args.check:
         return 1 if stale else 0
     if stale or args.force:
-        manifest = build(slices)
+        manifest = build(slices, reuse=not args.force)
         update_pages(manifest)
         update_sw(manifest)
         finish(manifest)
