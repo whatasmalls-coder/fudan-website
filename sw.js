@@ -16,14 +16,13 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v10';
+const CACHE_VERSION = 'v11';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/',
   '/bus-search/',
   '/calendar/',
-  '/today/',
   '/manifest.json',
   '/favicon.ico',
   '/favicon-32.png',
