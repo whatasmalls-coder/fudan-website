@@ -2,7 +2,7 @@ name: Scrape school calendar
 
 on:
   schedule:
-    - cron: '0 3 * * 1'  # 每週一台灣時間早上11點（校曆不常變，不用太頻繁）
+    - cron: '11 3 * * 1'  # 每週一台灣時間早上11點（校曆不常變，不用太頻繁）
   workflow_dispatch:
 
 jobs:
