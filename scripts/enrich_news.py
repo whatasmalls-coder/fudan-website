@@ -90,7 +90,9 @@ def enrich_announcement(title: str, page_text: str):
         if resp is not None:
             detail = f" HTTP {resp.status_code}: {resp.text[:200]}"
         print(f"[warn] AI 加工失敗（下次排程會重試）：{title[:30]}… {e}{detail}")
-        quota = resp is not None and resp.status_code == 429
+        # 暫時性問題（額度用完、Gemini 忙線 5xx、逾時、連線失敗）：這次先停，下次排程再試，不算壞掉
+        quota = (resp is not None and (resp.status_code == 429 or resp.status_code >= 500)) or \
+            isinstance(e, (requests.Timeout, requests.ConnectionError))
         if os.environ.get("GITHUB_ACTIONS"):
             # 在 GitHub Actions 的執行結果頁面顯示成黃色警告，方便查原因
             msg = f"{type(e).__name__}: {e}{detail}".replace("\n", " ")[:300]
@@ -135,7 +137,7 @@ def main() -> int:
         calls += 1
         enriched = enrich_announcement(item["title"], page_text)
         if enriched == "quota":
-            # 額度用完了：這次就停，別再打（也留額度給網站上的 AI 功能）
+            # 額度用完或 Gemini 忙線：這次就停，別再打（也留額度給網站上的 AI 功能）
             failed += 1
             quota_hit = True
             continue
@@ -160,7 +162,7 @@ def main() -> int:
     left = sum(1 for i in items if is_placeholder(i))
     print(f"完成：成功 {ok} 筆、失敗 {failed} 筆；還沒有真正摘要的公告 {left} 筆")
     if quota_hit:
-        print("Gemini 免費額度暫時用完，下次排程再繼續補")
+        print("Gemini 暫時無法使用（額度用完或忙線），下次排程再繼續補")
     # 有呼叫但全部失敗、而且不是額度問題 → 讓 workflow 顯示失敗，才不會像以前一樣默默壞掉
     return 1 if calls and not ok and not quota_hit else 0
 
