@@ -18,21 +18,38 @@ jobs:
         with:
           ref: main
 
+      # 「自動更新最新消息」每小時跑一次，但大多時候沒有新公告、也沒有 commit。
+      # 那種時候就不用再去學校網站抓一輪公告頁、也不用呼叫 AI，直接結束。
+      # （手動按 Run workflow 時照常執行）
+      - name: 這次有新公告嗎？
+        if: github.event_name == 'workflow_run'
+        run: |
+          subject="$(git log -1 --format=%s)"
+          echo "最新 commit：$subject"
+          case "$subject" in
+            自動更新最新消息*) echo "有新公告，繼續。" ;;
+            *) echo "沒有新公告，這次跳過。"; echo "SKIP=1" >> "$GITHUB_ENV" ;;
+          esac
+
       - uses: actions/setup-python@v6
+        if: env.SKIP != '1'
         with:
           python-version: '3.11'
 
       - name: Install dependencies
+        if: env.SKIP != '1'
         run: pip install requests beautifulsoup4
 
       # 免費：預設走網站的 Cloudflare Worker（Gemini）。
       # 如果之後在 repo 的 Settings → Secrets 加了 GEMINI_API_KEY，就會改成直接呼叫 Gemini API。
       - name: Enrich news
+        if: env.SKIP != '1'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/enrich_news.py
 
       - name: Commit changes
+        if: env.SKIP != '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
