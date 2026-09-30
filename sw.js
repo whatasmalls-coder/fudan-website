@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v12';
+const CACHE_VERSION = 'v13';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -76,39 +76,62 @@ self.addEventListener('activate', (event) => {
           .filter((name) => name !== CACHE_NAME)
           .map((name) => caches.delete(name))
       )
-    )
+    ).then(trimOldFonts)
   );
   self.clients.claim();
 });
+
+// 字型檔名帶雜湊，字型一更新就換新檔名；舊檔如果不刪，會一直堆在使用者手機裡。
+// fonts/manifest.json 列出目前網站在用的字型檔，不在清單上的就刪掉。
+// （沒有雜湊的舊檔名，例如 NotoSerifTC-900-subset.woff2，不會被動到）
+const HASHED_FONT = /\/fonts\/[^/]+\.[0-9a-f]{8}\.woff2$/;
+async function trimOldFonts() {
+  try {
+    const res = await fetch('/fonts/manifest.json', { cache: 'no-store' });
+    if (!res.ok) return;
+    const files = (await res.json()).files || {};   // { 檔名: {字型資訊} }
+    const names = Array.isArray(files) ? files : Object.keys(files);
+    const current = new Set(names.map((f) => '/fonts/' + f));
+    if (!current.size) return;
+    const cache = await caches.open(CACHE_NAME);
+    for (const req of await cache.keys()) {
+      const path = new URL(req.url).pathname;
+      if (HASHED_FONT.test(path) && !current.has(path)) await cache.delete(req);
+    }
+  } catch (e) { /* 離線或清單讀不到：下次再清 */ }
+}
 
 function isNeverCacheRequest(url) {
   return NEVER_CACHE_HOSTS.some((host) => url.hostname.includes(host));
 }
 
 // 網路優先：先試網路，成功就更新快取；失敗才退回快取版本
-async function networkFirst(request) {
+// cacheKey：存進快取用的網址（頁面會去掉 ?q= 之類的參數，見下方 navigate）
+async function networkFirst(request, cacheKey = request) {
   try {
     const response = await fetch(request);
     if (response && response.ok) {
       const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
+      cache.put(cacheKey, response.clone());
     }
     return response;
   } catch (e) {
-    const cached = await caches.match(request);
+    const cached = await caches.match(cacheKey);
     if (cached) return cached;
     throw e;
   }
 }
 
 // 快取優先：有快取就直接用，背景不特別更新（適合幾乎不變的靜態資源）
-async function cacheFirst(request) {
+// onNew：快取裡沒有、剛從網路抓到新檔時要做的事（字型用來清掉舊版字型檔）
+async function cacheFirst(request, onNew) {
   const cached = await caches.match(request);
   if (cached) return cached;
   const response = await fetch(request);
   if (response && response.ok) {
     const cache = await caches.open(CACHE_NAME);
-    cache.put(request, response.clone());
+    await cache.put(request, response.clone());
+    if (onNew) onNew();
   }
   return response;
 }
@@ -136,8 +159,11 @@ self.addEventListener('fetch', (event) => {
 
   // 頁面導覽（直接輸入網址或點連結進來）：網路優先，離線時退回快取
   if (request.mode === 'navigate') {
+    // 網址後面的 ?q=龍潭、?cat=段考 只是給頁面程式讀的，HTML 內容都一樣，
+    // 所以快取時一律存成不帶參數的網址：一頁只存一份，不會每搜一次就多存一份整頁。
+    const pageKey = url.origin + url.pathname;
     // 沒網路、又沒快取過這頁時，顯示離線備用頁，而不是瀏覽器的錯誤畫面
-    event.respondWith(networkFirst(request).catch(() => caches.match('/offline.html')));
+    event.respondWith(networkFirst(request, pageKey).catch(() => caches.match('/offline.html')));
     return;
   }
 
@@ -151,7 +177,11 @@ self.addEventListener('fetch', (event) => {
   // 站內字型：檔名帶內容雜湊（scripts/build_fonts.py 產生），內容一變就換檔名，
   // 同一個網址永遠是同一份檔案，所以直接快取優先就好
   if (url.origin === self.location.origin && url.pathname.startsWith('/fonts/')) {
-    event.respondWith(cacheFirst(request));
+    // 抓到新字型檔 = 網站字型更新過，順便清掉用不到的舊字型檔
+    event.respondWith(cacheFirst(request, () => {
+      const done = trimOldFonts();
+      try { event.waitUntil(done); } catch (e) { /* 事件已結束也沒關係，清理照樣會跑 */ }
+    }));
     return;
   }
 
