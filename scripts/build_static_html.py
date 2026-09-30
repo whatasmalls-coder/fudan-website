@@ -17,6 +17,7 @@
 寫入位置（兩段註解之間的內容會被整段換掉）：
   bus-search/index.html   <!--prerender:routes:start--> … <!--prerender:routes:end-->
   calendar/index.html     <!--prerender:calendar:start--> … <!--prerender:calendar:end-->
+  index.html              <!--prerender:news:start--> … <!--prerender:news:end-->（首頁近期公告前 5 則）
 
 用法：
   python scripts/build_static_html.py          # 重新產生
@@ -139,9 +140,45 @@ def sync_sitemap() -> bool:
     return False
 
 
+NEWS_TAG_CLASS = {"校車": "tag-bus", "防疫": "tag-health", "防災": "tag-safety", "獎助學金": "tag-scholarship",
+                  "競賽": "tag-contest", "招生": "tag-admission", "研習": "tag-workshop", "榮譽": "tag-honor",
+                  "行政": "tag-admin"}
+EXT_SVG = ('<svg class="ext-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7"/><path d="M21 3l-9 9"/>'
+           '<path d="M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>')
+
+
+def news_items():
+    items = json.loads((ROOT / "news.json").read_text("utf-8"))
+    return items if isinstance(items, list) else []
+
+
+def news_html() -> str:
+    """首頁「近期公告」前 5 則，格式跟 index.html 裡的程式產生的一樣。"""
+    out = []
+    for n in news_items()[:5]:
+        link = str(n.get("link", ""))
+        if not re.match(r"https?://", link):
+            link = "#"
+        cls = NEWS_TAG_CLASS.get(n.get("tag", ""), "")
+        out.append(f'<a class="news-item" href="{e(link)}" target="_blank" rel="noopener">'
+                   f'<div class="news-date">{e(n.get("date", ""))}</div>'
+                   f'<div><span class="news-tag {cls}">{e(n.get("tag", ""))}</span>'
+                   f'<div class="news-title">{e(n.get("title", ""))}{EXT_SVG}</div></div>'
+                   f'<div class="news-arrow">→</div></a>')
+    return "".join(out)
+
+
+def sync_news_key(text: str) -> str:
+    """把前 5 則公告的識別字串寫到 #newsList 的 data-key，頁面程式發現一樣就不重畫。"""
+    key = "\n".join(f'{n.get("link", "")}|{n.get("title", "")}' for n in news_items()[:5])
+    return re.sub(r'<div class="news-list" id="newsList"(?: data-key="[^"]*")?>',
+                  lambda m: f'<div class="news-list" id="newsList" data-key="{e(key)}">', text, count=1)
+
+
 TARGETS = [
     ("bus-search/index.html", "routes", routes_html),
     ("calendar/index.html", "calendar", calendar_html),
+    ("index.html", "news", news_html),
 ]
 
 
@@ -162,6 +199,8 @@ def main() -> int:
             new = sync_calendar_meta(new)
         elif key == "routes":
             new = sync_bus_counts(new)
+        elif key == "news":
+            new = sync_news_key(new)
         if new != text:
             stale.append(rel)
             if not args.check:
