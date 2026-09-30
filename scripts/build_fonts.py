@@ -65,6 +65,8 @@ FAMILY = {"sans": ("Noto Sans TC", "NotoSansTC"), "serif": ("Noto Serif TC", "No
 WEIGHTS = [("sans", 400), ("sans", 500), ("sans", 700), ("serif", 600), ("serif", 700)]
 
 PAGE_KEYS = ["home", "cal", "bus"]
+MIN_SLICE_CHARS = 60  # 小於這個字數的分片會併進 all
+
 SLICES = ["all", "home-cal", "home-bus", "cal-bus", "home", "cal", "bus", "other"]
 
 
@@ -194,6 +196,12 @@ def assign_slices(fresh: bool = False) -> dict:
     if fresh or not prev:
         other |= previously_covered()
     result["other"] |= other - used
+    # 太小的分片併進 all：每多一個字型檔，瀏覽器就要多下載一次、字型到了又要重新排版一次，
+    # 幾個字的分片不值得（例如 cal 只有 5 個字、cal-bus 只有 7 個字）
+    for sl in SLICES[1:7]:
+        if 0 < len(result[sl]) < MIN_SLICE_CHARS:
+            result["all"] |= result[sl]
+            result[sl] = set()
     return result
 
 
