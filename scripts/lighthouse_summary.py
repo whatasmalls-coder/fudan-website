@@ -45,12 +45,23 @@ def main() -> int:
                     break
             if lcp_el:
                 break
-        slow = [f'{x["title"]}（約 {x["details"]["overallSavingsMs"] / 1000:.1f}s）'
-                for x in a.values()
-                if (x.get("details") or {}).get("overallSavingsMs", 0) >= 150]
+        # 新版 Lighthouse 把省下的時間放在 metricSavings（FCP / LCP …），舊版在 details.overallSavingsMs
+        slow = []
+        for x in a.values():
+            if x.get("score") is not None and x["score"] >= 0.9:
+                continue
+            sav = max([v for v in (x.get("metricSavings") or {}).values() if isinstance(v, (int, float))]
+                      + [(x.get("details") or {}).get("overallSavingsMs") or 0])
+            if sav >= 150:
+                slow.append((sav, f'{x["title"]}（約 {sav / 1000:.1f}s）'))
+        slow = [s for _, s in sorted(slow, reverse=True)]
+        ttfb = a.get("server-response-time", {}).get("numericValue")
+        redirects = a.get("redirects", {}).get("numericValue")
         path = url.replace("https://www.visitfudan.com", "") or "/"
         msg = (f"{path} 效能 {scores}（中位數那次）FCP {ms('first-contentful-paint')}、LCP {ms('largest-contentful-paint')}、"
                f"SI {ms('speed-index')}、TBT {tbt:.0f}ms、CLS {cls:.3f}"
+               + (f"、伺服器回應 {ttfb:.0f}ms" if ttfb is not None else "")
+               + (f"、轉址 {redirects:.0f}ms" if redirects else "")
                + (f"｜LCP 元素 {lcp_el}" if lcp_el else "")
                + (f"｜可改善：{'；'.join(slow[:4])}" if slow else ""))
         lines.append(msg)
