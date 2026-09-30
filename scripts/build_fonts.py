@@ -17,6 +17,17 @@
   檔名帶內容雜湊（例如 NotoSansTC-400-cal.1a2b3c4d.woff2），字一變就換網址，
   不會有瀏覽器或 Service Worker 快取到舊字型、新字缺字的問題。
 
+每一片再依「字寬是否固定」拆成兩種檔：
+  - 中文、全形標點（每個字一樣寬）：一個「可變字重」檔包含這一片需要的整段字重
+    （黑體 400–700、明體 600–700），例如 NotoSansTC-400-700-home.xxxx.woff2。
+    以前每個字重各一個檔，首頁要抓 20 個檔、約 950KB；共用之後少了約三成。
+    畫出來的中文跟逐字重產生的檔案逐像素相同。
+  - 英文、數字、符號（字寬不固定）：照舊每個字重一個小檔，例如 NotoSansTC-700-all.xxxx.woff2。
+    可變字重檔在字重中間值時英文字寬會有小數誤差，一行可能差幾個像素、造成換行不同，
+    所以這部分維持原本的做法，畫面完全不變。
+  CSS 仍然逐一宣告原本的字重（400、500、700…），同一個可變字重檔宣告好幾次，
+  瀏覽器只會下載一次。
+
 這支腳本會同時更新：
   - fonts/ 底下的字型檔（刪掉不再使用的舊檔）
   - 各頁面 HTML 裡 /*fonts:start*/ … /*fonts:end*/ 之間的 @font-face
@@ -41,6 +52,7 @@ import json
 import pathlib
 import re
 import sys
+import unicodedata
 import urllib.request
 
 from fontTools import subset
@@ -63,6 +75,25 @@ FAMILY = {"sans": ("Noto Sans TC", "NotoSansTC"), "serif": ("Noto Serif TC", "No
 # 要產生的字重。NotoSerifTC-900-subset.woff2 是首頁大標題專用、字固定且手寫
 # unicode-range，不在這裡處理。
 WEIGHTS = [("sans", 400), ("sans", 500), ("sans", 700), ("serif", 600), ("serif", 700)]
+# 中文用的可變字重檔要涵蓋的字重範圍（= 上面各字體最細到最粗）
+RANGES = {fam: (min(w for f, w in WEIGHTS if f == fam), max(w for f, w in WEIGHTS if f == fam))
+          for fam in {f for f, _ in WEIGHTS}}
+LAYOUT = 3  # manifest 格式版本：2 = 中文可變字重＋英文逐字重。改了拆檔方式就加一，強制全部重新產生
+
+
+def wkey(rng) -> str:
+    """可變字重範圍在檔名和 manifest 裡的寫法，例如 (400, 700) → "400-700"。"""
+    return f"{rng[0]}-{rng[1]}"
+
+
+def fixed_width(c: int) -> bool:
+    """中文字（不含標點符號）：每個字一樣寬，用可變字重檔畫出來跟逐字重檔完全相同。
+    全形標點（，。・「」…）不算：瀏覽器會自動縮排相鄰標點的空白，
+    這個調整值在可變字重檔裡會差 1px，所以標點跟英文一樣放逐字重檔。"""
+    ch = chr(c)
+    if not is_cjk(ch) or 0x3000 <= c <= 0x303F or 0xFF00 <= c <= 0xFFEF or 0xFE30 <= c <= 0xFE4F:
+        return False
+    return unicodedata.category(ch)[0] not in "PSZ"
 
 PAGE_KEYS = ["home", "cal", "bus"]
 MIN_SLICE_CHARS = 60  # 小於這個字數的分片會併進 all
@@ -216,6 +247,28 @@ def ensure_source(key: str) -> pathlib.Path:
 
 
 _instances = {}
+_SUBSET_OPTS = dict(hinting=False, desubroutinize=True, name_IDs=["*"], notdef_outline=True, layout_features=["*"])
+
+
+def make_var_slice(src_key: str, rng, codepoints: set) -> tuple:
+    """從原始可變字型切出這些字，字重範圍縮到 rng（範圍外的字重資料丟掉）。"""
+    font = TTFont(ensure_source(src_key))
+    opts = subset.Options()
+    for k, v in _SUBSET_OPTS.items():
+        setattr(opts, k, v)
+    sub = subset.Subsetter(opts)
+    sub.populate(unicodes=codepoints)
+    sub.subset(font)
+    buf = io.BytesIO()
+    font.save(buf)  # 存檔再讀回來，instancer 才不會碰到 fontTools 延遲載入的問題
+    font = TTFont(io.BytesIO(buf.getvalue()))
+    font = instancer.instantiateVariableFont(font, {"wght": rng}, updateFontNames=False)
+    buf = io.BytesIO()
+    font.flavor = "woff2"
+    font.recalcTimestamp = False
+    font["head"].modified = font["head"].created
+    font.save(buf)
+    return buf.getvalue(), sorted(font.getBestCmap())
 
 
 def instance(src_key: str, weight: int) -> bytes:
@@ -269,27 +322,38 @@ def build(slices: dict, reuse: bool = True) -> dict:
     使用者瀏覽器和 Service Worker 裡快取的字型就不用整批重新下載；
     也避免不同電腦／CI 的 fonttools 版本產生位元組不同的檔案，造成沒必要的換檔。"""
     files = {}
-    old = load_manifest() if reuse else {}
+    old = load_manifest() if reuse and load_manifest().get("layout") == LAYOUT else {}
     old_slices = {k: set(v) for k, v in old.get("slices", {}).items()}
+
+    def emit(src_key, weight, sl, cps, maker):
+        """weight：int＝單一字重檔；"400-700"＝可變字重檔。"""
+        if not cps:
+            return
+        same = (old_slices == slices) if isinstance(weight, int) else (old_slices.get(sl) == slices[sl])
+        if same:
+            kept = [(n, f) for n, f in old.get("files", {}).items()
+                    if f["family"] == src_key and f["weight"] == weight and f["slice"] == sl
+                    and (FONT_DIR / n).exists()]
+            if kept:
+                files[kept[0][0]] = kept[0][1]
+                return
+        data, covered = maker()
+        h = hashlib.sha256(data).hexdigest()[:8]
+        name = f"{FAMILY[src_key][1]}-{weight}-{sl}.{h}.woff2"
+        (FONT_DIR / name).write_bytes(data)
+        files[name] = {"family": src_key, "weight": weight, "slice": sl, "codepoints": covered}
+        print(f"  {name}: {len(covered)} 字，{len(data) // 1024}KB")
+
+    # 英文、符號字很少，不管原本在哪一片，全部放進 all 的逐字重檔（每頁都會宣告 all），
+    # 免得各片多出只有一兩個字的小檔、多一次下載
+    narrow = {c for sl in SLICES for c in slices[sl] if not fixed_width(c)}
+    for sl in SLICES:
+        wide = {c for c in slices[sl] if fixed_width(c)}
+        for src_key, rng in sorted(RANGES.items()):
+            emit(src_key, wkey(rng), sl, wide, lambda: make_var_slice(src_key, rng, wide))
     for src_key, weight in WEIGHTS:
-        fam = FAMILY[src_key][1]
-        for sl in SLICES:
-            if not slices[sl]:
-                continue
-            if old_slices.get(sl) == slices[sl]:
-                kept = [(n, f) for n, f in old.get("files", {}).items()
-                        if f["family"] == src_key and f["weight"] == weight and f["slice"] == sl
-                        and (FONT_DIR / n).exists()]
-                if kept:
-                    files[kept[0][0]] = kept[0][1]
-                    continue
-            data, covered = make_slice(src_key, weight, slices[sl])
-            h = hashlib.sha256(data).hexdigest()[:8]
-            name = f"{fam}-{weight}-{sl}.{h}.woff2"
-            (FONT_DIR / name).write_bytes(data)
-            files[name] = {"family": src_key, "weight": weight, "slice": sl, "codepoints": covered}
-            print(f"  {name}: {len(covered)} 字，{len(data) // 1024}KB")
-    return {"slices": {k: sorted(v) for k, v in slices.items()}, "files": files}
+        emit(src_key, weight, "all", narrow, lambda: make_slice(src_key, weight, narrow))
+    return {"layout": LAYOUT, "slices": {k: sorted(v) for k, v in slices.items()}, "files": files}
 
 
 def finish(manifest: dict) -> None:
@@ -303,13 +367,15 @@ def finish(manifest: dict) -> None:
 
 
 def files_for(manifest: dict, src_key: str, weight: int, slice_names) -> list:
+    """這個字重要用的檔：該字重的英文檔＋同字體的中文可變字重檔。"""
+    var = wkey(RANGES[src_key])
     return [n for n, f in manifest["files"].items()
-            if f["family"] == src_key and f["weight"] == weight and f["slice"] in slice_names]
+            if f["family"] == src_key and f["weight"] in (weight, var) and f["slice"] in slice_names]
 
 
-FACE_RE = re.compile(r"@font-face\{font-family:'Noto (?:Sans|Serif) TC';[^}]*?src:url\('/fonts/NotoS(?:ans|erif)TC-\d{3}(?:-[a-z-]+(?:\.[0-9a-f]+)?)?\.woff2'\)[^}]*\}\n?")
+FACE_RE = re.compile(r"@font-face\{font-family:'Noto (?:Sans|Serif) TC';[^}]*?src:url\('/fonts/NotoS(?:ans|erif)TC-\d{3}(?:-\d{3})?(?:-[a-z-]+(?:\.[0-9a-f]+)?)?\.woff2'\)[^}]*\}\n?")
 BLOCK_RE = re.compile(r"/\*fonts:start\*/.*?/\*fonts:end\*/\n?", re.S)
-PRELOAD_OLD_RE = re.compile(r"<link rel=\"preload\" href=\"/fonts/NotoS(?:ans|erif)TC-\d{3}(?:-[a-z-]+\.[0-9a-f]+)?\.woff2\"[^>]*>")
+PRELOAD_OLD_RE = re.compile(r"<link rel=\"preload\" href=\"/fonts/NotoS(?:ans|erif)TC-\d{3}(?:-\d{3})?(?:-[a-z-]+\.[0-9a-f]+)?\.woff2\"[^>]*>")
 PRELOAD_BLOCK_RE = re.compile(r"<!--fonts:preload:start-->.*?<!--fonts:preload:end-->", re.S)
 
 
@@ -334,6 +400,8 @@ def page_preload(manifest: dict, cfg: dict) -> str:
     for i, (src_key, weight) in enumerate(cfg["preload"]):
         wanted = slices_of(cfg["slice"])
         for name in files_for(manifest, src_key, weight, wanted):
+            if f'href="/fonts/{name}"' in "".join(links):
+                continue  # 同一個中文可變字重檔被好幾個字重共用，只預載一次
             prio = ' fetchpriority="high"' if i == 0 and not links else ""
             links.append(f'<link rel="preload" href="/fonts/{name}" as="font" type="font/woff2" crossorigin{prio}>')
     return "<!--fonts:preload:start-->" + "".join(links) + "<!--fonts:preload:end-->"
@@ -371,7 +439,7 @@ def update_pages(manifest: dict, quiet: bool = False) -> None:
 
 
 SW_RE = re.compile(r"( *)// fonts:precache:start\n.*?// fonts:precache:end", re.S)
-SW_OLD_RE = re.compile(r"( *)'/fonts/NotoS(?:ans|erif)TC-\d{3}(?:-[a-z-]+\.[0-9a-f]+)?\.woff2',\n")
+SW_OLD_RE = re.compile(r"( *)'/fonts/NotoS(?:ans|erif)TC-\d{3}(?:-\d{3})?(?:-[a-z-]+\.[0-9a-f]+)?\.woff2',\n")
 
 
 def update_sw(manifest: dict, quiet: bool = False) -> None:
@@ -399,6 +467,8 @@ def update_sw(manifest: dict, quiet: bool = False) -> None:
 def needs_rebuild(slices: dict) -> bool:
     man = load_manifest()
     if not man:
+        return True
+    if man.get("layout") != LAYOUT:
         return True
     old = {k: set(v) for k, v in man.get("slices", {}).items()}
     if old != slices:
