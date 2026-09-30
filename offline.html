@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0e1a30">
+<title>復旦高中 | 目前離線</title>
+<!-- 離線備用頁：Service Worker 在沒網路、而且這一頁沒被快取過時顯示。
+     只用系統字型、不載入任何外部檔案，離線也一定打得開。 -->
+<style>
+:root{--navy-deep:#0e1a30;--dawn:#d4a24c;--dawn-text:#835a1d;--paper:#f6f3ec;--ink:#20242e;--slate:#5a6072;--card:#fff;--line:rgba(20,30,55,0.12)}
+@media (prefers-color-scheme:dark){:root{--paper:#0f1826;--ink:#eae7dd;--slate:#c2c8d6;--card:#1a2540;--dawn-text:#e0b568;--line:rgba(232,228,216,0.12)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"PingFang TC","Microsoft JhengHei","Noto Sans CJK TC",system-ui,sans-serif;line-height:1.7}
+header{background:var(--navy-deep);color:#fff;padding:calc(16px + env(safe-area-inset-top)) 20px 16px;font-weight:700}
+main{max-width:520px;margin:0 auto;padding:64px 20px 80px;text-align:center}
+.icon{font-size:2.6rem;line-height:1}
+h1{font-size:1.3rem;margin:16px 0 8px}
+p{color:var(--slate);margin:0 0 28px}
+nav{display:flex;flex-direction:column;gap:10px}
+nav a{display:block;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:700}
+nav a:first-child{background:var(--dawn);border-color:var(--dawn);color:var(--navy-deep)}
+button{margin-top:24px;background:none;border:0;color:var(--dawn-text);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+<header>復旦高中</header>
+<main>
+<div class="icon" aria-hidden="true">📡</div>
+<h1>目前沒有網路連線</h1>
+<p>這一頁還沒存在手機裡，要連上網路才能打開。<br>下面這幾頁之前打開過的話，離線也能看：</p>
+<nav aria-label="離線可用的頁面">
+<a href="/bus-search/">校車路線查詢</a>
+<a href="/calendar/">校曆</a>
+<a href="/">首頁</a>
+</nav>
+<button type="button" onclick="location.reload()">重新連線</button>
+</main>
+</body>
+</html>

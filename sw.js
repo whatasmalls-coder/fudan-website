@@ -16,13 +16,14 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v11';
+const CACHE_VERSION = 'v12';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/',
   '/bus-search/',
   '/calendar/',
+  '/offline.html',
   '/manifest.json',
   '/favicon.ico',
   '/favicon-32.png',
@@ -135,7 +136,8 @@ self.addEventListener('fetch', (event) => {
 
   // 頁面導覽（直接輸入網址或點連結進來）：網路優先，離線時退回快取
   if (request.mode === 'navigate') {
-    event.respondWith(networkFirst(request));
+    // 沒網路、又沒快取過這頁時，顯示離線備用頁，而不是瀏覽器的錯誤畫面
+    event.respondWith(networkFirst(request).catch(() => caches.match('/offline.html')));
     return;
   }
 
