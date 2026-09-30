@@ -19,8 +19,14 @@ jobs:
         uses: actions/checkout@v5
 
       - name: 執行 Lighthouse 檢查
+        id: lh
         uses: treosh/lighthouse-ci-action@v11
         with:
           configPath: './.github/lighthouserc.json'
           uploadArtifacts: true
           temporaryPublicStorage: true
+
+      # 完整報告有時打不開，把每頁的分數、各項時間和主要拖慢原因直接顯示在結果頁
+      - name: 整理重點
+        if: always()
+        run: python3 scripts/lighthouse_summary.py "${{ steps.lh.outputs.resultsPath }}"
