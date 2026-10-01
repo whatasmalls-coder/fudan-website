@@ -259,6 +259,34 @@ def main():
     print("解析表格為結構化行事曆事件...")
     events = parse_calendar_table(rows, start_year, start_month)
 
+    previous = []
+    if os.path.exists(OUTPUT_PATH):
+        try:
+            with open(OUTPUT_PATH, encoding="utf-8") as f:
+                previous = json.load(f).get("events") or []
+        except (ValueError, OSError):
+            previous = []
+
+    # 內容完全沒變：不要重寫檔案。否則每週都會多一個只改了 updatedAt 的 commit，
+    # sitemap 的更新日期也會跟著變，等於告訴 Google「校曆改了」但其實沒有。
+    if events == previous:
+        print(f"校曆內容沒有變動（{len(events)} 筆），不更新檔案")
+        if os.path.exists("calendar_debug.json"):
+            os.remove("calendar_debug.json")
+        return
+
+    # 防呆：PDF 版面改了、解析結果明顯不對時，寧可保留舊資料也不要把網站校曆變成空的。
+    # （丟出例外 → 寫入 calendar_debug.json、workflow 顯示失敗，看得到要修）
+    MIN_EVENTS = 30
+    if len(events) < MIN_EVENTS:
+        raise ValueError(f"只解析到 {len(events)} 筆事件（少於 {MIN_EVENTS} 筆），PDF 格式可能改了，保留原本的校曆")
+    if previous:
+        old_range = (min(e["date"] for e in previous), max(e["date"] for e in previous))
+        new_range = (min(e["date"] for e in events), max(e["date"] for e in events))
+        same_term = new_range[0] <= old_range[1] and old_range[0] <= new_range[1]  # 日期範圍有重疊 = 同一學期
+        if same_term and len(events) < len(previous) * 0.5:
+            raise ValueError(f"同一學期的事件從 {len(previous)} 筆掉到 {len(events)} 筆，解析可能出錯，保留原本的校曆")
+
     output = {
         "updatedAt": datetime.now(timezone.utc).isoformat(),
         "source": PDF_URL,
