@@ -643,10 +643,15 @@ aiHint.innerHTML = '<span class="ai-spark">' + icon + '</span>' + html;
 }
 
 // 回傳 { keywords: string[] } 或 { error: true }（區分「AI 也找不到」跟「呼叫失敗」）
+// Gemini 忙線時請求可能一直卡住：超過 15 秒就當作失敗，顯示錯誤提示，不要一直轉圈
+var AI_TIMEOUT_MS = 15000;
 async function askAIKeywords(rawQuery){
+var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, AI_TIMEOUT_MS) : 0;
 try{
 var res = await fetch(AI_PROXY_URL, {
 method: 'POST',
+signal: ctrl ? ctrl.signal : undefined,
 headers: {'Content-Type':'application/json'},
 body: JSON.stringify({
 contents: [{ role:'user', parts:[{ text:
@@ -678,6 +683,8 @@ keywords = keywords.filter(function(k){ return typeof k === 'string' && k.trim()
 return { keywords: keywords };
 }catch(e){
 return { error: true };
+}finally{
+clearTimeout(timer);
 }
 }
 
