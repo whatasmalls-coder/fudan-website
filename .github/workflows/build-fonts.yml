@@ -39,10 +39,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -z "$(git status --porcelain -- fonts/ sw.js '*.html')" ]; then
+          if [ -z "$(git status --porcelain -- fonts/ sw.js '*.html' sitemap.xml llms.txt)" ]; then
             echo "字型不用更新。"
           else
-            git add fonts/ sw.js '*.html'
+            git add fonts/ sw.js '*.html' sitemap.xml llms.txt
             git commit -m "🤖 字型補字"
             git pull --rebase
             git push
