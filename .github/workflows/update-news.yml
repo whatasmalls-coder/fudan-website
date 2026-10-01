@@ -47,5 +47,6 @@ jobs:
           else
             git add news.json sitemap.xml llms.txt fonts/ sw.js '*.html'
             git commit -m "自動更新最新消息 ($(date -u +'%Y-%m-%d'))"
+            git pull --rebase   # 同時有別的 commit 推上來時先接上，避免 push 被拒絕
             git push
           fi

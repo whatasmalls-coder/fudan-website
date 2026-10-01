@@ -45,4 +45,5 @@ jobs:
           # 字型分片會同時改到各頁 @font-face 和 sw.js，要一起 commit
           git add fonts/ sw.js '*.html' sitemap.xml llms.txt 2>/dev/null || true
           git diff --staged --quiet || git commit -m "🤖 自動更新校曆（或除錯資訊）"
+          git pull --rebase   # 同時有別的 commit 推上來時先接上，避免 push 被拒絕
           git push
