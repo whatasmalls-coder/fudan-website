@@ -204,12 +204,21 @@ def main():
         print("沒有新公告，news.json 不用更新。")
         sys.exit(0)
 
-    merged = new_items + current
+    # 已經在清單裡的公告放前面：同一天的公告剛好卡在第 30 則的邊界時，
+    # 優先保留原本就在的（排序是穩定的）。以前新抓到的放前面，結果每次排程都把
+    # 同一天的幾則「擠掉 → 下次當成新公告加回來 → 又擠掉另一批」來回交換，
+    # 每小時都多一個 commit，AI 摘要也一直被清掉重做、浪費額度。
+    merged = current + new_items
     # 依日期新到舊排序；沒有 date 欄位的手動項目會被排到最後，不會被誤刪
     merged.sort(key=lambda it: it.get("date", ""), reverse=True)
 
     if len(merged) > MAX_ITEMS:
         merged = merged[:MAX_ITEMS]
+
+    if [it.get("link") for it in merged] == [it.get("link") for it in current]:
+        print("新抓到的都是比清單裡更舊、會被擠出前 30 則的公告，news.json 不用更新。")
+        sys.exit(0)
+    new_items = [it for it in merged if it.get("link") not in existing_links]
 
     save_news(merged)
     update_sitemap_lastmod()
