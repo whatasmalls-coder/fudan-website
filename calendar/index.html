@@ -322,6 +322,8 @@ refresh();
 })
 .catch(function(){
 jumpBtn.hidden = true;
+// 資料抓不到（例如離線）但 HTML 裡已經預先寫好校曆了：保留原本的內容，不要換成錯誤訊息
+if(contentEl.querySelector('.day-row')) return;
 contentEl.innerHTML = '<div class="error-state">校曆資料暫時載入失敗，請稍後再試，或直接查看<a href="https://www.fdhs.tyc.edu.tw" target="_blank" rel="noopener">學校官網</a>。</div>';
 });
 })();

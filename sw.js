@@ -35,6 +35,9 @@ const PRECACHE_URLS = [
   '/js/fuse.min.js',
   '/js/exam-countdown.js',
   '/js/routes.json',
+  // 校曆、公告資料也先存起來：離線時校曆頁的搜尋／篩選、首頁的近期行事都還能用
+  '/calendar.json',
+  '/news.json',
   '/js/stops-coords.json',
   // fonts:precache:start
   '/fonts/NotoSansTC-400-700-all.511b3948.woff2',
