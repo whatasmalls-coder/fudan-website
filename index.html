@@ -253,7 +253,7 @@ var WD = ['日','一','二','三','四','五','六'];
 function pad(n){ return (n < 10 ? '0' : '') + n; }
 var sk = ''; for(var i=0;i<4;i++){ sk += '<div class="skeleton-item"></div>'; } list.innerHTML = sk;
 function load(){
-fetch('/calendar.json').then(function(r){ return r.ok ? r.json() : Promise.reject(); }).then(function(data){
+/* 跟段考倒數（js/exam-countdown.js）共用同一次下載 */(window.fdCalendarData || (window.fdCalendarData = fetch('/calendar.json').then(function(r){ return r.ok ? r.json() : Promise.reject(new Error('無法載入校曆資料')); }))).then(function(data){
 var d = new Date(); var today = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
 var ev = ((data && data.events) || []).filter(function(e){ return e.date >= today; }).sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }).slice(0, 4);
 if(!ev.length){ list.innerHTML = '<p class="upcoming-empty">本學期行事已全部結束，新學期校曆公布後會自動更新。</p>'; return; }

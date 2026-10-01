@@ -309,8 +309,8 @@ jumpBtn.removeAttribute('aria-hidden');
 jumpBtn.removeAttribute('tabindex');
 }
 
-fetch('/calendar.json')
-.then(function(r){ return r.ok ? r.json() : Promise.reject(new Error('無法載入校曆資料')); })
+/* 跟段考倒數（js/exam-countdown.js）共用同一次下載 */
+(window.fdCalendarData || (window.fdCalendarData = fetch('/calendar.json').then(function(r){ return r.ok ? r.json() : Promise.reject(new Error('無法載入校曆資料')); })))
 .then(function(data){
 allEvents = (data && data.events) || [];
 if(allEvents.length === 0){

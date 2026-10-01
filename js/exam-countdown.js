@@ -68,8 +68,10 @@
   var dataPromise = null;
   function load() {
     if (!dataPromise) {
-      dataPromise = fetch('/calendar.json')
-        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      // 首頁、校曆頁本身也要校曆資料：共用 window.fdCalendarData，同一頁只下載一次
+      window.fdCalendarData = window.fdCalendarData || fetch('/calendar.json')
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('無法載入校曆資料')); });
+      dataPromise = window.fdCalendarData
         .then(function (d) { return (d && d.events) || []; });
     }
     return dataPromise;
