@@ -12,7 +12,7 @@
 另外也會：
   - 把校曆頁標題、說明裡的「XXX學年度第X學期」換成校曆資料對應的學期
   - 把 sitemap.xml 裡校曆頁的 <lastmod> 設成校曆資料更新日期
-  - 公車頁標題、說明、統計文字裡的「N條路線、N個停靠站」跟著 routes.json 更新
+  - 各頁標題、說明、分享預覽、統計文字裡的「N條路線、N個停靠站」跟著 routes.json 更新
   - llms.txt（給 AI 助理看的網站說明）裡的路線數、站數也一起更新
 
 寫入位置（兩段註解之間的內容會被整段換掉）：
@@ -199,10 +199,10 @@ def main() -> int:
         new = pat.sub(lambda m: m.group(1) + fn() + m.group(2), text, count=1)
         if key == "calendar":
             new = sync_calendar_meta(new)
-        elif key == "routes":
-            new = sync_bus_counts(new)
         elif key == "news":
             new = sync_news_key(new)
+        # 路線數、站數不只公車頁有寫（首頁的說明、分享預覽也有），每一頁都同步
+        new = sync_bus_counts(new)
         if new != text:
             stale.append(rel)
             if not args.check:
