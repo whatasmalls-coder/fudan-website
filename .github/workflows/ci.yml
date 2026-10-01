@@ -27,3 +27,16 @@ jobs:
 
       - name: 檢查站內資源路徑是否有失效引用（例如刪檔案後忘記清引用）
         run: python scripts/check_local_asset_refs.py
+
+      # 下面兩項「沒同步」時，push 後的「字型補字」workflow 會自動重新產生並 commit，
+      # 所以只顯示黃色提醒、不讓這次檢查變紅色。
+      - name: 預先寫進 HTML 的路線／校曆／公告是否跟資料同步
+        run: |
+          python scripts/build_static_html.py --check || \
+            echo "::warning title=預先寫入內容未同步::請執行 python scripts/build_static_html.py（字型補字 workflow 也會自動補上）"
+
+      - name: 字型是否收錄了頁面上所有的字
+        run: |
+          pip install -q fonttools brotli
+          python scripts/build_fonts.py --check || \
+            echo "::warning title=字型需要重新產生::請執行 python scripts/build_fonts.py（字型補字 workflow 也會自動補上）"
