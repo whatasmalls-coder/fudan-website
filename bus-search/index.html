@@ -438,6 +438,12 @@ trackEvent('校車查詢：找我附近的站失敗', { reason: 'geolocation_err
 locate(true);
 });
 
+// 「5」「5號」「5號車」「第5條」→ 5 號路線（沒有這條就回傳 undefined）。搜尋和自動完成共用
+function routeByNumber(q){
+var m = String(q || '').trim().match(/^第?\s*(\d{1,3})\s*(?:號|路|條|線)?\s*(?:車|校車|路線)?$/);
+return m ? ROUTES.filter(function(r){ return String(r.no) === String(parseInt(m[1], 10)); })[0] : undefined;
+}
+
 function render(query){
 resultList.innerHTML = '';
 var q = (query||'').trim();
@@ -451,8 +457,7 @@ matchedRoutes.push({route:route, matchedStopCodes:{}, showAll:false, routeNameMa
 } else {
 /* 只打路線編號（例如「5」「5號」「5號車」「第5條」）：直接顯示那一條路線。
    以前編號不在搜尋範圍內，打「5」會模糊比對到一堆站碼、時間含 5 的路線，卻找不到 5 號車 */
-var numMatch = q.match(/^第?\s*(\d{1,3})\s*(?:號|路|條|線)?\s*(?:車|校車|路線)?$/);
-var exactRoute = numMatch && ROUTES.filter(function(r){ return String(r.no) === String(parseInt(numMatch[1], 10)); })[0];
+var exactRoute = routeByNumber(q);
 if(exactRoute){
 matchedRoutes.push({route:exactRoute, matchedStopCodes:{}, showAll:true, routeNameMatch:true});
 } else {
@@ -809,6 +814,11 @@ function buildAutocompleteSuggestions(q){
 if(!q || q.length < 1) return [];
 var seen = {};
 var results = [];
+var numRoute = routeByNumber(stripQuestionWords(q));
+if(numRoute){
+seen[numRoute.name] = true;
+results.push({ label: numRoute.name + '（' + numRoute.no + '號）', tag: '路線', fill: String(numRoute.no) });
+}
 stopFuse.search(q).slice(0, 8).forEach(function(r){
 var name = r.item.name;
 if(seen[name]) return;
