@@ -387,6 +387,9 @@ nearMeBtn.disabled = true;
 setNearMeStatus('正在取得你的位置...');
 trackEvent('校車查詢：找我附近的站');
 
+// 先要求高精度（GPS）；在室內常常 10 秒內定位不到，那就自動改用一般精度（Wi‑Fi／基地台）再試一次，找最近的站牌已經夠準
+var triedLowAccuracy = false;
+function locate(highAccuracy){
 navigator.geolocation.getCurrentPosition(function(pos){
 var userLat = pos.coords.latitude, userLng = pos.coords.longitude;
 
@@ -418,6 +421,11 @@ trackEvent('校車查詢：找我附近的站失敗', { reason: 'no_coords_data'
 nearMeBtn.disabled = false;
 });
 }, function(err){
+if(err.code !== err.PERMISSION_DENIED && highAccuracy && !triedLowAccuracy){
+triedLowAccuracy = true;
+locate(false);
+return;
+}
 nearMeBtn.disabled = false;
 if(err.code === err.PERMISSION_DENIED){
 setNearMeStatus('需要允許定位權限才能使用這個功能，可以到瀏覽器設定重新開啟權限', true);
@@ -425,7 +433,9 @@ setNearMeStatus('需要允許定位權限才能使用這個功能，可以到瀏
 setNearMeStatus('無法取得目前位置，請稍後再試', true);
 }
 trackEvent('校車查詢：找我附近的站失敗', { reason: 'geolocation_error_' + err.code });
-}, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+}, { enableHighAccuracy: highAccuracy, timeout: 10000, maximumAge: 60000 });
+}
+locate(true);
 });
 
 function render(query){
