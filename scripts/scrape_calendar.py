@@ -121,6 +121,17 @@ def strip_month_fragments(text: str) -> str:
 
 
 DATE_FRAGMENT_RE = re.compile(r"^[\d/～~；;）)]+$")
+TIME_RANGE_RE = re.compile(r"^\d{1,2}:\d{2}\s*[~～-]\s*\d{1,2}:\d{2}$")  # 單獨一行的時間，例如「10:30~11:30」
+
+
+def _width(s: str) -> float:
+    """大約的顯示寬度：中文 1、英數 0.5（校曆 PDF 一格大約 11～12 個中文字寬就會換行）"""
+    return sum(0.5 if ord(c) < 128 else 1 for c in s)
+
+
+def _core(s: str) -> str:
+    """去掉括號裡的補充說明，例如「量測(健康中心)」→「量測」"""
+    return re.sub(r"[(（][^)）]*[)）]", "", s)
 
 
 def merge_wrapped_lines(lines: list) -> list:
@@ -130,6 +141,10 @@ def merge_wrapped_lines(lines: list) -> list:
     - 這一行本身就是一段日期／括號的收尾（例如「9/2~9/3)」「(初賽)」）
     - 這一行很短又沒有起始標記（【】或數字開頭），大概是被硬拆成兩半的詞
       （例如「宣導」被拆成「宣」「導」兩行）
+    - 這一行只有時間（例如「10:30~11:30」），是上一個事件的時間
+    - 上一行已經寫滿一格（約 11 字寬）、這一行又很短（括號外 5 字以內）：
+      例如「本週國二各班身高體重視」＋「力量測(健康中心)」、「【家長場】青年儲蓄戶宣」＋「導活動」
+      （寫滿一格但下一行是完整事件的，例如「【56】國一班際拔河比賽」＋「高三模擬考3」，下一行比較長，不會被黏起來）
     判斷不到的就當作獨立事件，這是規則式解析先天的極限，
     比 AI 理解語意差一點，但完全免費、不會因為額度問題而整個失敗。"""
     merged = []
@@ -144,8 +159,12 @@ def merge_wrapped_lines(lines: list) -> list:
             or line.startswith(("(", "（"))
             or bool(DATE_FRAGMENT_RE.match(line))
             or (len(line) <= 2 and not line.startswith("【") and not line[0].isdigit())
+            or (_width(prev) >= 10.5 and not line.startswith("【") and _width(_core(line)) <= 5
+                and not prev.endswith((")", "）")))
         )
-        if looks_like_continuation:
+        if TIME_RANGE_RE.match(line):
+            merged[-1] = prev + " " + line
+        elif looks_like_continuation:
             merged[-1] = prev + line
         else:
             merged.append(line)
