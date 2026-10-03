@@ -1,19 +1,29 @@
 import json
+import time
 import requests
 from datetime import datetime, timezone
 
 NEWS_PATH = "news.json"
 REPORT_PATH = "link_check_report.json"
-TIMEOUT = 8
+TIMEOUT = 20
+TRIES = 3  # 學校網站偶爾回應很慢：逾時／連線失敗會再試，連續失敗才算失效（以前 8 秒逾時一次就回報，常常誤報）
+
 
 def check_url(url: str) -> dict:
-    try:
-        resp = requests.head(url, timeout=TIMEOUT, allow_redirects=True)
-        if resp.status_code >= 400:
-            resp = requests.get(url, timeout=TIMEOUT, allow_redirects=True)
-        return {"url": url, "status": resp.status_code, "ok": resp.status_code < 400}
-    except requests.RequestException as e:
-        return {"url": url, "status": None, "ok": False, "error": str(e)}
+    last = {}
+    for attempt in range(TRIES):
+        if attempt:
+            time.sleep(5)
+        try:
+            resp = requests.head(url, timeout=TIMEOUT, allow_redirects=True)
+            if resp.status_code >= 400:
+                resp = requests.get(url, timeout=TIMEOUT, allow_redirects=True)
+            last = {"url": url, "status": resp.status_code, "ok": resp.status_code < 400}
+            if last["ok"] or resp.status_code < 500:
+                return last  # 成功，或 404 之類明確的錯誤：不用再試
+        except requests.RequestException as e:
+            last = {"url": url, "status": None, "ok": False, "error": f"{type(e).__name__}: {e}"[:200]}
+    return last
 
 def main():
     with open(NEWS_PATH, "r", encoding="utf-8") as f:

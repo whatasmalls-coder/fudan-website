@@ -5,6 +5,10 @@ on:
     - cron: '7 2 * * 1'  # 每週一台灣時間早上10點
   workflow_dispatch:
 
+permissions:
+  contents: read
+  issues: write   # 開／更新／關閉「失效連結」issue
+
 jobs:
   check-links:
     runs-on: ubuntu-latest
@@ -27,17 +31,27 @@ jobs:
         with:
           script: |
             const fs = require('fs');
+            // 腳本中途失敗沒產生報告時，不要在這一步再報錯一次
+            if (!fs.existsSync('link_check_report.json')) { core.warning('沒有產生 link_check_report.json'); return; }
             const report = JSON.parse(fs.readFileSync('link_check_report.json', 'utf8'));
+            const { owner, repo } = context.repo;
+            // 同時只保留一個「失效連結」issue：有就更新內容，沒有失效連結時自動關閉
+            const open = await github.rest.issues.listForRepo({ owner, repo, state: 'open', labels: 'broken-link' });
+            const existing = open.data[0];
             if (report.brokenCount > 0) {
-              let body = '## 失效連結報告\n\n';
+              let body = `## 失效連結報告（${report.checkedAt.slice(0, 10)}）\n\n`;
               for (const b of report.broken) {
-                body += `- **${b.announcementTitle}**: ${b.url} (狀態: ${b.status})\n`;
+                const why = b.status ? `HTTP ${b.status}` : `連不上（${b.error || '逾時'}）`;
+                body += `- **${b.title}**（${b.date || ''}）: ${b.url} — ${why}\n`;
               }
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: `🔗 發現 ${report.brokenCount} 個失效連結`,
-                body: body,
-                labels: ['broken-link']
-              });
+              const title = `🔗 發現 ${report.brokenCount} 個失效連結`;
+              if (existing) {
+                await github.rest.issues.update({ owner, repo, issue_number: existing.number, title, body });
+              } else {
+                await github.rest.issues.create({ owner, repo, title, body, labels: ['broken-link'] });
+              }
+            } else if (existing) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: existing.number,
+                body: `${report.checkedAt.slice(0, 10)} 重新檢查 ${report.totalChecked} 個連結，都正常，自動關閉。` });
+              await github.rest.issues.update({ owner, repo, issue_number: existing.number, state: 'closed' });
             }
