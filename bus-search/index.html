@@ -532,10 +532,24 @@ var showTip = function(){
 shareBtn.classList.add('copied');
 setTimeout(function(){ shareBtn.classList.remove('copied'); }, 1600);
 };
+// LINE、IG 等 App 內建瀏覽器常擋掉新的剪貼簿功能，有時連 prompt 也擋：依序試 新方法 → 舊方法 → 跳出視窗
+var fallback = function(){
+var ta = document.createElement('textarea');
+ta.value = url;
+ta.setAttribute('readonly', '');
+ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.select(); ta.setSelectionRange(0, url.length);
+var ok = false;
+try{ ok = document.execCommand('copy'); }catch(err){}
+document.body.removeChild(ta);
+shareBtn.focus();
+if(ok) showTip(); else window.prompt('複製這個連結：', url);
+};
 if(navigator.clipboard && navigator.clipboard.writeText){
-navigator.clipboard.writeText(url).then(showTip).catch(function(){ window.prompt('複製這個連結：', url); });
+navigator.clipboard.writeText(url).then(showTip).catch(fallback);
 } else {
-window.prompt('複製這個連結：', url);
+fallback();
 }
 });
 
