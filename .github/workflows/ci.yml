@@ -28,6 +28,9 @@ jobs:
       - name: 檢查站內資源路徑是否有失效引用（例如刪檔案後忘記清引用）
         run: python scripts/check_local_asset_refs.py
 
+      - name: 校曆 PDF 解析規則（被換行切開的活動要黏回去、獨立活動不能誤黏）
+        run: python scripts/test_scrape_calendar.py
+
       # 下面兩項「沒同步」時，push 後的「字型補字」workflow 會自動重新產生並 commit，
       # 所以只顯示黃色提醒、不讓這次檢查變紅色。
       - name: 預先寫進 HTML 的路線／校曆／公告是否跟資料同步
