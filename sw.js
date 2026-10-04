@@ -16,7 +16,7 @@
  * 讓舊的快取被自動清掉，使用者才會拿到最新版本。
  */
 
-const CACHE_VERSION = 'v13';
+const CACHE_VERSION = 'v14';
 const CACHE_NAME = `fd-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -48,7 +48,6 @@ const PRECACHE_URLS = [
   '/fonts/NotoSerifTC-600-all.e0f2258b.woff2',
   '/fonts/NotoSerifTC-700-all.af36fcf9.woff2',
   // fonts:precache:end
-  '/fonts/NotoSerifTC-900-subset.woff2',
 ];
 
 // 這些網域的請求（AI API、分析、CMS）永遠不快取，一律直接走網路
