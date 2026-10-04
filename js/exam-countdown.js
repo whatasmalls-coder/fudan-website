@@ -80,9 +80,22 @@
   function start(box) {
     load().then(function (events) {
       var today = ymd(new Date());
+      box._cdDay = today;
       render(box, groupExams(events, today), today);
     }).catch(function () { box.hidden = true; });
   }
+
+  // 手機把分頁留著隔天再打開（或從上一頁返回時整頁從快取還原）不會重新載入，
+  // 倒數天數會停在昨天：回到這頁時日期變了就重算一次
+  function refresh() {
+    if (document.visibilityState === 'hidden') return;
+    var today = ymd(new Date());
+    Array.prototype.forEach.call(boxes, function (box) {
+      if (box._cdDay && box._cdDay !== today) start(box);
+    });
+  }
+  document.addEventListener('visibilitychange', refresh);
+  window.addEventListener('pageshow', refresh);
 
   Array.prototype.forEach.call(boxes, function (box) {
     box.classList.add('exam-cd');
