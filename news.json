@@ -50,6 +50,24 @@
     "updatedAt": null
   },
   {
+    "date": "2026.10.07",
+    "tag": "競賽",
+    "title": "轉知_國立臺灣師範大學華語文與科技研究中心辦理 「2026-2027第八屆科普閱讀力大賽」競賽資訊。",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48372"
+  },
+  {
+    "date": "2026.10.07",
+    "tag": "轉知",
+    "title": "華語認證考試資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48371"
+  },
+  {
+    "date": "2026.10.07",
+    "tag": "轉知",
+    "title": "越南語認證資訊",
+    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48370"
+  },
+  {
     "date": "2026.10.06",
     "tag": "競賽",
     "title": "桃園市政府教育局「2027年亞太數學奧林匹亞競賽初選考試」報名簡章 1份，請查照。",
@@ -220,38 +238,5 @@
     "tag": "轉知",
     "title": "龍華科技大學檢送推廣教育中心開辦「ACP Adobe Indesign國際認證輔導班-假日班」資訊",
     "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48346"
-  },
-  {
-    "date": "2026.10.02",
-    "tag": "競賽",
-    "title": "東海大學理學院與國立自然科學博物館合辦「2026全國火星任務創意競賽」，鼓勵所屬學生踴躍報名參加。",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48335",
-    "summary": "東海大學理學院與國立自然科學博物館合辦「2026全國火星任務創意競賽」，鼓勵學生踴躍報名。",
-    "seoDescription": "東海大學理學院與國立自然科學博物館共同舉辦「2026全國火星任務創意競賽」，旨在激發學生創新思考與科學探索能力。歡迎學生踴躍組隊報名參加，展現跨領域創意與科技實力！",
-    "contentHash": "b5816facefd0b873",
-    "enrichedAt": "2026-10-02T01:42:58.763945+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.10.02",
-    "tag": "轉知",
-    "title": "請高二三同學登入高中線上系統確認歷程收訖狀況 (10/2下午一點至 10/8中午12點)",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48339",
-    "summary": "請高二及高三學生於10月2日下午1點至10月8日中午12點，登入高中線上系統確認歷程收訖狀況。",
-    "seoDescription": "請高二與高三同學注意，請於10月2日下午1點至10月8日中午12點期間，登入高中線上系統確認學習歷程收訖狀況，以確保個人資料正確與維護相關權益。",
-    "contentHash": "a87e24c1852973d4",
-    "enrichedAt": "2026-10-02T08:32:43.718831+00:00",
-    "updatedAt": null
-  },
-  {
-    "date": "2026.10.02",
-    "tag": "轉知",
-    "title": "關於實驗教育(含自學)申請資訊",
-    "link": "https://www.fdhs.tyc.edu.tw/e-fdhs/board/out_bd_detail.php?flag=14&bd_id=48342",
-    "summary": "本公告提供實驗教育及非學校型態實驗教育（含在家自學）的相關申請資訊說明。",
-    "seoDescription": "本校公告最新實驗教育（含個人自學、團體及機構實驗教育）申請資訊。歡迎有意的學生與家長參閱相關申請流程、日程與規定，掌握實驗教育申請要點。",
-    "contentHash": "db2aa31a539b759f",
-    "enrichedAt": "2026-10-02T08:33:01.474381+00:00",
-    "updatedAt": null
   }
 ]
