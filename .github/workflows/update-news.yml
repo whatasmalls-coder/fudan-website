@@ -10,6 +10,12 @@ on:
 permissions:
   contents: write   # 讓這個 workflow 有權限 commit / push 回這個 repo
 
+# 公告更新和 AI 摘要都會改 news.json：排隊一個一個跑，避免兩個同時 push 互相衝突
+# （10/7 手動觸發剛好撞上排程，兩個 AI 摘要同時改 news.json，其中一個 rebase 衝突失敗）
+concurrency:
+  group: news-json
+  cancel-in-progress: false
+
 jobs:
   update-news:
     runs-on: ubuntu-24.04  # 固定版本：ubuntu-latest 10/19 起會換成 Ubuntu 26，避免無人看管的自動排程突然壞掉
