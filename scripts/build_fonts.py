@@ -123,7 +123,7 @@ PAGES = {
                             "preload": [("serif", 700), ("sans", 400), ("sans", 700)]},
     "bus-search/index.html": {"slice": "bus", "weights": WEIGHTS,
                               "preload": [("sans", 400), ("sans", 700)]},
-    "404.html": {"slice": None, "weights": [("sans", 400), ("sans", 700)], "preload": []},
+    "404.html": {"slice": None, "weights": [("sans", 400), ("sans", 700), ("serif", 700)], "preload": []},
     "admin.html": {"slice": None, "weights": [("sans", 400), ("sans", 500), ("sans", 700)], "preload": []},
 }
 

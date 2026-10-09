@@ -1,10 +1,12 @@
 name: Enrich news announcements
 
+# 10/9 依站長決定關閉自動執行：摘要沒有顯示在網站上，卻會用掉公車 AI 搜尋共用的 Gemini 免費額度。
+# 需要時仍可在 GitHub 網頁上手動按「Run workflow」。要恢復自動，把下面註解掉的 workflow_run 打開即可。
 on:
-  workflow_run:
-    workflows: ["自動更新最新消息"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["自動更新最新消息"]
+  #   types:
+  #     - completed
   workflow_dispatch:
 
 # 公告更新和 AI 摘要都會改 news.json：排隊一個一個跑，避免兩個同時 push 互相衝突
