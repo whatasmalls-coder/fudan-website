@@ -63,12 +63,11 @@ button,input,select,textarea{font-family:inherit}
 .near-me-status{text-align:center;font-size:0.8rem;color:var(--slate);margin-top:10px}
 .near-me-status.error{color:#a4443c}
 .near-me-results{display:flex;flex-direction:column;gap:10px}
-.near-me-item{display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--card-bg);border:1px solid var(--line);border-radius:3px;padding:16px 20px;cursor:pointer;transition:border-color .2s ease,transform .2s ease}
-.near-me-item:hover,.near-me-item:focus-visible{border-color:var(--dawn);transform:translateY(-2px)}
-.near-me-item:focus-visible{outline:2px solid var(--dawn);outline-offset:2px}
-.near-me-item-main b{color:var(--heading);font-size:1rem}
+.near-me-item{position:relative;display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--card-bg);border:1px solid var(--line);border-radius:3px;padding:16px 20px;cursor:pointer;transition:border-color .2s ease,transform .2s ease}
+.near-me-item:hover,.near-me-item:focus-within{border-color:var(--dawn);transform:translateY(-2px)}.near-me-item:has(.near-me-item-open:focus-visible){outline:2px solid var(--dawn);outline-offset:2px}
+.near-me-item-open{all:unset;cursor:pointer;color:var(--heading);font-size:1rem;font-weight:700;overflow-wrap:anywhere}.near-me-item-open::after{content:'';position:absolute;inset:0}.near-me-item-side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px}.near-me-walk{position:relative;z-index:1;display:inline-flex;align-items:center;padding:5px 12px;border:1px solid var(--line);border-radius:999px;font-size:0.78rem;font-weight:700;color:var(--dawn-text);background:var(--card-bg);text-decoration:none;white-space:nowrap}.near-me-walk:hover,.near-me-walk:focus-visible{border-color:var(--dawn)}.near-me-walk:focus-visible{outline:2px solid var(--dawn);outline-offset:2px}
 .near-me-item-main{min-width:0}.near-me-item-routes{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}.near-me-item-routes li{display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--paper-dim);color:var(--ink)}.near-me-route-no{font-weight:700;color:var(--dawn-text)}.near-me-route-time{font-weight:700;color:var(--heading);font-variant-numeric:tabular-nums}
-.near-me-item-dist{flex:none;font-size:0.85rem;color:var(--slate);font-variant-numeric:tabular-nums}main{max-width:920px;margin:0 auto;padding:40px 20px 100px}.result-count{font-size:0.85rem;color:var(--slate);margin-bottom:18px;letter-spacing:0.02em}.result-count b{color:var(--heading)}.route-card{background:var(--card-bg);border:1px solid var(--line);border-radius:3px;margin-bottom:16px;overflow:hidden;transition:box-shadow .2s ease,transform .2s ease}.route-card:hover{box-shadow:0 8px 24px rgba(20,30,55,0.08)}.route-head{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer;background:var(--paper-dim);transition:background-color .2s ease}.route-head:hover{background:rgba(212,162,76,0.14)}.route-head:focus-visible{outline:2px solid var(--dawn);outline-offset:-2px}.route-info:focus-visible{outline:2px solid var(--dawn);outline-offset:-2px}.route-no{font-family:'Noto Serif TC','Noto Serif TC Fallback',serif;font-weight:700;color:var(--navy-deep);background:var(--dawn-soft);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex:none}.route-info{flex:1;min-width:0}.route-name{font-weight:700;color:var(--heading);font-size:1.02rem}.route-time{font-size:0.8rem;color:var(--slate);margin-top:2px}.route-toggle{color:var(--dawn-text);flex:none;display:flex;align-items:center}
+.near-me-item-dist{font-size:0.85rem;color:var(--slate);font-variant-numeric:tabular-nums}main{max-width:920px;margin:0 auto;padding:40px 20px 100px}.result-count{font-size:0.85rem;color:var(--slate);margin-bottom:18px;letter-spacing:0.02em}.result-count b{color:var(--heading)}.route-card{background:var(--card-bg);border:1px solid var(--line);border-radius:3px;margin-bottom:16px;overflow:hidden;transition:box-shadow .2s ease,transform .2s ease}.route-card:hover{box-shadow:0 8px 24px rgba(20,30,55,0.08)}.route-head{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer;background:var(--paper-dim);transition:background-color .2s ease}.route-head:hover{background:rgba(212,162,76,0.14)}.route-head:focus-visible{outline:2px solid var(--dawn);outline-offset:-2px}.route-info:focus-visible{outline:2px solid var(--dawn);outline-offset:-2px}.route-no{font-family:'Noto Serif TC','Noto Serif TC Fallback',serif;font-weight:700;color:var(--navy-deep);background:var(--dawn-soft);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex:none}.route-info{flex:1;min-width:0}.route-name{font-weight:700;color:var(--heading);font-size:1.02rem}.route-time{font-size:0.8rem;color:var(--slate);margin-top:2px}.route-toggle{color:var(--dawn-text);flex:none;display:flex;align-items:center}
 .share-btn{position:relative;flex:none;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:none;background:transparent;color:var(--slate);opacity:.65;cursor:pointer;transition:opacity .2s ease,background .2s ease,color .2s ease}
 .share-btn:hover,.share-btn:focus-visible{opacity:1;background:rgba(212,162,76,0.16);color:var(--dawn-text)}
 .share-btn:focus-visible{outline:2px solid var(--dawn);outline-offset:2px}
@@ -359,26 +358,30 @@ function renderNearMeResults(items){
 resultCount.innerHTML = '離你最近的 <b>' + items.length + '</b> 個站牌：';
 var html = '<div class="near-me-results">' + items.map(function(item){
 var distText = item.dist >= 1000 ? (item.dist/1000).toFixed(1) + ' 公里' : Math.round(item.dist) + ' 公尺';
-return '<div class="near-me-item" role="button" tabindex="0" data-name="' + escapeHtml(item.name) + '">' +
-'<div class="near-me-item-main"><b>' + escapeHtml(item.name) + '</b>' +
+// 起點不帶，Google 地圖會自動用使用者目前位置
+var walkUrl = 'https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=' + item.lat + ',' + item.lng;
+// 整張卡片可點（按鈕的 ::after 撐滿卡片）；「走過去」連結疊在上面，避免巢狀互動元素
+return '<div class="near-me-item">' +
+'<div class="near-me-item-main"><button type="button" class="near-me-item-open" data-name="' + escapeHtml(item.name) + '">' + escapeHtml(item.name) + '</button>' +
 (item.routes.length ? '<ul class="near-me-item-routes">' + item.routes.map(function(r){
 return '<li><span class="near-me-route-no">' + escapeHtml(r.routeNo) + '號</span>' +
 '<span class="near-me-route-name">' + escapeHtml(r.routeName) + '</span>' +
 '<time class="near-me-route-time">' + escapeHtml(r.time) + '</time></li>';
 }).join('') + '</ul>' : '') +
-'</div><div class="near-me-item-dist">約 ' + distText + '</div></div>';
+'</div><div class="near-me-item-side"><div class="near-me-item-dist">約 ' + distText + '</div>' +
+'<a class="near-me-walk" href="' + walkUrl + '" target="_blank" rel="noopener" aria-label="用 Google 地圖步行導航到 ' + escapeHtml(item.name) + '">走過去<span aria-hidden="true"> ↗</span></a>' +
+'</div></div>';
 }).join('') + '</div>';
 resultList.innerHTML = html;
-resultList.querySelectorAll('.near-me-item').forEach(function(el){
-function activate(){
-input.value = el.getAttribute('data-name');
+resultList.querySelectorAll('.near-me-item-open').forEach(function(btn){
+btn.addEventListener('click', function(){
+input.value = btn.getAttribute('data-name');
 updateClearBtn();
 doSearch();
-}
-el.addEventListener('click', activate);
-el.addEventListener('keydown', function(e){
-if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); activate(); }
 });
+});
+resultList.querySelectorAll('.near-me-walk').forEach(function(a){
+a.addEventListener('click', function(){ trackEvent('校車查詢：步行導航到站牌'); });
 });
 }
 
