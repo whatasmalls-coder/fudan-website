@@ -40,11 +40,11 @@ const PRECACHE_URLS = [
   '/news.json',
   '/js/stops-coords.json',
   // fonts:precache:start
-  '/fonts/NotoSansTC-400-700-all.b473b866.woff2',
+  '/fonts/NotoSansTC-400-700-all.53a03928.woff2',
   '/fonts/NotoSansTC-400-all.671ad479.woff2',
   '/fonts/NotoSansTC-500-all.0d089481.woff2',
   '/fonts/NotoSansTC-700-all.e0d0d103.woff2',
-  '/fonts/NotoSerifTC-600-700-all.7983f369.woff2',
+  '/fonts/NotoSerifTC-600-700-all.1d6331d6.woff2',
   '/fonts/NotoSerifTC-600-all.b6b4706c.woff2',
   '/fonts/NotoSerifTC-700-all.94887a94.woff2',
   // fonts:precache:end
