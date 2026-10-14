@@ -674,7 +674,7 @@ var AI_PROXY_URL = "https://fudan-ai-proxy.whatasmalls.workers.dev";
 /* ===== 站牌問題回報 =====
  * 送到 Worker 的 /report，由 Worker 在 GitHub 開 Issue（Worker 完整原始碼見 cloudflare-worker/worker.js）。
  * Worker 還沒裝好之前保持 false，按鈕不會出現。 */
-var REPORT_ENABLED = false;
+var REPORT_ENABLED = true;
 var REPORT_TYPES = [
 ['location', '站牌位置不對'],
 ['info', '站名或時間有誤'],
