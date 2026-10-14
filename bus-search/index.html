@@ -292,7 +292,7 @@ nearMeStatus.classList.toggle('error', !!isError);
 var IS_IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 function renderNearMeResults(items){
-resultCount.innerHTML = '離你最近的 <b>' + items.length + '</b> 個站牌：';
+resultCount.innerHTML = '離你最近的 <b>' + items.length + '</b> 個站牌（距離是直線距離，實際走路會比較遠）：';
 var html = '<div class="near-me-results">' + items.map(function(item){
 var distText = item.dist >= 1000 ? (item.dist/1000).toFixed(1) + ' 公里' : Math.round(item.dist) + ' 公尺';
 // 起點不帶，地圖 App 會自動用使用者目前位置。
@@ -308,7 +308,7 @@ return '<li><span class="near-me-route-no">' + escapeHtml(r.routeNo) + '號</spa
 '<span class="near-me-route-name">' + escapeHtml(r.routeName) + '</span>' +
 '<time class="near-me-route-time">' + escapeHtml(r.time) + '</time></li>';
 }).join('') + '</ul>' : '') +
-'</div><div class="near-me-item-side"><div class="near-me-item-dist">約 ' + distText + '</div>' +
+'</div><div class="near-me-item-side"><div class="near-me-item-dist">直線 ' + distText + '</div>' +
 '<a class="near-me-walk" href="' + walkUrl + '" target="_blank" rel="noopener" aria-label="用' + (IS_IOS ? ' Apple ' : ' Google ') + '地圖步行導航到 ' + escapeHtml(item.name) + '">走過去<span aria-hidden="true"> ↗</span></a>' +
 '</div></div>';
 }).join('') + '</div>';
