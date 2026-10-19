@@ -31,6 +31,9 @@ jobs:
       - name: 校曆 PDF 解析規則（被換行切開的活動要黏回去、獨立活動不能誤黏）
         run: python scripts/test_scrape_calendar.py
 
+      - name: calendar.ics（手機行事曆訂閱）是否跟 calendar.json 同步
+        run: python scripts/build_ics.py --check
+
       # 下面兩項「沒同步」時，push 後的「字型補字」workflow 會自動重新產生並 commit，
       # 所以只顯示黃色提醒、不讓這次檢查變紅色。
       - name: 預先寫進 HTML 的路線／校曆／公告是否跟資料同步

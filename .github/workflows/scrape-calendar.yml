@@ -23,6 +23,10 @@ jobs:
       - name: Scrape calendar
         run: python scripts/scrape_calendar.py
 
+      - name: 產生 calendar.ics（給「加到手機行事曆」訂閱用）
+        continue-on-error: true
+        run: python scripts/build_ics.py
+
       - name: 把校曆事件寫進 calendar/index.html（讓 Google 讀得到）
         continue-on-error: true
         run: python scripts/build_static_html.py
@@ -41,6 +45,7 @@ jobs:
           # 分開 add，一個檔案不存在（例如成功時不會有 calendar_debug.json）
           # 不會連累其他真的存在的檔案沒被 stage 到。
           git add calendar.json 2>/dev/null || true
+          git add calendar.ics 2>/dev/null || true
           git add calendar_debug.json 2>/dev/null || true
           # 字型分片會同時改到各頁 @font-face 和 sw.js，要一起 commit
           git add fonts/ sw.js '*.html' sitemap.xml llms.txt 2>/dev/null || true
