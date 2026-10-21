@@ -406,15 +406,19 @@ if(!selectedDate) selectedDate = dates[dates.length - 1];
 var allDates = allEvents.map(function(e){ return e.date; }).sort();
 var y = +allDates[0].slice(0, 4), m = +allDates[0].slice(5, 7) - 1;
 var endKey = allDates[allDates.length - 1].slice(0, 7);
+var semStart = allDates[0], semEnd = allDates[allDates.length - 1];
 var html = '<div class="mgrid-legend" aria-hidden="true"><span><i class="lg-holiday"></i>放假</span><span><i class="lg-exam"></i>段考、學測</span></div>';
 while(true){
 var key = y + '-' + pad(m + 1);
 if(key > endKey) break;
+// 這個月沒有符合的行事就整個月不顯示
+if(!dates.some(function(x){ return x.slice(0, 7) === key; })){ if(++m > 11){ m = 0; y++; } continue; }
 var hasToday = todayStr.slice(0, 7) === key;
 html += '<section class="month-section"' + (hasToday ? ' id="todayAnchor"' : '') + '><h2 class="month-title">' + MONTH_NAMES[m] + '<span class="month-year">' + y + '</span></h2><div class="mgrid">';
 WEEKDAY_NAMES.forEach(function(w, i){ html += '<div class="mgrid-wd' + (i === 0 || i === 6 ? ' is-weekend' : '') + '" aria-hidden="true">' + w + '</div>'; });
 var first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate();
-for(var b = 0; b < first; b++) html += '<div class="mcell is-blank" aria-hidden="true"></div>';
+var cells = [];
+for(var b = 0; b < first; b++) cells.push({ date: null, html: '<div class="mcell is-blank" aria-hidden="true"></div>' });
 var detail = '';
 for(var d = 1; d <= days; d++){
 var ds = key + '-' + pad(d), wd = (first + d - 1) % 7, evs = byDate[ds] || [];
@@ -429,15 +433,21 @@ inner += '</span>';
 if(evs.length > 3) inner += '<span class="mmore">還有 ' + (evs.length - 3) + ' 項</span>';
 var sel = ds === selectedDate;
 if(sel) cls += ' is-selected';
-html += '<button type="button" class="' + cls + '" data-date="' + ds + '" aria-pressed="' + sel + '" aria-label="' + dayLabel(ds) + (ds === todayStr ? '，今天' : '') + '，' + evs.length + ' 項行事">' + inner + '</button>';
+cells.push({ date: ds, html: '<button type="button" class="' + cls + '" data-date="' + ds + '" aria-pressed="' + sel + '" aria-label="' + dayLabel(ds) + (ds === todayStr ? '，今天' : '') + '，' + evs.length + ' 項行事">' + inner + '</button>' });
 if(sel){
 detail = '<div class="mday-head">' + dayLabel(ds) + (ds === todayStr ? '・今天' : '') + '</div><div class="day-events">';
 evs.forEach(function(e){ detail += '<div class="event-item"><span class="event-tag tag-' + escapeHtml(e.category) + '">' + escapeHtml(e.category) + '</span><span class="event-title">' + highlight(e.title) + '</span></div>'; });
 detail += '</div>';
 }
 } else {
-html += '<div class="' + cls + '"' + (ds === todayStr ? ' aria-label="' + dayLabel(ds) + '，今天"' : ' aria-hidden="true"') + '>' + inner + '</div>';
+cells.push({ date: ds, html: '<div class="' + cls + '"' + (ds === todayStr ? ' aria-label="' + dayLabel(ds) + '，今天"' : ' aria-hidden="true"') + '>' + inner + '</div>' });
 }
+}
+// 學期開始前、結束後整週都是空白的那幾排不顯示
+for(var w = 0; w < cells.length; w += 7){
+var week = cells.slice(w, w + 7);
+if(!week.some(function(c){ return c.date && c.date >= semStart && c.date <= semEnd; })) continue;
+week.forEach(function(c){ html += c.html; });
 }
 html += '</div><div class="mday-detail" aria-live="polite"' + (detail ? '' : ' hidden') + '>' + detail + '</div></section>';
 if(++m > 11){ m = 0; y++; }
