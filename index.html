@@ -66,7 +66,7 @@ header{position:static !important;background:var(--card-bg) !important;box-shado
 a{color:#000 !important}
 .outcome-row,.track,.faculty-stat{color:#000 !important}
 }
-@media (max-width:480px){.brand-sub{letter-spacing:0.16em;white-space:nowrap}}@media (max-width:359px){.brand-sub{letter-spacing:0.06em}}</style>
+@media (max-width:480px){.brand-sub{letter-spacing:0.16em;white-space:nowrap}}@media (max-width:359px){.brand-sub{letter-spacing:0.06em}}.news-new{display:inline-block;margin-right:6px;padding:1px 7px;border-radius:999px;background:var(--dawn);color:var(--navy-deep);font-size:0.68rem;font-weight:700;line-height:1.5;vertical-align:1px}</style>
 <script type="application/ld+json">
 {
 "@context": "https://schema.org",
@@ -238,6 +238,21 @@ var skeletonHtml = '';
 for(var i=0;i<3;i++){ skeletonHtml += '<div class="skeleton-item"></div>'; }
 list0.innerHTML = skeletonHtml;
 })();
+// 今天（台灣時間）發布的公告，標題前加「新」
+function markNewNews(list){
+if(!list) return;
+var t = new Date(Date.now() + 8 * 3600 * 1000).toISOString().slice(0, 10).replace(/-/g, '.');
+list.querySelectorAll('.news-item').forEach(function(a){
+var d = a.querySelector('.news-date'), title = a.querySelector('.news-title');
+if(!d || !title || title.querySelector('.news-new')) return;
+if(d.textContent.trim() === t){
+var b = document.createElement('span'); b.className = 'news-new'; b.textContent = '新';
+var sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = '公告：';
+b.appendChild(sr); title.insertBefore(b, title.firstChild);
+}
+});
+}
+markNewNews(document.getElementById('newsList'));
 fetch('/news.json')
 .then(function(r){ return r.ok ? r.json() : null; })
 .then(function(items){
@@ -257,6 +272,7 @@ html += '<a class="news-item" href="' + escapeHtml(safeHref(item.link)) + '" tar
 list.style.opacity = '0';
 setTimeout(function(){
 list.innerHTML = html;
+markNewNews(list);
 list.style.opacity = '1';
 }, 220);
 })
