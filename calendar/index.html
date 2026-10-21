@@ -146,7 +146,7 @@ button.mcell:hover{border-color:var(--dawn)}
 <h1>校曆</h1>
 <p>依校方公告的學期行事曆整理，可依分類篩選。日期或活動內容如有異動，請以總務處最新公告為準。</p>
 <div data-exam-countdown></div>
-<div class="hero-actions"><div class="view-toggle" role="group" aria-label="檢視方式"><button type="button" data-view="month" aria-pressed="false">月曆</button><button type="button" data-view="list" aria-pressed="true">清單</button></div><button type="button" class="jump-today is-pending" id="jumpToday" aria-hidden="true" tabindex="-1">↓ 跳到今天</button></div>
+<div class="hero-actions"><div class="view-toggle" role="group" aria-label="檢視方式"><button type="button" data-view="month" aria-pressed="true">月曆</button><button type="button" data-view="list" aria-pressed="false">清單</button></div><button type="button" class="jump-today is-pending" id="jumpToday" aria-hidden="true" tabindex="-1">↓ 跳到今天</button></div>
 </header>
 <div class="cal-search" role="search"><label for="calSearch" class="sr-only">搜尋校曆</label><input type="search" id="calSearch" placeholder="搜尋校曆，例如：定期評量、補假" enterkeyhint="search" autocomplete="off"></div>
 <div class="filter-wrap" id="filterWrap" role="region" aria-label="依分類篩選"></div>
@@ -201,9 +201,9 @@ var contentEl = document.getElementById('calendarContent');
 var filterWrap = document.getElementById('filterWrap');
 var activeCategory = null;
 var jumpBtn = document.getElementById('jumpToday');
-// 檢視方式：清單（預設）或月曆；記在網址 ?view=month 和這台裝置上
-var view = 'list';
-try{ if(localStorage.getItem('calView') === 'month') view = 'month'; }catch(e){}
+// 檢視方式：月曆（預設）或清單；改選清單會記在網址 ?view=list 和這台裝置上
+var view = 'month';
+try{ if(localStorage.getItem('calViewPref') === 'list') view = 'list'; }catch(e){}
 try{ var v0 = new URLSearchParams(location.search).get('view'); if(v0 === 'month' || v0 === 'list') view = v0; }catch(e){}
 var selectedDate = null;
 var viewBtns = document.querySelectorAll('.view-toggle button');
@@ -214,7 +214,7 @@ b.addEventListener('click', function(){
 var v = b.getAttribute('data-view');
 if(v === view) return;
 view = v;
-try{ localStorage.setItem('calView', view); }catch(e){}
+try{ localStorage.setItem('calViewPref', view); }catch(e){}
 syncViewBtns();
 if(allEvents.length) refresh();
 });
@@ -276,7 +276,7 @@ var params = new URLSearchParams(location.search);
 var raw = searchInput.value.trim();
 if(raw) params.set('q', raw); else params.delete('q');
 if(activeCategory) params.set('cat', activeCategory); else params.delete('cat');
-if(view === 'month') params.set('view', 'month'); else params.delete('view');
+if(view === 'list') params.set('view', 'list'); else params.delete('view');
 var qs = params.toString();
 history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
 }catch(e){}
