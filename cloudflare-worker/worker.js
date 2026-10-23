@@ -248,9 +248,12 @@ async function handleReport(request, env) {
   if (type === "other" && !note) return reportJson({ ok: false, error: "need_note" }, 400, origin);
 
   const loc = data.location || {};
-  const lat = num(loc.lat, 21, 27);
-  const lng = num(loc.lng, 118, 123);
-  const acc = num(loc.accuracy, 0, 100000);
+  // 隱私：回報者位置一律取到小數點後 3 位（約 100 公尺）才寫進公開的 GitHub issue
+  const blur = (v) => (v == null ? null : Math.round(v * 1000) / 1000);
+  const lat = blur(num(loc.lat, 21, 27));
+  const lng = blur(num(loc.lng, 118, 123));
+  const accRaw = num(loc.accuracy, 0, 100000);
+  const acc = accRaw == null ? null : Math.max(100, accRaw);
   const cur = data.currentCoords || {};
   const curLat = num(cur.lat, 21, 27);
   const curLng = num(cur.lng, 118, 123);

@@ -1,7 +1,7 @@
 {
   "name": "復旦高中 Fudan Senior High School",
   "short_name": "復旦高中",
-  "description": "復旦高中官方形象網站，提供學校介紹、師資課程、升學表現、最新消息與校車路線查詢。",
+  "description": "學生自製的復旦高中非官方資訊網站，提供學校介紹、師資課程、升學表現、最新消息與校車路線查詢。",
   "start_url": "/?utm_source=app&utm_medium=pwa",
   "scope": "/",
   "display": "standalone",
