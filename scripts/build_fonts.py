@@ -112,7 +112,7 @@ PAGE_SOURCES = {
     "bus": ["bus-search/index.html", "js/routes.json", "js/stops-coords.json"],
 }
 # 不屬於特定頁面、但網站上會出現的字 → other（除非也在某頁出現）
-OTHER_SOURCES = ["404.html", "admin.html", "bus-search.html", "js/ai-shared.js"]
+OTHER_SOURCES = ["404.html", "privacy/index.html", "admin.html", "bus-search.html", "js/ai-shared.js"]
 
 # 各頁面：宣告哪些字重（沿用頁面原本就有的），以及要 preload 哪幾個 (字體, 字重)。
 # preload 會預載該字重、這一頁會用到的所有分片。
@@ -123,6 +123,7 @@ PAGES = {
                             "weights": [("sans", 400), ("sans", 500), ("sans", 700), ("serif", 700)],
                             "preload": [("serif", 700), ("sans", 400), ("sans", 700)]},
     "bus-search/index.html": {"slice": "bus", "weights": WEIGHTS, "preload": []},
+    "privacy/index.html": {"slice": None, "weights": [("sans", 400), ("sans", 700), ("serif", 700)], "preload": []},
     "404.html": {"slice": None, "weights": [("sans", 400), ("sans", 700), ("serif", 700)], "preload": []},
     "admin.html": {"slice": None, "weights": [("sans", 400), ("sans", 500), ("sans", 700)], "preload": []},
 }
