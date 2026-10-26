@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write   # 讓這個 workflow 有權限 commit / push 回這個 repo
+  issues: write     # 公告抓取異常時開／關「公告更新異常」issue
 
 # 公告更新和 AI 摘要都會改 news.json：排隊一個一個跑，避免兩個同時 push 互相衝突
 # （10/7 手動觸發剛好撞上排程，兩個 AI 摘要同時改 news.json，其中一個 rebase 衝突失敗）
@@ -56,3 +57,39 @@ jobs:
             git pull --rebase   # 同時有別的 commit 推上來時先接上，避免 push 被拒絕
             git push
           fi
+
+      - name: 健康檢查：抓不到公告或太久沒新公告就開 issue 提醒
+        if: always()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync('news_health.json')) { core.warning('沒有產生 news_health.json'); return; }
+            const h = JSON.parse(fs.readFileSync('news_health.json', 'utf8'));
+            const STALE_DAYS = 5;
+            const problems = [];
+            for (const s of h.sources) {
+              if (s.status === 'parsed_zero') problems.push(`- **${s.name}**：連得上官網，但一則公告都沒抓到，可能是官網改版、格式對不上。`);
+            }
+            // 台灣時間的今天
+            const today = new Date(Date.now() + 8 * 3600e3);
+            let days = null;
+            if (h.newest) {
+              const d = new Date(h.newest.replace(/\./g, '-') + 'T00:00:00+08:00');
+              days = Math.floor((today - d) / 86400e3);
+              if (days > STALE_DAYS) problems.push(`- 最新一則公告是 **${h.newest}**，已經 ${days} 天沒有新公告。可能只是學校沒發（例如放假），也可能是抓取出問題，請打開官網確認。`);
+            }
+            const { owner, repo } = context.repo;
+            const open = await github.rest.issues.listForRepo({ owner, repo, state: 'open', labels: 'news-health' });
+            const existing = open.data[0];
+            if (problems.length) {
+              const detail = h.sources.map(s => `- ${s.name}：${s.status}，抓到 ${s.count} 則${s.newest ? '，最新 ' + s.newest : ''}${s.error ? '（' + s.error + '）' : ''}`).join('\n');
+              const body = `## 最新消息自動更新可能有問題\n\n${problems.join('\n')}\n\n### 這次的抓取結果（${h.checkedAt.slice(0, 16)} UTC）\n${detail}\n\n官網：https://www.fdhs.tyc.edu.tw\n\n恢復正常後這個 issue 會自動關閉。`;
+              const title = '⚠️ 最新消息自動更新異常';
+              if (existing) await github.rest.issues.update({ owner, repo, issue_number: existing.number, title, body });
+              else await github.rest.issues.create({ owner, repo, title, body, labels: ['news-health'] });
+            } else if (existing) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: existing.number,
+                body: `${h.checkedAt.slice(0, 10)} 檢查正常（最新公告 ${h.newest}），自動關閉。` });
+              await github.rest.issues.update({ owner, repo, issue_number: existing.number, state: 'closed' });
+            }

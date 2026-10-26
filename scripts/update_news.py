@@ -119,6 +119,7 @@ def scrape_source(source):
     except Exception as e:
         print(f"[{source['name']}] 這次連不上（可能是暫時維護或網路逾時），跳過這個來源。")
         print(f"[{source['name']}] 實際錯誤訊息（僅供除錯參考）：{e}")
+        HEALTH["sources"].append({"name": source["name"], "status": "fetch_error", "count": 0, "error": str(e)[:200]})
         return []
 
     items = []
@@ -137,6 +138,9 @@ def scrape_source(source):
             }
         )
     print(f"[{source['name']}] 這次抓到 {len(items)} 則公告。")
+    # 連得上卻一則都沒抓到 → 多半是官網改版、格式對不上（健康檢查會開 issue 提醒）
+    HEALTH["sources"].append({"name": source["name"], "status": "ok" if items else "parsed_zero", "count": len(items),
+                              "newest": max((it["date"] for it in items), default=None)})
     return items
 
 
@@ -189,8 +193,25 @@ def update_sitemap_lastmod():
         print("更新 sitemap.xml 時發生問題（不影響公告更新）：" + str(e))
 
 
+# 給 workflow 的健康檢查用：每個來源抓到幾則、最新公告日期（寫到 news_health.json，不 commit）
+HEALTH = {"sources": []}
+HEALTH_PATH = os.path.join(os.path.dirname(__file__), "..", "news_health.json")
+
+
+def write_health(scraped):
+    dates = [it.get("date", "") for it in scraped + load_news() if it.get("date")]
+    HEALTH["newest"] = max(dates) if dates else None
+    HEALTH["checkedAt"] = datetime.now(timezone.utc).isoformat()
+    try:
+        with open(HEALTH_PATH, "w", encoding="utf-8") as f:
+            json.dump(HEALTH, f, ensure_ascii=False, indent=2)
+    except OSError as e:
+        print(f"健康檢查檔寫入失敗（不影響更新）：{e}")
+
+
 def main():
     scraped = scrape_all()
+    write_health(scraped)
 
     if not scraped:
         print("這次所有來源都沒有抓到任何公告，可能是官網格式改變了。為了安全，不修改 news.json。")
