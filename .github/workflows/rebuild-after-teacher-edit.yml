@@ -1,0 +1,54 @@
+name: 老師後台存檔後重新產生首頁
+
+# 老師在後台儲存 news.json 後，Worker 會用老師的 GitHub 權限 push 進來。
+# 這裡負責把首頁的靜態 HTML（給 Google 讀的內容）同步更新。
+# 排程抓公告（github-actions[bot]）自己已經會重建，所以這裡跳過它的 commit，避免重複執行。
+on:
+  push:
+    branches: [main]
+    paths: [news.json]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: news-json
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 取得 repo 內容
+        uses: actions/checkout@v5
+
+      - name: 設定 Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: 安裝字型工具
+        run: pip install fonttools brotli
+
+      - name: 把最新公告寫進首頁 HTML
+        run: python scripts/build_static_html.py
+
+      - name: 字型補字
+        run: python scripts/build_fonts.py
+
+      - name: 確認所有頁面引用的檔案都存在
+        run: python scripts/check_local_asset_refs.py
+
+      - name: 如果有變動就 commit + push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- news.json sitemap.xml llms.txt fonts/ sw.js '*.html')" ]; then
+            echo "沒有需要更新的檔案"
+          else
+            git add news.json sitemap.xml llms.txt fonts/ sw.js '*.html'
+            git commit -m "依後台修改重新產生首頁 ($(date -u +'%Y-%m-%d %H:%M'))"
+            git pull --rebase
+            git push
+          fi
