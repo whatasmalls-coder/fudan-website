@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://fudan-admin.whatasmalls.workers.dev; frame-src https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>復旦高中 | 最新消息編輯後台</title>
@@ -32,335 +32,360 @@
 @font-face{font-family:'Noto Sans TC';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/NotoSansTC-400-700-other.b5454b87.woff2') format('woff2');unicode-range:U+4E45,U+4E82,U+4F3A,U+4F46,U+4F75,U+5009,U+503C,U+522A,U+5247,U+52FF,U+5426,U+584A,U+5957,U+59D3,U+5C01,U+5C1A,U+5C3E,U+5E95,U+6089,U+6191,U+628A,U+62FF,U+6309,U+6372,U+64CB,U+64CD-64CE,U+6691,U+6756,U+683C,U+6846,U+6ABB,U+6B04,U+6BEB,U+6C7A,U+6D6E,U+6E4A,U+719F,U+731C,U+7559,U+7591,U+76E1,U+7A69,U+7D66,U+7DEF,U+7E7C,U+804A,U+8166,U+8490,U+88AB,U+8A3B,U+8A72,U+8B93,U+8C61,U+8D05,U+8E64,U+8F15,U+9072,U+9215,U+9396,U+975C,U+97FF,U+983B}
 /*fonts:end*/
 button,input,select,textarea{font-family:inherit}
-      @font-face{font-family:'Noto Sans TC Fallback';src:local('PingFang TC'),local('Microsoft JhengHei'),local('Noto Sans CJK TC'),local('Heiti TC');ascent-override:88%;descent-override:12%;line-gap-override:0%}
+  @font-face{font-family:'Noto Sans TC Fallback';src:local('PingFang TC'),local('Microsoft JhengHei'),local('Noto Sans CJK TC'),local('Heiti TC');ascent-override:88%;descent-override:12%;line-gap-override:0%}
   :root{
     --navy-deep:#0e1a30; --navy:#16274a; --dawn:#d4a24c; --dawn-text:#8f6424;
     --paper:#f6f3ec; --paper-dim:#eae5d8; --ink:#20242e; --slate:#5a6072; --line:rgba(20,30,55,0.12);
+    --ok:#1a7a3a; --ok-bg:#e6f4ea; --err:#b3392f; --err-bg:#fbe7e6;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans TC','Noto Sans TC Fallback',sans-serif;line-height:1.7;}
   header{background:var(--navy-deep);color:#fff;padding:28px 24px;}
   header h1{margin:0 0 6px;font-size:1.3rem;}
-  header p{margin:0;color:rgba(255,255,255,0.6);font-size:0.85rem;}
-  main{max-width:760px;margin:0 auto;padding:32px 20px 100px;}
-
-  .box{background:#fff;border:1px solid var(--line);border-radius:4px;padding:24px;margin-bottom:24px;}
-  .box h2{margin-top:0;font-size:1.05rem;color:var(--navy);}
-  .hint{font-size:0.85rem;color:var(--slate);line-height:1.8;}
-  .hint a{color:var(--dawn-text);}
-  label{display:block;font-size:0.85rem;font-weight:600;color:var(--navy);margin:14px 0 6px;}
-  input[type=text],input[type=password],input[type=url]{
-    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:3px;font-size:0.95rem;font-family:inherit;
-  }
-  .btn{
-    display:inline-block;padding:11px 22px;border-radius:3px;border:none;cursor:pointer;
-    font-size:0.9rem;font-weight:600;font-family:inherit;
-  }
+  header p{margin:0;color:rgba(255,255,255,0.7);font-size:0.85rem;}
+  main{max-width:760px;margin:0 auto;padding:28px 20px 100px;}
+  .box{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px;margin-bottom:24px;}
+  .box[hidden]{display:none;}
+  .box h2{margin:0 0 8px;font-size:1.05rem;color:var(--navy);}
+  .hint{font-size:0.86rem;color:var(--slate);line-height:1.8;margin:0 0 16px;}
+  .who{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:0.86rem;color:var(--slate);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+  .who b{color:var(--navy);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 18px;border-radius:4px;border:none;cursor:pointer;font-size:0.9rem;font-weight:600;font-family:inherit;}
   .btn-primary{background:var(--dawn);color:var(--navy-deep);}
   .btn-primary:hover{background:#e0b562;}
   .btn-ghost{background:var(--paper-dim);color:var(--navy);}
-  .btn-danger{background:#c0392b;color:#fff;}
+  .btn-ghost:hover{background:#dcd5c2;}
+  .btn-danger{background:#fff;color:var(--err);border:1px solid #e7b5b0;}
+  .btn-sm{min-height:34px;padding:6px 12px;font-size:0.82rem;}
   .btn:disabled{opacity:0.5;cursor:not-allowed;}
-
-  #status{margin-top:14px;font-size:0.88rem;padding:10px 14px;border-radius:3px;display:none;}
-  #status.ok{display:block;background:#e6f4ea;color:#1a7a3a;}
-  #status.err{display:block;background:#fbe7e6;color:#c0392b;}
-  #status.loading{display:block;background:var(--paper-dim);color:var(--slate);}
-
-  .item{border:1px solid var(--line);border-radius:3px;padding:16px;margin-bottom:12px;background:var(--paper);}
-  .item-row{display:grid;grid-template-columns:120px 100px 1fr;gap:10px;margin-bottom:8px;}
-  .item-row input{font-size:0.85rem;padding:8px 10px;}
-  .item-actions{text-align:right;margin-top:8px;}
-  .item-actions button{font-size:0.78rem;padding:5px 12px;}
-
-  .unsaved-badge{display:none;margin-left:10px;font-size:0.78rem;font-weight:700;color:#c0392b;background:#fbe7e6;padding:3px 9px;border-radius:10px;vertical-align:middle;}
-  .unsaved-badge.show{display:inline-block;}
-
-  #editorArea{display:none;}
+  .btn:focus-visible,input:focus-visible{outline:3px solid var(--dawn);outline-offset:2px;}
+  .status{margin:14px 0 0;font-size:0.9rem;padding:10px 14px;border-radius:4px;}
+  .status[hidden]{display:none;}
+  .status.ok{background:var(--ok-bg);color:var(--ok);}
+  .status.err{background:var(--err-bg);color:var(--err);}
+  .status.info{background:var(--paper-dim);color:var(--slate);}
+  .badge{display:inline-block;margin-left:8px;font-size:0.78rem;font-weight:700;color:var(--err);background:var(--err-bg);padding:2px 9px;border-radius:10px;vertical-align:middle;}
+  .badge[hidden]{display:none;}
+  .item{border:1px solid var(--line);border-radius:4px;padding:14px;margin-bottom:12px;background:var(--paper);}
+  .grid{display:grid;grid-template-columns:130px 110px 1fr;gap:10px;}
+  .field{display:flex;flex-direction:column;gap:4px;min-width:0;}
+  .field span{font-size:0.78rem;font-weight:600;color:var(--navy);}
+  .field input{width:100%;padding:9px 10px;border:1px solid #cfc8b6;border-radius:3px;font-size:0.92rem;background:#fff;color:var(--ink);}
+  .link-field{margin-top:10px;}
+  .row-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  hr{margin:24px 0;border:none;border-top:1px solid var(--line);}
   @media (max-width:600px){
-    .item-row{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    main{padding:20px 16px 100px;}
+    .box{padding:18px;}
   }
 </style>
 </head>
 <body>
-
-<div id="lockScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;">
-  <div style="max-width:340px;width:100%;background:#fff;border-radius:12px;padding:32px 24px;box-shadow:0 8px 24px rgba(20,30,55,0.12);">
-    <h2 style="margin:0 0 8px;font-size:1.15rem;">🔒 需要密碼</h2>
-    <p style="margin:0 0 18px;color:var(--slate);font-size:0.85rem;">此頁面僅供內部維護使用，請輸入密碼繼續。</p>
-    <input type="password" id="lockPasswordInput" placeholder="請輸入密碼" autocomplete="off" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
-    <button class="btn btn-primary" id="lockSubmitBtn" style="width:100%;margin-top:12px;">進入</button>
-    <div id="lockError" style="color:#b3392f;font-size:0.82rem;margin-top:10px;display:none;">密碼錯誤，請再試一次。</div>
-  </div>
-</div>
-
-<div id="adminContent" style="display:none;">
 <header>
-  <h1>📝 最新消息編輯後台</h1>
-  <p>此頁面僅供學校內部維護網站內容使用，一般訪客請勿在此操作</p>
+  <h1>📝 最新消息後台</h1>
+  <p>僅供學校老師維護網站內容。儲存後約 1–2 分鐘會更新到網站。</p>
 </header>
-
 <main>
-  <div class="box">
-    <h2>第一步：連接 GitHub</h2>
-    <div class="hint">
-      需要一組 GitHub 個人存取權杖（Personal Access Token）才能儲存變更。<br>
-      取得方式：登入 GitHub → 右上角頭像 → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token，Repository access 選擇這個網站的倉庫，Permissions 的 Contents 設為 Read and write。<br>
-      <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">直接前往建立權杖 →</a><br>
-      <b>權杖只會暫存在你目前的瀏覽器分頁，關閉分頁後就會消失，不會外流或儲存在任何地方。</b>
-      若瀏覽器跳出「要儲存這組密碼嗎？」的提示，請選擇「不要儲存」，避免權杖被瀏覽器永久記住。
-    </div>
-    <label for="tokenInput">GitHub 權杖</label>
-    <input type="password" id="tokenInput" placeholder="ghp_ 或 github_pat_ 開頭的權杖" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-bwignore>
-    <label for="repoInput">倉庫（格式：帳號名稱/倉庫名稱）</label>
-    <input type="text" id="repoInput" value="whatasmalls-coder/fudan-website" autocomplete="off">
-    <div style="margin-top:16px;">
-      <button class="btn btn-primary" id="connectBtn">連接並載入目前內容</button>
-    </div>
-    <div id="status"></div>
-  </div>
+  <section class="box" id="loginBox">
+    <h2>老師登入</h2>
+    <p class="hint">請用後台名單中的 Google 帳號登入。若不確定自己有沒有權限，請聯絡管理者。</p>
+    <div id="gBtn"></div>
+    <p class="status info" id="loginNotice" hidden></p>
+  </section>
 
-  <div class="box" id="editorArea">
-    <h2>最新消息列表 <span class="unsaved-badge" id="unsavedBadge">尚未儲存</span></h2>
-    <div class="hint" style="margin-bottom:16px;">最上面的會顯示在網站最前面，建議把最新的公告排在最上方。</div>
-    <div id="itemsContainer"></div>
-    <button class="btn btn-ghost" id="addItemBtn">＋ 新增一則消息</button>
-    <hr style="margin:24px 0;border:none;border-top:1px solid var(--line);">
-    <button class="btn btn-primary" id="saveBtn">💾 儲存變更到網站</button>
-    <div id="saveStatus"></div>
-  </div>
+  <section class="box" id="editorBox" hidden>
+    <div class="who">
+      <span>已登入：<b id="whoEmail"></b></span>
+      <button class="btn btn-ghost btn-sm" id="signOutBtn" type="button">登出</button>
+    </div>
+    <h2>最新消息 <span class="badge" id="dirtyBadge" hidden>尚未儲存</span></h2>
+    <p class="hint">最上面的會顯示在網站最前面。新增的消息會放在最上方；用 ↑ ↓ 可以調整順序。</p>
+    <div id="items"></div>
+    <button class="btn btn-ghost" id="addBtn" type="button">＋ 新增一則消息</button>
+    <hr>
+    <button class="btn btn-primary" id="saveBtn" type="button">💾 儲存並發布到網站</button>
+    <p class="status" id="status" role="status" hidden></p>
+    <div id="reauthBox" hidden>
+      <p class="hint" style="margin-top:14px;">登入已過期。你的內容還在畫面上，請重新登入後再按一次儲存。</p>
+      <div id="gBtn2"></div>
+    </div>
+  </section>
 </main>
-</div>
-
-<script>
-/* 前端密碼鎖：只是擋掉隨手亂點或搜尋引擎意外收錄的訪客，
-   不是真正的資安防護 —— 真正的防線是需要有效的 GitHub Token 才能實際存檔。
-   密碼用 SHA-256 雜湊比對，原始密碼不會出現在程式碼裡。 */
-(function(){
-  var CORRECT_HASH = '86f7227b0ad1c27e540da20d7cfcca1611509c9f8a250b391f6a1f63e2e1efea';
-  var UNLOCK_SESSION_KEY = 'fd_admin_unlocked';
-
-  var lockScreen = document.getElementById('lockScreen');
-  var adminContent = document.getElementById('adminContent');
-  var pwInput = document.getElementById('lockPasswordInput');
-  var submitBtn = document.getElementById('lockSubmitBtn');
-  var errorEl = document.getElementById('lockError');
-
-  async function sha256Hex(text){
-    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2, '0'); }).join('');
-  }
-
-  function unlock(){
-    lockScreen.style.display = 'none';
-    adminContent.style.display = '';
-    try{ sessionStorage.setItem(UNLOCK_SESSION_KEY, '1'); }catch(e){}
-  }
-
-  async function tryUnlock(){
-    var hash = await sha256Hex(pwInput.value);
-    if(hash === CORRECT_HASH){
-      errorEl.style.display = 'none';
-      unlock();
-    }else{
-      errorEl.style.display = '';
-      pwInput.value = '';
-      pwInput.focus();
-    }
-  }
-
-  // 同一個瀏覽器分頁的 session 內，不用每次重新整理都再輸入一次
-  try{
-    if(sessionStorage.getItem(UNLOCK_SESSION_KEY) === '1') unlock();
-  }catch(e){}
-
-  submitBtn.addEventListener('click', tryUnlock);
-  pwInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') tryUnlock(); });
-})();
-</script>
+<datalist id="tagList">
+  <option value="招生"></option><option value="校車"></option><option value="獎助學金"></option>
+  <option value="競賽"></option><option value="研習"></option><option value="榮譽"></option>
+  <option value="行政"></option><option value="防疫"></option><option value="防災"></option>
+  <option value="活動"></option><option value="轉知"></option>
+</datalist>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 (function(){
-  var FILE_PATH = 'news.json';
-  var currentSha = null;
-  var isDirty = false;
+  // ===== 設定（部署 Worker 與 Google 登入後填入）=====
+  var ADMIN_API = 'https://fudan-admin.whatasmalls.workers.dev';
+  var GOOGLE_CLIENT_ID = 'REPLACE_WITH_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+  var DEFAULT_LINK = 'https://www.fdhs.tyc.edu.tw';
+  // =================================================
 
-  var tokenInput = document.getElementById('tokenInput');
-  var repoInput = document.getElementById('repoInput');
-  var connectBtn = document.getElementById('connectBtn');
-  var statusEl = document.getElementById('status');
-  var editorArea = document.getElementById('editorArea');
-  var itemsContainer = document.getElementById('itemsContainer');
-  var addItemBtn = document.getElementById('addItemBtn');
-  var saveBtn = document.getElementById('saveBtn');
-  var saveStatus = document.getElementById('saveStatus');
-  var unsavedBadge = document.getElementById('unsavedBadge');
+  var idToken = null;   // 只放在記憶體，不存進 localStorage，關閉分頁就消失
+  var sha = null;
+  var dirty = false;
+  var pendingRetry = null;
+  var configured = GOOGLE_CLIENT_ID.indexOf('REPLACE_') !== 0;
 
-  function setStatus(el, type, msg){
-    el.className = type;
-    el.textContent = msg;
+  function $(id){ return document.getElementById(id); }
+
+  function setStatus(msg, type){
+    var el = $('status');
+    el.textContent = msg || '';
+    el.className = 'status ' + (type || '');
+    el.hidden = !msg;
   }
-
-  function markDirty(){
-    isDirty = true;
-    unsavedBadge.classList.add('show');
+  function setLoginNotice(msg){
+    var el = $('loginNotice');
+    el.textContent = msg || '';
+    el.hidden = !msg;
   }
-
-  function markClean(){
-    isDirty = false;
-    unsavedBadge.classList.remove('show');
+  function setDirty(v){
+    dirty = v;
+    $('dirtyBadge').hidden = !v;
   }
-
   window.addEventListener('beforeunload', function(e){
-    if(isDirty){
-      e.preventDefault();
-      e.returnValue = '';
-      return '';
-    }
+    if(dirty){ e.preventDefault(); e.returnValue = ''; }
   });
 
-  function apiHeaders(){
-    return {
-      'Authorization': 'Bearer ' + tokenInput.value.trim(),
-      'Accept': 'application/vnd.github+json'
-    };
+  function today(){
+    var d = new Date();
+    var p = function(n){ return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate());
   }
 
-  function renderItems(items){
-    itemsContainer.innerHTML = '';
-    items.forEach(function(item, idx){
-      addItemRow(item, true);
+  function api(method, body){
+    var headers = { 'Authorization': 'Bearer ' + idToken };
+    if(body) headers['Content-Type'] = 'application/json';
+    return fetch(ADMIN_API + '/news', {
+      method: method,
+      headers: headers,
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function(res){
+      return res.json().catch(function(){ return {}; }).then(function(data){
+        if(!res.ok){
+          var err = new Error(data.error || ('發生錯誤（' + res.status + '）'));
+          err.status = res.status;
+          throw err;
+        }
+        return data;
+      });
     });
   }
 
-  function addItemRow(item, isInitialLoad){
-    item = item || {date:'', tag:'', title:'', link:'https://www.fdhs.tyc.edu.tw'};
-    var div = document.createElement('div');
-    div.className = 'item';
-    div.innerHTML =
-      '<div class="item-row">' +
-        '<input type="text" class="f-date" placeholder="日期 例如 2026.08.01" value="' + escapeAttr(item.date) + '">' +
-        '<input type="text" class="f-tag" placeholder="分類 例如 招生" value="' + escapeAttr(item.tag) + '">' +
-        '<input type="text" class="f-title" placeholder="標題內容" value="' + escapeAttr(item.title) + '">' +
-      '</div>' +
-      '<input type="url" class="f-link" placeholder="連結網址" value="' + escapeAttr(item.link) + '">' +
-      '<div class="item-actions"><button class="btn btn-danger btn-remove">刪除這則</button></div>';
-
-    div.querySelectorAll('input').forEach(function(inp){
-      inp.addEventListener('input', markDirty);
+  // ===== 登入 =====
+  function renderGoogleButtons(){
+    if(!(window.google && google.accounts && google.accounts.id)) return false;
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onCredential });
+    ['gBtn', 'gBtn2'].forEach(function(id){
+      $(id).innerHTML = '';
+      google.accounts.id.renderButton($(id), { theme: 'outline', size: 'large', text: 'signin_with', locale: 'zh-TW' });
     });
+    return true;
+  }
 
-    div.querySelector('.btn-remove').addEventListener('click', function(){
-      var titleField = div.querySelector('.f-title');
-      var label = (titleField && titleField.value.trim()) ? '「' + titleField.value.trim() + '」' : '這一則消息';
-      var confirmed = window.confirm('確定要刪除' + label + '嗎？\n\n此動作要等按下「儲存變更到網站」之後才會真的生效，如果按錯了，儲存前都還可以重新整理頁面復原。');
-      if(confirmed){
-        div.remove();
-        markDirty();
-      }
-    });
-
-    itemsContainer.appendChild(div);
-
-    if(!isInitialLoad){
-      markDirty();
+  function onCredential(resp){
+    idToken = resp.credential;
+    setLoginNotice('');
+    if(pendingRetry){
+      var retry = pendingRetry;
+      pendingRetry = null;
+      $('reauthBox').hidden = true;
+      retry();
+    }else{
+      loadNews();
     }
   }
 
-  function escapeAttr(s){
-    return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  function showLogin(msg){
+    idToken = null;
+    sha = null;
+    $('editorBox').hidden = true;
+    $('loginBox').hidden = false;
+    setLoginNotice(msg || '');
   }
 
-  function collectItems(){
-    var rows = itemsContainer.querySelectorAll('.item');
-    var items = [];
+  function signOut(){
+    if(dirty && !window.confirm('還有尚未儲存的修改，確定要登出嗎？')) return;
+    if(window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect();
+    $('items').innerHTML = '';
+    setDirty(false);
+    setStatus('');
+    showLogin('已登出。');
+  }
+
+  // ===== 載入與渲染 =====
+  function loadNews(){
+    setLoginNotice('');
+    api('GET').then(function(data){
+      sha = data.sha;
+      $('whoEmail').textContent = data.email;
+      $('items').innerHTML = '';
+      data.items.forEach(function(it){ addRow(it, false); });
+      $('loginBox').hidden = true;
+      $('editorBox').hidden = false;
+      setDirty(false);
+      setStatus('');
+    }).catch(function(err){
+      if(err.status === 401){
+        showLogin('登入已過期，請重新登入。');
+      }else if(err.status === 403){
+        showLogin(err.message);
+      }else{
+        showLogin('載入失敗：' + err.message);
+      }
+    });
+  }
+
+  function addRow(item, atTop){
+    item = item || { date: today(), tag: '', title: '', link: DEFAULT_LINK };
+    var row = document.createElement('div');
+    row.className = 'item';
+    // 沒有在表單上的欄位（例如 AI 摘要）原樣保留，儲存時一起送出
+    row._extra = {};
+    ['summary', 'seoDescription'].forEach(function(k){
+      if(item[k]) row._extra[k] = item[k];
+    });
+
+    var grid = document.createElement('div');
+    grid.className = 'grid';
+    grid.appendChild(makeField('日期', 'date', item.date || '', '2026.08.01'));
+    grid.appendChild(makeField('分類', 'tag', item.tag || '', '例如 招生', 'tagList'));
+    grid.appendChild(makeField('標題', 'title', item.title || '', '公告標題'));
+    row.appendChild(grid);
+
+    var linkWrap = makeField('連結網址', 'link', item.link || DEFAULT_LINK, 'https://');
+    linkWrap.classList.add('link-field');
+    row.appendChild(linkWrap);
+
+    var actions = document.createElement('div');
+    actions.className = 'row-actions';
+    actions.appendChild(makeBtn('↑ 上移', 'btn btn-ghost btn-sm', function(){
+      var prev = row.previousElementSibling;
+      if(prev){ row.parentNode.insertBefore(row, prev); setDirty(true); }
+    }));
+    actions.appendChild(makeBtn('↓ 下移', 'btn btn-ghost btn-sm', function(){
+      var next = row.nextElementSibling;
+      if(next){ row.parentNode.insertBefore(next, row); setDirty(true); }
+    }));
+    actions.appendChild(makeBtn('刪除', 'btn btn-danger btn-sm', function(){
+      var title = row.querySelector('[data-k="title"]').value.trim();
+      var label = title ? '「' + title + '」' : '這一則消息';
+      if(window.confirm('確定要刪除' + label + '嗎？\n（要按下「儲存」之後才會真的從網站移除）')){
+        row.remove();
+        setDirty(true);
+      }
+    }));
+    row.appendChild(actions);
+
+    row.querySelectorAll('input').forEach(function(inp){
+      inp.addEventListener('input', function(){ setDirty(true); });
+    });
+
+    var list = $('items');
+    if(atTop && list.firstChild){ list.insertBefore(row, list.firstChild); }
+    else { list.appendChild(row); }
+    return row;
+  }
+
+  function makeField(label, key, value, placeholder, listId){
+    var wrap = document.createElement('label');
+    wrap.className = 'field';
+    var span = document.createElement('span');
+    span.textContent = label;
+    var input = document.createElement('input');
+    input.type = key === 'link' ? 'url' : 'text';
+    input.value = value;
+    input.placeholder = placeholder;
+    input.setAttribute('data-k', key);
+    input.autocomplete = 'off';
+    if(listId) input.setAttribute('list', listId);
+    wrap.appendChild(span);
+    wrap.appendChild(input);
+    return wrap;
+  }
+
+  function makeBtn(text, cls, fn){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = cls;
+    b.textContent = text;
+    b.addEventListener('click', fn);
+    return b;
+  }
+
+  function collect(){
+    var rows = $('items').querySelectorAll('.item');
+    var out = [];
     rows.forEach(function(row){
-      var date = row.querySelector('.f-date').value.trim();
-      var tag = row.querySelector('.f-tag').value.trim();
-      var title = row.querySelector('.f-title').value.trim();
-      var link = row.querySelector('.f-link').value.trim();
-      if(title){
-        items.push({date:date, tag:tag, title:title, link:link || 'https://www.fdhs.tyc.edu.tw'});
-      }
+      var get = function(k){ return row.querySelector('[data-k="' + k + '"]').value.trim(); };
+      var item = { date: get('date'), tag: get('tag'), title: get('title'), link: get('link') };
+      Object.keys(row._extra).forEach(function(k){ item[k] = row._extra[k]; });
+      out.push(item);
     });
-    return items;
+    return out;
   }
 
-  connectBtn.addEventListener('click', function(){
-    var token = tokenInput.value.trim();
-    var repo = repoInput.value.trim();
-    if(!token || !repo){
-      setStatus(statusEl, 'err', '請輸入權杖與倉庫名稱');
+  // ===== 儲存 =====
+  function save(){
+    if(!idToken){
+      setStatus('請先登入再儲存。', 'err');
       return;
     }
-    setStatus(statusEl, 'loading', '載入中...');
-    connectBtn.disabled = true;
-
-    fetch('https://api.github.com/repos/' + repo + '/contents/' + FILE_PATH, {headers: apiHeaders()})
-      .then(function(res){
-        if(res.status === 401) throw new Error('權杖無效或已過期，請重新產生');
-        if(res.status === 404) throw new Error('找不到 ' + FILE_PATH + '，請確認倉庫名稱正確、且倉庫根目錄有這個檔案');
-        if(!res.ok) throw new Error('連接失敗（狀態碼 ' + res.status + '）');
-        return res.json();
-      })
-      .then(function(data){
-        currentSha = data.sha;
-        var content = decodeURIComponent(escape(atob(data.content)));
-        var items = JSON.parse(content);
-        renderItems(items);
-        editorArea.style.display = 'block';
-        markClean();
-        setStatus(statusEl, 'ok', '連接成功！已載入目前 ' + items.length + ' 則消息，可以在下方編輯。');
-      })
-      .catch(function(err){
-        setStatus(statusEl, 'err', err.message);
-      })
-      .finally(function(){
-        connectBtn.disabled = false;
-      });
-  });
-
-  addItemBtn.addEventListener('click', function(){
-    addItemRow(null, false);
-  });
-
-  saveBtn.addEventListener('click', function(){
-    var repo = repoInput.value.trim();
-    var items = collectItems();
+    var items = collect();
     if(items.length === 0){
-      setStatus(saveStatus, 'err', '至少需要保留一則消息');
+      setStatus('至少需要保留一則消息。', 'err');
       return;
     }
-    var jsonStr = JSON.stringify(items, null, 2) + '\n';
-    var base64Content = btoa(unescape(encodeURIComponent(jsonStr)));
-
-    setStatus(saveStatus, 'loading', '儲存中...');
+    var saveBtn = $('saveBtn');
     saveBtn.disabled = true;
+    setStatus('儲存中…', 'info');
 
-    fetch('https://api.github.com/repos/' + repo + '/contents/' + FILE_PATH, {
-      method: 'PUT',
-      headers: Object.assign({'Content-Type':'application/json'}, apiHeaders()),
-      body: JSON.stringify({
-        message: '更新最新消息 - ' + new Date().toLocaleString('zh-TW'),
-        content: base64Content,
-        sha: currentSha
-      })
-    })
-      .then(function(res){
-        if(!res.ok) return res.json().then(function(e){ throw new Error(e.message || '儲存失敗'); });
-        return res.json();
-      })
-      .then(function(data){
-        currentSha = data.content.sha;
-        markClean();
-        setStatus(saveStatus, 'ok', '✓ 已成功儲存！網站約 1-2 分鐘後會更新，重新整理首頁即可看到最新內容。');
-      })
-      .catch(function(err){
-        setStatus(saveStatus, 'err', '儲存失敗：' + err.message);
-      })
-      .finally(function(){
-        saveBtn.disabled = false;
-      });
+    api('PUT', { items: items, sha: sha }).then(function(data){
+      sha = data.sha;
+      setDirty(false);
+      setStatus('✓ 已儲存。網站約 1–2 分鐘後更新，重新整理首頁即可看到。', 'ok');
+    }).catch(function(err){
+      if(err.status === 401){
+        // 內容保留在畫面上，請使用者重新登入後自動再存一次
+        pendingRetry = save;
+        $('reauthBox').hidden = false;
+        setStatus('登入已過期，內容還在，請用下方按鈕重新登入。', 'err');
+        if(!renderGoogleButtons()) setStatus('登入元件尚未載入，請重新整理頁面。', 'err');
+      }else if(err.status === 409){
+        setStatus(err.message + '（你的修改還在畫面上，可先複製起來，再重新整理後貼回去）', 'err');
+      }else{
+        setStatus('儲存失敗：' + err.message, 'err');
+      }
+    }).finally(function(){
+      saveBtn.disabled = false;
+    });
+  }
+
+  // ===== 初始化 =====
+  $('addBtn').addEventListener('click', function(){
+    addRow(null, true);
+    setDirty(true);
   });
+  $('saveBtn').addEventListener('click', save);
+  $('signOutBtn').addEventListener('click', signOut);
+
+  if(!configured){
+    setLoginNotice('後台尚未完成設定，請聯絡管理者。');
+    $('gBtn').hidden = true;
+    return;
+  }
+  (function waitForGoogle(tries){
+    if(renderGoogleButtons()) return;
+    if(tries > 50){ setLoginNotice('登入元件載入失敗，請重新整理頁面。'); return; }
+    setTimeout(function(){ waitForGoogle(tries + 1); }, 200);
+  })(0);
 })();
 </script>
 </body>
